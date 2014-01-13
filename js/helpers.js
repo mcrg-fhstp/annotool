@@ -118,6 +118,9 @@ function HELPER_CLASS(){
 
 
 
+// color conversion
+// from: https://github.com/bebraw/colorjs/blob/master/src/color.js
+
 var RGB_HSV = function(rgb) {
     // http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
     var r = rgb.r;
