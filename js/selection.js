@@ -229,7 +229,7 @@ function SELECTION_CLASS(){
 		this.border = border;
 	}
 
-
+/*
 	this.drawBorder = function(context, W, H, offsetX, offsetY, scale){
 		var border = this.border;
 		if (border != null){
@@ -256,7 +256,44 @@ function SELECTION_CLASS(){
 		else
 			context.clearRect(0,0,W,H);
 	}
-	
+*/
+
+
+	this.drawBorder = function(context, W, H, offsetX, offsetY, scale){
+		var mask = this.current;
+		if (mask != null){
+			var img = context.createImageData(W,H);
+			var imgData = img.data;
+		
+			// get rise and fall
+			for(var i=0; i < mask.length; i++){
+				if(mask[i] == undefined)
+					continue;
+				for(var j=0; j < mask[i].length; j++){
+					if(mask[i][j] == undefined)
+						continue;
+					//pixel within visible area?
+					if ((i/scale) > -offsetX &&
+						(i/scale) < (-offsetX + W) &&
+						(j/scale) > -offsetY &&
+						(j/scale) < (-offsetY + H)){
+						// draw pixel
+						var k = ((Math.ceil(j/scale)+offsetY) * W + (Math.ceil(i/scale)+offsetX)) * 4;
+						imgData[k+0] = 255;	// r
+						imgData[k+1] = 255; 	// g
+						imgData[k+2] = 0; 	// b
+						imgData[k+3] = 255;	// a
+					}
+				}
+			}
+			
+			context.putImageData(img,0,0);
+		}
+		else
+			context.clearRect(0,0,W,H);
+		//console.log(offsetX+" "+offsetY);
+	}
+		
 	
 	this.getBoundingBox = function(mask){
 		return this.boundingBox;
