@@ -163,8 +163,8 @@ function TOOLS_CLASS(){
 				var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 				var imgData = img.data;
 				var k = ((y * (img.width * 4)) + (x * 4));
-				var dx = [ 0, -1, +1,  0];
-				var dy = [-1,  0,  0, +1];
+				var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
+				var dy = [-1, -1, -1,  0,  0, +1, +1, +1];
 				var color_to = {
 					r: 255,
 					g: 0,
