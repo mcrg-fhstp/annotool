@@ -958,7 +958,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		}
 		
 		// redraw selected area
-		this.redrawSelection();
+		//this.redrawSelection();
 		
 		// redraw existing figures
 		FIGURES.draw(figureHolder,_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), _imageWidth/zoomWidth);
@@ -1126,6 +1126,10 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 	}
 	this.redrawSelection = redrawSelection;
 
+
+	this.clearSelection = function(){
+		overlayCanvas.getContext('2d').clearRect(0,0,_canvas.width, _canvas.height);
+	}
 
 	//(function() { // setup
 		if( _tilesSystem === "deepzoom" ) {

@@ -397,6 +397,7 @@ function CONTROLS_CLASS(){
 			else {
 				IMAGE.zoomOut(CONTROL.mouse.x, CONTROL.mouse.y);
 			}
+			IMAGE.redrawSelection();
 		}
 		
 		//disable page scroll if ctrl pressed

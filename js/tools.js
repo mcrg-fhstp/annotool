@@ -118,10 +118,12 @@ function TOOLS_CLASS(){
 			//console.log(deltaX +" "+ deltaY);
 
 			IMAGE.moveXY(deltaX, deltaY);
+			IMAGE.clearSelection();
 		}
 		else if(type == 'release'){
 			if(mouse.valid == false || mouse.click_x === false) return false;
 			TOOLS.set_cursor("grab");
+			IMAGE.redrawSelection();
 			if(mouse.x - mouse.click_x == 0 || mouse.y - mouse.click_y == 0) return false;	
 		}
 	}
