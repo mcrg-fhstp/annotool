@@ -45,7 +45,7 @@ function SELECTION_CLASS(){
 			this.border = this.undoStack[this.stackCounter-1].border;
 			this.boundingBox = this.undoStack[this.stackCounter-1].boundingBox;
 		}
-		IMAGE.redrawSelection();
+		IMAGE.redrawSelectionFull();
 		
 		$('#redo_tool').removeClass('inactive');
 		if(this.stackCounter == this.undoStack.length)
@@ -65,7 +65,7 @@ function SELECTION_CLASS(){
 			this.border = this.undoStack[this.stackCounter-1].border;
 			this.boundingBox = this.undoStack[this.stackCounter-1].boundingBox;
 		}
-		IMAGE.redrawSelection();
+		IMAGE.redrawSelectionFull();
 		
 		$('#undo_tool').removeClass('inactive');
 		if(this.stackCounter == 0)
@@ -229,7 +229,7 @@ function SELECTION_CLASS(){
 		this.border = border;
 	}
 
-/*
+
 	this.drawBorder = function(context, W, H, offsetX, offsetY, scale){
 		var border = this.border;
 		if (border != null){
@@ -256,10 +256,10 @@ function SELECTION_CLASS(){
 		else
 			context.clearRect(0,0,W,H);
 	}
-*/
 
 
-	this.drawBorder = function(context, W, H, offsetX, offsetY, scale){
+
+	this.fillRegion = function(context, W, H, offsetX, offsetY, scale){
 		var mask = this.current;
 		if (mask != null){
 			var img = context.createImageData(W,H);

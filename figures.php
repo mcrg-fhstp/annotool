@@ -75,7 +75,7 @@
 			<a id="undo_tool" title="Undo selection" style="background-position: -446px -43px;" class="" onclick="SELECTION.undo(); return false;" href="#"></a>
 			<a id="redo_tool" title="Redo selection" style="background-position: -498px -43px;" class="inactive" onclick="SELECTION.redo(); return false;" href="#"></a>
 
-			<a title="Clear selection" style="background-position: -95px -45px;" class="" onclick="SELECTION.push(); SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelection(); TOOLS.reset(); return false;" href="#"></a>	
+			<a title="Clear selection" style="background-position: -95px -45px;" class="" onclick="SELECTION.push(); SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" href="#"></a>	
 		</div>
 		
 		<div id="tool_options">
@@ -133,7 +133,7 @@
 			
 			<input id="save" type="button" value="Save to DB" onclick="SELECTION.saveClassificationData()" disabled />
 			<input id="delete" type="button" value="Delete from DB" onclick="FIGURES.removeClassificationData()" disabled />
-			<input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelection(); TOOLS.reset(); return false;" />
+			<input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" />
 			<div id="classificationHint">Complete all classificationsets and make sure all total confidences are 1!</div>
 		</div>
 		

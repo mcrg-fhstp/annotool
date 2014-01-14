@@ -1119,16 +1119,18 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		this.paint();
 	}
 	
-	function redrawSelection(){
+	function redrawSelectionOutline(){
 		var scale = _imageWidth/_tileZoomArray[_zoomLevel][_aGetWidth];
 		
 		SELECTION.drawBorder(overlayCanvas.getContext('2d'),_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), scale);
 	}
-	this.redrawSelection = redrawSelection;
+	this.redrawSelectionOutline = redrawSelectionOutline;
 
 
-	this.clearSelection = function(){
-		overlayCanvas.getContext('2d').clearRect(0,0,_canvas.width, _canvas.height);
+	this.redrawSelectionFull = function(){
+		var scale = _imageWidth/_tileZoomArray[_zoomLevel][_aGetWidth];
+		
+		SELECTION.fillRegion(overlayCanvas.getContext('2d'),_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), scale);
 	}
 
 	//(function() { // setup

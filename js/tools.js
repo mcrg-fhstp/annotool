@@ -118,12 +118,12 @@ function TOOLS_CLASS(){
 			//console.log(deltaX +" "+ deltaY);
 
 			IMAGE.moveXY(deltaX, deltaY);
-			IMAGE.clearSelection();
+			IMAGE.redrawSelectionOutline();
 		}
 		else if(type == 'release'){
 			if(mouse.valid == false || mouse.click_x === false) return false;
 			TOOLS.set_cursor("grab");
-			IMAGE.redrawSelection();
+			IMAGE.redrawSelectionFull();
 			if(mouse.x - mouse.click_x == 0 || mouse.y - mouse.click_y == 0) return false;	
 		}
 	}
@@ -271,7 +271,7 @@ function TOOLS_CLASS(){
 				else if (sel == 'sub') SELECTION.subtract(mask);
 				else if (sel == 'create') SELECTION.create(mask);
 
-				IMAGE.redrawSelection();						
+				IMAGE.redrawSelectionFull();						
 				CLASSIFICATOR.show();
 				TOOLS.selectionState = null;
 				
@@ -427,7 +427,7 @@ function TOOLS_CLASS(){
 						SELECTION.create(mask);
 					}
 					
-					IMAGE.redrawSelection();			
+					IMAGE.redrawSelectionFull();			
 					CLASSIFICATOR.show();
 					TOOLS.select_data = false;
 					TOOLS.set_cursor("crosshair");
@@ -607,7 +607,7 @@ function TOOLS_CLASS(){
 						SELECTION.create(mask);
 					}
 					
-					IMAGE.redrawSelection();			
+					IMAGE.redrawSelectionFull();			
 					CLASSIFICATOR.show();	
 					TOOLS.select_data = [];	
 					TOOLS.set_cursor("crosshair");	
