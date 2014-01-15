@@ -5,7 +5,7 @@
 	<?php endif; ?>
 
 	<h1>3D-Pitoti AnnoTool
-		<span> v1.1b</span>
+		<span> v1.2b</span>
 	</h1>
 	
 	<?php if($_SESSION['username'] != ""): ?>
