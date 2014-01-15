@@ -144,6 +144,13 @@
 				
 			<h2 id="changelog">ChangeLog</h2>
 				<p>
+				<p><b>v1.2b</b></p>
+				<p><ul>
+				<li>Changed view of selected area from outline to filled</li>
+				<li>Some changes in selection tools for better selection results</li>
+				</ul></p>
+			
+				<p>
 				<p><b>v1.1b</b></p>
 				<p><ul>
 				<li>Added dropdowns for Figure Incomplete, Figure Damaged and Tracing Incomplete</li>
