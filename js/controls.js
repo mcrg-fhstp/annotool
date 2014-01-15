@@ -54,7 +54,7 @@ function CONTROLS_CLASS(){
 		//esc
 		else if(k == 27){		
 			this.esc_pressed = true;
-			IMAGE.redrawSelection();		
+			IMAGE.redrawSelectionFull();		
 			TOOLS.reset();
 		}
 		//backspace

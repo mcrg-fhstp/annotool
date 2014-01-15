@@ -69,7 +69,7 @@ function FIGURES_CLASS(){
 						  SELECTION.load( FIGURES.selectedFigure );
 						  CLASSIFICATOR.showDeleteButton();
 						  //FIGURES.loadClassificationData( FIGURES.selectedFigure );
-						  IMAGE.redrawSelection();
+						  IMAGE.redrawSelectionFull();
 						  $('#wait').hide();
 					  },50);
 					  $('.figureBox').removeClass('selected');
