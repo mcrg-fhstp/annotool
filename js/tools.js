@@ -220,6 +220,7 @@ function TOOLS_CLASS(){
 					Tested[curPointX][curPointY] = true;
 					
 					for (var i = 0; i < 4; i++){
+					for (var i = 0; i < dx.length; i++){
 						var nextPointX = curPointX + dx[i];
 						var nextPointY = curPointY + dy[i];
 						if (nextPointX < 0 || nextPointY < 0 || nextPointX >= IMAGE.width || nextPointY >= IMAGE.height) 
