@@ -173,12 +173,26 @@ function TOOLS_CLASS(){
 					b: 0,
 					a: 1,
 					}
-				var color_from = {
+				var color_from_mid = {
 					r: imgData[k+0],
 					g: imgData[k+1],
 					b: imgData[k+2],
 					a: imgData[k+3],
+					};
+				//console.log(RGB_HSV(color_from_mid));
+				var color_from_darkest = color_from_mid;
+				for (var i=0;i<dx.length;i++){
+					var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
+					var color_from_temp = {
+						r: imgData[k+0],
+						g: imgData[k+1],
+						b: imgData[k+2],
+						a: imgData[k+3],
+					};
+					if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
+						color_from_darkest = color_from_temp;
 					}
+				}
 					
 				var Tested = [];
 				for (var i=0;i<IMAGE.width;i++)
@@ -186,10 +200,10 @@ function TOOLS_CLASS(){
 					
 				var mask = [];	
 					
-				if(color_from.r == color_to.r && 
-				  color_from.g == color_to.g && 
-				  color_from.b == color_to.b && 
-				  color_from.a == color_to.a) 
+				if(color_from_mid.r == color_to.r && 
+				  color_from_mid.g == color_to.g && 
+				  color_from_mid.b == color_to.b && 
+				  color_from_mid.a == color_to.a) 
 					return false;
 					
 				var k = (y * IMAGE.width + x) * 4;
@@ -219,25 +233,27 @@ function TOOLS_CLASS(){
 					var curPointX = stack.pop();
 					Tested[curPointX][curPointY] = true;
 					
-					for (var i = 0; i < 4; i++){
 					for (var i = 0; i < dx.length; i++){
 						var nextPointX = curPointX + dx[i];
 						var nextPointY = curPointY + dy[i];
 						if (nextPointX < 0 || nextPointY < 0 || nextPointX >= IMAGE.width || nextPointY >= IMAGE.height) 
 							continue;
 						var k = (nextPointY * IMAGE.width + nextPointX) * 4;
-						//check
-						if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from.a) <= sensitivity &&
+						//check clicked pixel
+						if(((Math.abs(imgData[k+0] - color_from_mid.r) <= sensitivity &&
+						  Math.abs(imgData[k+1] - color_from_mid.g) <= sensitivity &&
+						  Math.abs(imgData[k+2] - color_from_mid.b) <= sensitivity &&
+						  Math.abs(imgData[k+3] - color_from_mid.a) <= sensitivity) ||
+						  // darkest pixel
+						 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+						  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+						  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+						  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+						  // pixel not white
+						 (Math.abs(imgData[k+0] - 255) > sensitivity ||
+						  Math.abs(imgData[k+1] - 255) > sensitivity ||
+						  Math.abs(imgData[k+2] - 255) > sensitivity) &&
 						  !Tested[nextPointX][nextPointY]){
-							//fill pixel
-							/*imgData[k+0] = color_to.r; //r
-							imgData[k+1] = color_to.g; //g
-							imgData[k+2] = color_to.b; //b
-							imgData[k+3] = color_to.a; //a
-							*/
 							
 							if (mask[nextPointX+offsetX] == undefined)
 								mask[nextPointX+offsetX] = [];
