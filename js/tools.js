@@ -181,6 +181,7 @@ function TOOLS_CLASS(){
 					};
 				//console.log(RGB_HSV(color_from_mid));
 				var color_from_darkest = color_from_mid;
+				var color_from_lightest = color_from_mid;
 				for (var i=0;i<dx.length;i++){
 					var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
 					var color_from_temp = {
@@ -191,6 +192,9 @@ function TOOLS_CLASS(){
 					};
 					if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
 						color_from_darkest = color_from_temp;
+					}
+					else if (RGB_HSV(color_from_temp).v > RGB_HSV(color_from_darkest).v){
+						color_from_lightest = color_from_temp;
 					}
 				}
 					
@@ -239,11 +243,11 @@ function TOOLS_CLASS(){
 						if (nextPointX < 0 || nextPointY < 0 || nextPointX >= IMAGE.width || nextPointY >= IMAGE.height) 
 							continue;
 						var k = (nextPointY * IMAGE.width + nextPointX) * 4;
-						//check clicked pixel
-						if(((Math.abs(imgData[k+0] - color_from_mid.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_mid.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_mid.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_mid.a) <= sensitivity) ||
+						//check lightest pixel
+						if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+						  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+						  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+						  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
 						  // darkest pixel
 						 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
 						  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
