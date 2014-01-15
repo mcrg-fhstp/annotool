@@ -173,28 +173,12 @@ function TOOLS_CLASS(){
 					b: 0,
 					a: 1,
 					}
-				var color_from_mid = {
+				var color_from = {
 					r: imgData[k+0],
 					g: imgData[k+1],
 					b: imgData[k+2],
 					a: imgData[k+3],
-					};
-				//console.log(RGB_HSV(color_from_mid));
-				var color_from_darkest = color_from_mid;
-				for (var i=0;i<dx.length;i++){
-					var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
-					var color_from_temp = {
-						r: imgData[k+0],
-						g: imgData[k+1],
-						b: imgData[k+2],
-						a: imgData[k+3],
-					};
-					if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
-						color_from_darkest = color_from_temp;
 					}
-				}
-				//console.log("MID: r: "+color_from_mid.r+" g: "+color_from_mid.g+" b: "+color_from_mid.b+" DARK: r: "+color_from_darkest.r+" g: "+color_from_darkest.g+" b: "+color_from_darkest.b);
-				//console.log(RGB_HSV(color_from_temp).v +" "+ RGB_HSV(color_from_darkest).v);
 					
 				var Tested = [];
 				for (var i=0;i<IMAGE.width;i++)
@@ -202,10 +186,10 @@ function TOOLS_CLASS(){
 					
 				var mask = [];	
 					
-				if(color_from_mid.r == color_to.r && 
-				  color_from_mid.g == color_to.g && 
-				  color_from_mid.b == color_to.b && 
-				  color_from_mid.a == color_to.a) 
+				if(color_from.r == color_to.r && 
+				  color_from.g == color_to.g && 
+				  color_from.b == color_to.b && 
+				  color_from.a == color_to.a) 
 					return false;
 					
 				var k = (y * IMAGE.width + x) * 4;
@@ -235,27 +219,24 @@ function TOOLS_CLASS(){
 					var curPointX = stack.pop();
 					Tested[curPointX][curPointY] = true;
 					
-					for (var i = 0; i < dx.length; i++){
+					for (var i = 0; i < 4; i++){
 						var nextPointX = curPointX + dx[i];
 						var nextPointY = curPointY + dy[i];
 						if (nextPointX < 0 || nextPointY < 0 || nextPointX >= IMAGE.width || nextPointY >= IMAGE.height) 
 							continue;
 						var k = (nextPointY * IMAGE.width + nextPointX) * 4;
-						//check clicked pixel
-						if(((Math.abs(imgData[k+0] - color_from_mid.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_mid.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_mid.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_mid.a) <= sensitivity) ||
-						  // check darkest neighbour pixel
-						  (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-						  //check pixel not white
-						  (Math.abs(imgData[k+0] - 255) > sensitivity ||
-						  Math.abs(imgData[k+1] - 255) > sensitivity ||
-						  Math.abs(imgData[k+2] - 255) > sensitivity) &&
+						//check
+						if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
+						  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
+						  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
+						  Math.abs(imgData[k+3] - color_from.a) <= sensitivity &&
 						  !Tested[nextPointX][nextPointY]){
+							//fill pixel
+							/*imgData[k+0] = color_to.r; //r
+							imgData[k+1] = color_to.g; //g
+							imgData[k+2] = color_to.b; //b
+							imgData[k+3] = color_to.a; //a
+							*/
 							
 							if (mask[nextPointX+offsetX] == undefined)
 								mask[nextPointX+offsetX] = [];
@@ -353,34 +334,17 @@ function TOOLS_CLASS(){
 					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
-					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
-					var dy = [-1, -1, -1,  0,  0, +1, +1, +1];
+					
 					
 					var k = ((y * (img.width * 4)) + (x * 4));
-					var color_from_mid = {
+					var color_from = {
 						r: imgData[k+0],
 						g: imgData[k+1],
 						b: imgData[k+2],
 						a: imgData[k+3],
-						};
-					//console.log(RGB_HSV(color_from_mid));
-					var color_from_darkest = color_from_mid;
-					for (var i=0;i<dx.length;i++){
-						var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
-						var color_from_temp = {
-							r: imgData[k+0],
-							g: imgData[k+1],
-							b: imgData[k+2],
-							a: imgData[k+3],
-						};
-						if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
-							color_from_darkest = color_from_temp;
 						}
-					}
-					//console.log("MID: r: "+color_from_mid.r+" g: "+color_from_mid.g+" b: "+color_from_mid.b+" DARK: r: "+color_from_darkest.r+" g: "+color_from_darkest.g+" b: "+color_from_darkest.b);
-					//console.log(RGB_HSV(color_from_temp).v +" "+ RGB_HSV(color_from_darkest).v);
-
-					if (color_from_mid.r >= 240 && color_from_mid.g >= 240 && color_from_mid.b >= 240){
+					
+					if (color_from.r >= 250 && color_from.g >= 250 && color_from.b >= 250){
 						alert("white area cannot be selected!");
 						$('#wait').hide();
 						return false;
@@ -396,19 +360,10 @@ function TOOLS_CLASS(){
 					for (var i=TOOLS.select_data.x; i<TOOLS.select_data.x+TOOLS.select_data.w; i++){
 						for (var j=TOOLS.select_data.y; j<TOOLS.select_data.y+TOOLS.select_data.h; j++){
 							var k = (j * IMAGE.width + i) * 4;
-							if(((Math.abs(imgData[k+0] - color_from_mid.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_mid.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_mid.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_mid.a) <= sensitivity) ||
-						  // check darkest neighbour pixel
-						  (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-						  //check pixel not white
-						  (Math.abs(imgData[k+0] - 255) > sensitivity ||
-						  Math.abs(imgData[k+1] - 255) > sensitivity ||
-						  Math.abs(imgData[k+2] - 255) > sensitivity)){
+							if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
 								if (mask[i+offsetX] == undefined)
 									mask[i+offsetX] = [];
 								mask[i+offsetX][j+offsetY] = true;
@@ -490,34 +445,16 @@ function TOOLS_CLASS(){
 					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
-					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
-					var dy = [-1, -1, -1,  0,  0, +1, +1, +1];
-				
+					
 					var k = ((y * (img.width * 4)) + (x * 4));
-					var color_from_mid = {
+					var color_from = {
 						r: imgData[k+0],
 						g: imgData[k+1],
 						b: imgData[k+2],
 						a: imgData[k+3],
-						};
-					//console.log(RGB_HSV(color_from_mid));
-					var color_from_darkest = color_from_mid;
-					for (var i=0;i<dx.length;i++){
-						var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
-						var color_from_temp = {
-							r: imgData[k+0],
-							g: imgData[k+1],
-							b: imgData[k+2],
-							a: imgData[k+3],
-						};
-						if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
-							color_from_darkest = color_from_temp;
 						}
-					}
-					//console.log("MID: r: "+color_from_mid.r+" g: "+color_from_mid.g+" b: "+color_from_mid.b+" DARK: r: "+color_from_darkest.r+" g: "+color_from_darkest.g+" b: "+color_from_darkest.b);
-					//console.log(RGB_HSV(color_from_temp).v +" "+ RGB_HSV(color_from_darkest).v);
 
-					if (color_from_mid.r >= 240 && color_from_mid.g >= 240 && color_from_mid.b >= 240){
+					if (color_from.r >= 250 && color_from.g >= 250 && color_from.b >= 250){
 						alert("white area cannot be selected!");
 						$('#wait').hide();
 						return false;
@@ -575,19 +512,10 @@ function TOOLS_CLASS(){
 							// within sensitivity?
 							var k = (jj * IMAGE.width + ii) * 4;
 							if( oddNodes &&
-								((Math.abs(imgData[k+0] - color_from_mid.r) <= sensitivity &&
-								  Math.abs(imgData[k+1] - color_from_mid.g) <= sensitivity &&
-								  Math.abs(imgData[k+2] - color_from_mid.b) <= sensitivity &&
-								  Math.abs(imgData[k+3] - color_from_mid.a) <= sensitivity) ||
-								  // check darkest neighbour pixel
-								  (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-								  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-								  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-								  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-								  //check pixel not white
-								  (Math.abs(imgData[k+0] - 255) > sensitivity ||
-								  Math.abs(imgData[k+1] - 255) > sensitivity ||
-								  Math.abs(imgData[k+2] - 255) > sensitivity)){
+								Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
+								Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
+								Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
+								Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
 									if (mask[ii+offsetX] == undefined)
 										mask[ii+offsetX] = [];
 									mask[ii+offsetX][jj+offsetY] = true;
