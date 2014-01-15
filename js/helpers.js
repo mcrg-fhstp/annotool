@@ -8,7 +8,7 @@ Array.prototype.remove = function(from, to) {
 
 // Array.clone for multidimensional array
 Array.prototype.clone = function() {
-  console.log(Object.prototype.toString.call($(this).first()));
+  //console.log(Object.prototype.toString.call($(this).first()));
   if (Object.prototype.toString.call($(this).first()) == '[object Object]'){
 	  var r = [];
 	  for (var i = 0; i < this.length; i++){
