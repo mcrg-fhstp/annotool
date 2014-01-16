@@ -270,7 +270,8 @@ function SELECTION_CLASS(){
 				if(mask[i] == undefined)
 					continue;
 				for(var j=0; j < mask[i].length; j++){
-					if(mask[i][j] == undefined)
+					if((mask[i][j] == undefined) ||
+						(mask[i][j] == false))
 						continue;
 					//pixel within visible area?
 					if ((i/scale) > -offsetX &&
