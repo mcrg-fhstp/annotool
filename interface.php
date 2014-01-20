@@ -166,6 +166,7 @@ function getImages(){
 		$node['section'] = $row['Section'];
 		$node['width'] = $row['Width'];
 		$node['height'] = $row['Height'];
+		$node['author'] = $row['Author'];
 		
 		$sql2 = "SELECT COUNT(*) FROM Figure WHERE TracingName = '" . $node['name'] . "'";
 		if ($_SESSION['username'] != 'admin')

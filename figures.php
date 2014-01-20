@@ -49,6 +49,7 @@
 			<p id="site"><b>Site:</b> <span>Campanine</span></p>
 			<p id="rock"><b>Rock:</b> <span>1</span></p>
 			<p id="section"><b>Section:</b> <span>B</span></p>
+			<p id="author"><b>Author:</b> <span>B</span></p>
 		</div>
 		
 		<div id="zoom_controls">

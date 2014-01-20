@@ -69,6 +69,7 @@ function setupImage(){
 	$('#imageDescription #site span').html(GET('site'));
 	$('#imageDescription #rock span').html(GET('rock'));
 	$('#imageDescription #section span').html(GET('section'));
+	$('#imageDescription #author span').html(GET('author'));
 	
 	
 	IMAGE = new CanvasZoom({ canvas: document.getElementById('imageCanvas'),tilesFolder: imagePath, imageWidth: imageWidth, imageHeight: imageHeight, tilesSystem: 'zoomify', tileOverlap: 0 });

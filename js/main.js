@@ -6,7 +6,7 @@ function generateImagesList(){
 	for(var i in images){
 		//console.log(images[i].name);
 		
-		var tr = '<tr><td><a href="figures.php?imageName=' + images[i].name + '&imagePath=' + images[i].folder + '&imageWidth=' + images[i].width + '&imageHeight=' + images[i].height;
+		var tr = '<tr><td><a href="figures.php?imageName=' + images[i].name + '&imagePath=' + images[i].folder + '&imageWidth=' + images[i].width + '&imageHeight=' + images[i].height + '&author=' + images[i].author;
 		var name = '';
 		if (images[i].site != ""){
 			name += images[i].site;
