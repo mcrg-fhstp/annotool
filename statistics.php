@@ -52,7 +52,7 @@
 
 <div id="content">
 <div id="wrapper">
-Statistic of number of annotated figures per node:
+Statistic of total number of annotated figures per node:
 </div>
 </div>
 
