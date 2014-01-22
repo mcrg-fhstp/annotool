@@ -30,7 +30,7 @@ html, body{
 	width:100%;
 } 
 
-#left p, #left ol{
+#imagePage #left p, #imagePage #left ol{
 	margin-bottom: 0.5em;
 	font-size: 0.9em;
 }
@@ -40,12 +40,6 @@ html, body{
 	position:absolute; top:0; left:0; height: 50px; width: 100%;
 	text-align: center;
 	background-color: #2D2D2D;
-	color: white;
-}
-#header a#back{
-	position: absolute;
-	top: 1em;
-	left: 1em;
 	color: white;
 }
 #header a#back, #footer a, #overviewPage #content a{
@@ -70,17 +64,28 @@ html, body{
 #header h1 span{
 	font-size: 0.6em;
 }
-#header #info{
+#header #left{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+}
+#header #right{
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 50%;
 }
-#header #info>*{
+#header #left>*{
+	float:left;
+	margin-left: 1em;
+	margin-top: 1em;
+}
+#header #right>*{
 	float: right;
 	margin: 1em 1em 0 0;
 }
-#header #info a{
+#header #right a{
 	border: 3px solid #ff8c00;
 	background: #989898 url('../img/all.png') no-repeat -42px -100px;
 	width: 24px;
@@ -96,11 +101,11 @@ html, body{
 	display: none;
 }
 
-#left {
+#imagePage #left {
 	position:absolute; top: 50px; left:0; bottom: 50px; width: 200px;
 	padding: 20px; box-sizing: border-box;
 }
-#right {
+#imagePage #right {
 	position:absolute; top: 50px; right:0; bottom: 50px; width: 500px;
 	padding: 20px; box-sizing: border-box;
 	overflow: auto;
@@ -128,7 +133,7 @@ html, body{
 .hint{
 	font-size: 0.8em;
 }
-#left div{
+#imagePage #left div{
 	margin-bottom: 1.2em;
 	clear: both;
 }

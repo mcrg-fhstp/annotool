@@ -1,16 +1,9 @@
 <div id="header">
 
-	<?php if (basename($_SERVER['PHP_SELF'], ".php") != 'index'): ?>
-	<a id="back" href="javascript:history.back()" >&lt; Back</a>
-	<?php endif; ?>
 
-	<h1>3D-Pitoti AnnoTool
-		<span> v1.2b</span>
-	</h1>
-	
 	<?php if($_SESSION['username'] != ""): ?>
 		
-	<div id="info">
+	<div id="right">
 		<a title="Open infobox" class="" onclick="$('#infobox').show(); return false;" href="#"></a>	
 	
 		<form id="logout" action="scripts/logout.php" method="post">
@@ -27,5 +20,21 @@
 	</div>	
 		
 	<?php endif; ?>
+
+
+
+	<div id="left">
+		<?php if (basename($_SERVER['PHP_SELF'], ".php") != 'index'): ?>
+		<a id="back" href="javascript:history.back()" >&lt; Back</a>
+		<form><input type="button" value="Show statistics" onclick="location.href='statistics.php';"></form>
+		<?php endif; ?>
+	</div>	
+
+
+
+	<h1>3D-Pitoti AnnoTool
+		<span> v1.2b</span>
+	</h1>
+	
 
 </div>

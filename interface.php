@@ -31,6 +31,10 @@ switch($action){
 	case "getClassificationOptions":
 		getClassificationOptions();
 		break;
+		
+	case "getClassificationOptionsWithQuantity":
+		getClassificationOptionsWithQuantity();
+		break;
 
 	case "getFiguresForImage":
 		$imageName = $_REQUEST['imageName'];
@@ -204,6 +208,42 @@ function getClassificationOptions(){
 		//$node['parentName'] = $row['ParentName'];
 		$node['mutuallyExclusive'] = $row['MutuallyExclusive'];
 		$node['typology'] = $row['Typology'];
+
+
+		array_push($output, $node);
+	}
+		
+	echo json_encode($output);	
+}
+
+
+
+
+function getClassificationOptionsWithQuantity(){
+	
+	$sql = "SELECT * FROM FigureTypeNode ORDER BY Typology, `Index`";
+		
+	$result = mysql_query($sql) or die("Error in getClassificationOptions: " . mysql_error());
+	
+	$output = array();
+	while ($row = mysql_fetch_array($result)) { 
+		$node = array();
+
+		$node['index'] = $row['Index'];
+		$node['parentIndex'] = $row['ParentIndex'];
+		$node['name'] = $row['Name'];
+		//$node['parentName'] = $row['ParentName'];
+		$node['mutuallyExclusive'] = $row['MutuallyExclusive'];
+		$node['typology'] = $row['Typology'];
+		
+		
+		
+		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes WHERE ClassID = '" . $row['Index'] . "'";
+		
+		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
+		$row2 = mysql_fetch_row($result2);
+
+		$node['quantity'] = $row2[0];
 
 
 		array_push($output, $node);

@@ -217,5 +217,26 @@ function LOADER_CLASS(){
 		});
 		return options;
 	}
+	
+	
+	this.loadClassificationOptionsWithQuantity = function(){
+		var options;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getClassificationOptionsWithQuantity',
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			options = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading classification options: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return options;
+	}
 
 }
