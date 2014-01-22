@@ -10,7 +10,9 @@
 			<input type="submit" name="logout" value="logout" />
 		</form>
 		
-		<form><input type="button" value="Change password" onclick="location.href='change_pwd.php';"></form>
+		<?php if($_SESSION['username'] != "demo"): ?>
+			<form><input type="button" value="Change password" onclick="location.href='change_pwd.php';"></form>
+		<?php endif; ?>
 		
 		<?php if($_SESSION['username'] == "admin"): ?>
 			<form><input type="button" value="Register new user" onclick="location.href='register.php';"></form>
