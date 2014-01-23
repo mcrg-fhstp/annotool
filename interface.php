@@ -238,7 +238,7 @@ function getClassificationOptionsWithQuantity(){
 		
 		
 		
-		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes WHERE ClassID = '" . $row['Index'] . "'";
+		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username !=  'demo'";
 		
 		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
