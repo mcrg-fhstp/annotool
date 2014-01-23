@@ -39,6 +39,9 @@
 	h3{
 		margin: 2em 0 1em -1em; 
 	}
+	#content{
+		bottom: auto;
+	}
 </style>
 
 </head>
@@ -48,7 +51,6 @@
 
 
 <?php include('header_inc.php'); ?>
-<?php include('footer_inc.php'); ?>
 
 <div id="content">
 <div id="wrapper">
