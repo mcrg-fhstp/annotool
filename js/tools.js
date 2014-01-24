@@ -212,14 +212,15 @@ function TOOLS_CLASS(){
 					
 				var k = (y * IMAGE.width + x) * 4;
 				if (Math.abs(imgData[k+0] - 255) <= sensitivity &&
-						  Math.abs(imgData[k+1] - 255) <= sensitivity &&
-						  Math.abs(imgData[k+2] - 255) <= sensitivity){
+					Math.abs(imgData[k+1] - 255) <= sensitivity &&
+					Math.abs(imgData[k+2] - 255) <= sensitivity){
 					alert("white area cannot be selected!");
 					$('#wait').hide();
 					TOOLS.selectionState = null;
 					return false;
 				}
 				
+				var orig_sensitivity = sensitivity;
 				// subtract
 				if (CONTROL.alt_pressed) sensitivity += 5;
 				// else
@@ -254,9 +255,9 @@ function TOOLS_CLASS(){
 						  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
 						  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
 						  // pixel not white
-						 (Math.abs(imgData[k+0] - 255) > sensitivity ||
-						  Math.abs(imgData[k+1] - 255) > sensitivity ||
-						  Math.abs(imgData[k+2] - 255) > sensitivity) &&
+						 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+						  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+						  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
 						  !Tested[nextPointX][nextPointY]){
 							
 							if (mask[nextPointX+offsetX] == undefined)
@@ -355,22 +356,46 @@ function TOOLS_CLASS(){
 					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
-					
+					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
+					var dy = [-1, -1, -1,  0,  0, +1, +1, +1];
 					
 					var k = ((y * (img.width * 4)) + (x * 4));
-					var color_from = {
+					var color_from_mid = {
 						r: imgData[k+0],
 						g: imgData[k+1],
 						b: imgData[k+2],
 						a: imgData[k+3],
+					};
+					//console.log(RGB_HSV(color_from_mid));
+					var color_from_darkest = color_from_mid;
+					var color_from_lightest = color_from_mid;
+					for (var i=0;i<dx.length;i++){
+						var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
+						var color_from_temp = {
+							r: imgData[k+0],
+							g: imgData[k+1],
+							b: imgData[k+2],
+							a: imgData[k+3],
+						};
+						if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
+							color_from_darkest = color_from_temp;
 						}
-					
-					if (color_from.r >= 250 && color_from.g >= 250 && color_from.b >= 250){
+						else if (RGB_HSV(color_from_temp).v > RGB_HSV(color_from_darkest).v){
+							color_from_lightest = color_from_temp;
+						}
+					}
+						
+					var k = (y * IMAGE.width + x) * 4;
+					if (Math.abs(imgData[k+0] - 255) <= sensitivity &&
+						Math.abs(imgData[k+1] - 255) <= sensitivity &&
+						Math.abs(imgData[k+2] - 255) <= sensitivity){
 						alert("white area cannot be selected!");
 						$('#wait').hide();
+						TOOLS.selectionState = null;
 						return false;
 					}
 					
+					var orig_sensitivity = sensitivity;
 					// subtract
 					if (CONTROL.alt_pressed) sensitivity += 5;
 					// else
@@ -381,10 +406,21 @@ function TOOLS_CLASS(){
 					for (var i=TOOLS.select_data.x; i<TOOLS.select_data.x+TOOLS.select_data.w; i++){
 						for (var j=TOOLS.select_data.y; j<TOOLS.select_data.y+TOOLS.select_data.h; j++){
 							var k = (j * IMAGE.width + i) * 4;
-							if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
-							  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
-							  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
-							  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
+							//check lightest pixel
+							if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
+							  // darkest pixel
+							 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+							  // pixel not white
+							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+2] - 255) > orig_sensitivity)){
+							  
 								if (mask[i+offsetX] == undefined)
 									mask[i+offsetX] = [];
 								mask[i+offsetX][j+offsetY] = true;
@@ -466,21 +502,46 @@ function TOOLS_CLASS(){
 					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
-					
+					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
+					var dy = [-1, -1, -1,  0,  0, +1, +1, +1];
+				
 					var k = ((y * (img.width * 4)) + (x * 4));
-					var color_from = {
+					var color_from_mid = {
 						r: imgData[k+0],
 						g: imgData[k+1],
 						b: imgData[k+2],
 						a: imgData[k+3],
+					};
+					//console.log(RGB_HSV(color_from_mid));
+					var color_from_darkest = color_from_mid;
+					var color_from_lightest = color_from_mid;
+					for (var i=0;i<dx.length;i++){
+						var k = (((y+dy[i]) * (img.width * 4)) + ((x+dx[i]) * 4));
+						var color_from_temp = {
+							r: imgData[k+0],
+							g: imgData[k+1],
+							b: imgData[k+2],
+							a: imgData[k+3],
+						};
+						if (RGB_HSV(color_from_temp).v < RGB_HSV(color_from_darkest).v){
+							color_from_darkest = color_from_temp;
 						}
-
-					if (color_from.r >= 250 && color_from.g >= 250 && color_from.b >= 250){
+						else if (RGB_HSV(color_from_temp).v > RGB_HSV(color_from_darkest).v){
+							color_from_lightest = color_from_temp;
+						}
+					}
+						
+					var k = (y * IMAGE.width + x) * 4;
+					if (Math.abs(imgData[k+0] - 255) <= sensitivity &&
+						Math.abs(imgData[k+1] - 255) <= sensitivity &&
+						Math.abs(imgData[k+2] - 255) <= sensitivity){
 						alert("white area cannot be selected!");
 						$('#wait').hide();
+						TOOLS.selectionState = null;
 						return false;
 					}
-										
+									
+					var orig_sensitivity = sensitivity;	
 					// subtract
 					if (CONTROL.alt_pressed) sensitivity += 5;
 					// else
@@ -532,11 +593,22 @@ function TOOLS_CLASS(){
 							}
 							// within sensitivity?
 							var k = (jj * IMAGE.width + ii) * 4;
-							if( oddNodes &&
-								Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
-								Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
-								Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
-								Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
+							//check lightest pixel
+							if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
+							  // darkest pixel
+							 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+							  // pixel not white
+							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
+							  oddNodes){
+
 									if (mask[ii+offsetX] == undefined)
 										mask[ii+offsetX] = [];
 									mask[ii+offsetX][jj+offsetY] = true;
