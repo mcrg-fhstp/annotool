@@ -233,10 +233,32 @@ function LOADER_CLASS(){
 			options = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
-			console.log( "Error loading classification options: " + errorThrown );
+			console.log( "Error loading classification options with quantity: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
 		return options;
+	}
+	
+	
+	this.loadImagesOfFiguresWithOption = function(optionIndex){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  //url: this.serverpath + 'coords.php',
+		  url: this.serverpath + 'interface.php?action=getImagesForFiguresWithOption&optionIndex=' + optionIndex,
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading images for figures with option: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
 	}
 
 }

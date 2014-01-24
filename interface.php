@@ -65,6 +65,16 @@ switch($action){
 		else
 			echo("no figureID defined");
 		break;
+	
+	case "getImagesForFiguresWithOption":
+		$optionIndex = $_REQUEST['optionIndex'];
+		if ($optionIndex){
+			getImagesForFiguresWithOption($optionIndex);
+		}
+		else
+			echo("no optionIndex defined");
+		break;	
+		
 		
 	case "saveNewFigure":
 		$imageName = $_REQUEST['imageName'];
@@ -394,6 +404,39 @@ function getMaskForFigure($figureID){
 		$figure['classes'] = $output;
 			
 		echo json_encode($figure);
+	}	
+}
+
+
+
+function getImagesForFiguresWithOption($optionIndex){
+	
+	// get figureIDs
+	$sql = "SELECT DISTINCT * FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
+	
+	$result = mysql_query($sql) or die("Error in getImagesForFiguresWithOption, getFigures: " . mysql_error());
+
+	$output = array();
+	if (mysql_num_rows($result) == 0) die("Error in getImagesForFiguresWithOption for option " . $optionIndex . ": No result!"); 
+	else {	
+		while ($row = mysql_fetch_array($result)) { 
+		
+			//$figure = array();
+	
+			$figure['figureID'] = $row['figureID'];
+			
+			// get figure
+			$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' AND Username != 'demo'";
+			
+			$result2 = mysql_query($sql2) or die("Error in getImagesForFiguresWithOption, getFigureImage: " . mysql_error());
+			while($row2 = mysql_fetch_array($result2)){
+				$figure['pathToMaskFile'] = $row2['PathToMaskFile'];
+				
+				array_push($output, $figure);
+			}
+		}
+			
+		echo json_encode($output);
 	}	
 }
 
