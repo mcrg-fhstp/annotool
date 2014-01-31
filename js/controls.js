@@ -397,7 +397,9 @@ function CONTROLS_CLASS(){
 			else {
 				IMAGE.zoomOut(CONTROL.mouse.x, CONTROL.mouse.y);
 			}
-			IMAGE.redrawSelectionFull();
+			IMAGE.redrawSelectionOutline();
+			clearTimeout(IMAGE.zoomTimer); 
+			IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);
 		}
 		
 		//disable page scroll if ctrl pressed

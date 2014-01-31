@@ -958,7 +958,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		}
 		
 		// redraw selected area
-		//this.redrawSelection();
+		this.redrawSelectionOutline();
 		
 		// redraw existing figures
 		FIGURES.draw(figureHolder,_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), _imageWidth/zoomWidth);
@@ -1237,4 +1237,8 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		$('#zoom_range').attr('max',_zoomLevelMax);
 
 	//}());
+	
+	this.zoomTimer = null;
+	this.zoomTimeOutFunction = function() { IMAGE.redrawSelectionFull();};
+	this.zoomTimeOut = 500;
 }
