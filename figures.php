@@ -54,11 +54,11 @@
 		
 		<div id="zoom_controls">
 			<p><b>Zoom</b></p>
-			<a title="Zoom out" style="background-position: -45px -45px;" class="" onclick="IMAGE.zoomOutCentre()" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);" href="#" ></a>
-			<a title="Zoom in" style="background-position: 5px -45px;" class="" onclick="IMAGE.zoomInCentre()" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);" href="#" ></a>
+			<a title="Zoom out" style="background-position: -45px -45px;" class="" onclick="IMAGE.zoomOutCentre(); IMAGE.redrawSelectionOutline();" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);" href="#" ></a>
+			<a title="Zoom in" style="background-position: 5px -45px;" class="" onclick="IMAGE.zoomInCentre(); IMAGE.redrawSelectionOutline();" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);" href="#" ></a>
 			<p class="hint"><span id="zoom_nr">100</span>%<p>
 			<br />
-			<input id="zoom_range" type="range" value="1" min="1" max="10" step="1" oninput="IMAGE.zoomCentre(this.value);" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);"/> 
+			<input id="zoom_range" type="range" value="1" min="1" max="10" step="1" oninput="IMAGE.zoomCentre(this.value); IMAGE.redrawSelectionOutline();" onmouseup="clearTimeout(IMAGE.zoomTimer); IMAGE.zoomTimer = setTimeout(IMAGE.zoomTimeOutFunction, IMAGE.zoomTimeOut);"/> 
 		</div>
 
 		

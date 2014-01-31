@@ -958,7 +958,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		}
 		
 		// redraw selected area
-		this.redrawSelectionOutline();
+		//this.redrawSelectionOutline();
 		
 		// redraw existing figures
 		FIGURES.draw(figureHolder,_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), _imageWidth/zoomWidth);
