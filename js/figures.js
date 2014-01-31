@@ -130,7 +130,6 @@ function FIGURES_CLASS(){
 	       }
 	       else{
 	         $(this).removeClass('hover');
-	         TOOLS.set_cursor('grab');
 	       }
 	    });
 	}

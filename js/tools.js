@@ -111,6 +111,9 @@ function TOOLS_CLASS(){
 		if(type == 'click'){
 			TOOLS.set_cursor("grabbing");
 		}
+		else if(type == 'move'){
+			TOOLS.set_cursor('grab');
+		}
 		else if(type == 'drag'){
 
 			var deltaX = mouse.x - mouse.last_x,
