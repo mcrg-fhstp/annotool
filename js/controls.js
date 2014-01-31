@@ -24,7 +24,7 @@ function CONTROLS_CLASS(){
 	var resize_all = false;
 	var mouse_click_valid = false;
 	
-	var _mousedownTime = null,
+	var _mousedownTime = (new Date()).getTime(),
 		_doubleclickTime = 500;
 	
 	var mouse_x_release_last = false,
