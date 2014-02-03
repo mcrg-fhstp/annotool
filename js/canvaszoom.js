@@ -649,7 +649,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 
 				tile = tileZoomLevelArray[iColumn][iRow];
 				
-				if( tile[_aGetTile] === NULL && tile[_aGetWaiting] === FALSE ) { // If not loaded or not loading
+				if( (tile[_aGetTile] === NULL || tile[_aGetTile] === undefined) && tile[_aGetWaiting] === FALSE ) { // If not loaded or not loading
 				
 					x1 = (iColumn * tileSizeX) + offsetX;
 					y1 = (iRow * tileSizeY) + offsetY;
@@ -859,7 +859,8 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		var rotated = [];
 		
 		// Paint background first
-		_ctx.drawImage( fullTile, offsetX, offsetY, zoomWidth, zoomHeight );
+		if (fullTile != undefined)
+			_ctx.drawImage( fullTile, offsetX, offsetY, zoomWidth, zoomHeight );
 		
 		// TODO: Improve this by working out the start / end column and row using the image position instead of looping through them all (still pretty fast though!)
 		for( iColumn = 0; iColumn < columns; iColumn++ ) {
@@ -899,7 +900,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 
 					tile = tileZoomLevelArray[iColumn][iRow][_aGetTile];
 										
-					if( tile !== NULL ) {
+					if( tile !== NULL && tile !== undefined ) {
 						// Draw tile
 						_ctx.drawImage( tile, x1, y1 );
 					}
@@ -1038,6 +1039,23 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		this.zoom( zl, _canvas.width / 2, _canvas.height / 2);
 		this.requestPaint();
 	};
+	
+	//Zoom at specific window
+	this.zoomWindow = function (x1, y1, x2, y2){
+		var zoomLevel = _zoomLevelMax;
+		while(Math.abs(x2-x1) > _canvas.width ||
+			  Math.abs(y2-y1) > _canvas.height){
+			zoomLevel--;
+			x1/=2;
+			x2/=2;
+			y1/=2;
+			y2/=2;
+		}
+		var midX = (x2+x1)/Math.pow(2,zoomLevel - _zoomLevel + 1);
+		var midY = (y2+y1)/Math.pow(2,zoomLevel - _zoomLevel + 1);
+		this.zoom( zoomLevel, midX + this.offsetX, midY + this.offsetY );
+		this.requestPaint();
+	}
 	
 	this.rotateClockwise = function () {
 		this.setRotate( _rotate + TWOPI/32 );
@@ -1229,7 +1247,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 
 		_imageLoader = new ImageLoader( {
 			"images": imageList,
-			"onAllLoaded":function() { IMAGE.initialTilesLoaded(); },
+			"onAllLoaded":function() { IMAGE.initialTilesLoaded(); $.event.trigger({type: "allImagesLoaded"});},
 		} );
 		
 		this.scale = _imageWidth/_tileZoomArray[_zoomLevel][_aGetWidth];

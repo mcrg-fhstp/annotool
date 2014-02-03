@@ -79,6 +79,22 @@ function setupImage(){
 	FIGURES.load(imageName);
 	CLASSIFICATOR.loadOptions();
 	TOOLS.draw_helpers();
+
+	
+	// figureID as GET-Parameter submitted -> zoom to figure
+	if(GET('figureID')){
+		// attach EventHandler, when Image fully loaded
+		$(document).on("allImagesLoaded",function() {
+			for(var i=0; i<FIGURES.figures.length; i++){
+				if(FIGURES.figures[i].figureID == GET('figureID')){
+					// zoom to figure		
+					IMAGE.zoomWindow(FIGURES.figures[i].boundingBox.x1, FIGURES.figures[i].boundingBox.y1, FIGURES.figures[i].boundingBox.x2, FIGURES.figures[i].boundingBox.y2);
+					// select figure
+					$("#figureHolder .figureBox[figureid='" + GET('figureID') + "']" ).trigger('click');
+				}
+			}
+		});
+	}
 }
 
 
