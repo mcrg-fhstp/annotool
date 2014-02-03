@@ -101,8 +101,8 @@ function setupImage(){
 var ACTION_DATA = [
 	{name: 'move_tool', 	title: 'Move canvas tool',	icon: ['all.png', 3, -98],	attributes: {}		, cursor: 'grab'},
 
-	{name: 'select_square', title: 'Rectangle selection tool', 	icon: ['all.png', -50+4, 5],	attributes: {sensitivity: 55}		, cursor: 'crosshair'},
-	{name: 'select_poly', title: 'Polygon selection tool', 	icon: ['all.png', -400+2, -50+3],	attributes: {sensitivity: 55}		, cursor: 'crosshair'},
-	{name: 'magic_wand', 	title: 'Magic wand selection tool', 	icon: ['all.png', -150+1, -50+2],	attributes: {sensitivity: 55}	, cursor: 'crosshair'	},
+	{name: 'select_square', title: 'Rectangle selection tool', 	icon: ['all.png', -50+4, 5],	attributes: {sensitivity: 55, lab_sensitivity: 35}		, cursor: 'crosshair'},
+	{name: 'select_poly', title: 'Polygon selection tool', 	icon: ['all.png', -400+2, -50+3],	attributes: {sensitivity: 55, lab_sensitivity: 35}		, cursor: 'crosshair'},
+	{name: 'magic_wand', 	title: 'Magic wand selection tool', 	icon: ['all.png', -150+1, -50+2],	attributes: {sensitivity: 55, lab_sensitivity: 35}	, cursor: 'crosshair'	},
 
 	];

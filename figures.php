@@ -65,6 +65,7 @@
 		
 		<p id="selection_tools"><b>Selection tools</b></p>
 		<div id="tools"></div>
+		<div id="lab_select"><input id="lab_checkbox" type="checkbox">use different sensitivity (better for filiform-select)</input></div>
 		
 		<div id="alt_key_pressed" class="key_pressed">ALT-Key pressed</div>
 		<div id="shift_key_pressed" class="key_pressed">SHIFT-Key pressed</div>
@@ -132,8 +133,8 @@
 			</select>
 			</div>
 			
-			<input id="save" type="button" value="Save to DB" onclick="SELECTION.saveClassificationData()" disabled />
-			<input id="delete" type="button" value="Delete from DB" onclick="FIGURES.removeClassificationData()" disabled />
+			<input id="save" type="button" value="Save to DB" onclick="SELECTION.saveClassificationData(); TOOLS.reset(); return false;" disabled />
+			<input id="delete" type="button" value="Delete from DB" onclick="FIGURES.removeClassificationData(); TOOLS.reset(); return false;" disabled />
 			<input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" />
 			<div id="classificationHint">Complete all classificationsets and make sure all total confidences are 1!</div>
 		</div>

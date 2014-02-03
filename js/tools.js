@@ -95,7 +95,8 @@ function TOOLS_CLASS(){
 		this.polygon_state = 'start';
 		this.selectionState = null;	
 		var ctx = toolCanvas.getContext('2d');
-		ctx.clearRect(0, 0, IMAGE.width, IMAGE.height);		
+		ctx.clearRect(0, 0, IMAGE.width, IMAGE.height);	
+		$('#lab_checkbox').attr('checked', false);
 	}
 	
 	
@@ -223,6 +224,18 @@ function TOOLS_CLASS(){
 					return false;
 				}
 				
+				// using LAB-colorcheck
+				if($('#lab_checkbox').prop('checked')){
+					var darkest_pixel_lab = rgb2lab(color_from_darkest);
+					var lightest_pixel_lab = rgb2lab(color_from_lightest);
+					var lab_sensitivity = TOOLS.action_data().attributes.lab_sensitivity;
+					
+					// subtract
+					if (CONTROL.alt_pressed) lab_sensitivity += 5;
+					// else
+					else lab_sensitivity -= 5;
+				}
+				
 				var orig_sensitivity = sensitivity;
 				// subtract
 				if (CONTROL.alt_pressed) sensitivity += 5;
@@ -247,31 +260,59 @@ function TOOLS_CLASS(){
 						if (nextPointX < 0 || nextPointY < 0 || nextPointX >= IMAGE.width || nextPointY >= IMAGE.height) 
 							continue;
 						var k = (nextPointY * IMAGE.width + nextPointX) * 4;
-						//check lightest pixel
-						if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
-						  // darkest pixel
-						 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-						  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-						  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-						  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-						  // pixel not white
-						 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
-						  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
-						  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
-						  !Tested[nextPointX][nextPointY]){
-							
-							if (mask[nextPointX+offsetX] == undefined)
-								mask[nextPointX+offsetX] = [];
-							mask[nextPointX+offsetX][nextPointY+offsetY] = true;
-				
-							stack.push(nextPointX);
-							stack.push(nextPointY);
+						
+						// using LAB-colorcheck
+						if($('#lab_checkbox').prop('checked')){
+							var pixel_lab = rgb2lab({r:imgData[k+0] ,g:imgData[k+1] ,b:imgData[k+2] });
+						
+							//check clicked pixel
+							if(((Math.abs(pixel_lab.a - lightest_pixel_lab.a) <= lab_sensitivity &&
+							  Math.abs(pixel_lab.b - lightest_pixel_lab.b) <= lab_sensitivity) ||
+							  // darkest pixel
+							 (Math.abs(pixel_lab.a - darkest_pixel_lab.a) <= lab_sensitivity &&
+							  Math.abs(pixel_lab.b - darkest_pixel_lab.b) <= lab_sensitivity)) &&
+							  // pixel not white
+							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
+							  !Tested[nextPointX][nextPointY]){
+								
+								if (mask[nextPointX+offsetX] == undefined)
+									mask[nextPointX+offsetX] = [];
+								mask[nextPointX+offsetX][nextPointY+offsetY] = true;
+					
+								stack.push(nextPointX);
+								stack.push(nextPointY);
+							}
+						}
+						// using RGB-colorcheck
+						else{
+							//check lightest pixel
+							if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
+							  // darkest pixel
+							 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+							  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+							  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+							  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+							  // pixel not white
+							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+							  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
+							  !Tested[nextPointX][nextPointY]){
+								
+								if (mask[nextPointX+offsetX] == undefined)
+									mask[nextPointX+offsetX] = [];
+								mask[nextPointX+offsetX][nextPointY+offsetY] = true;
+					
+								stack.push(nextPointX);
+								stack.push(nextPointY);
 							}
 						}
 					}
+				}
 				// create selection
 				if (sel == 'add') SELECTION.add(mask);
 				else if (sel == 'sub') SELECTION.subtract(mask);
@@ -398,6 +439,18 @@ function TOOLS_CLASS(){
 						return false;
 					}
 					
+					// using LAB-colorcheck
+					if($('#lab_checkbox').prop('checked')){
+						var darkest_pixel_lab = rgb2lab(color_from_darkest);
+						var lightest_pixel_lab = rgb2lab(color_from_lightest);
+						var lab_sensitivity = TOOLS.action_data().attributes.lab_sensitivity;
+						
+						// subtract
+						if (CONTROL.alt_pressed) lab_sensitivity += 5;
+						// else
+						else lab_sensitivity -= 5;
+					}
+					
 					var orig_sensitivity = sensitivity;
 					// subtract
 					if (CONTROL.alt_pressed) sensitivity += 5;
@@ -409,24 +462,48 @@ function TOOLS_CLASS(){
 					for (var i=TOOLS.select_data.x; i<TOOLS.select_data.x+TOOLS.select_data.w; i++){
 						for (var j=TOOLS.select_data.y; j<TOOLS.select_data.y+TOOLS.select_data.h; j++){
 							var k = (j * IMAGE.width + i) * 4;
-							//check lightest pixel
-							if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
-							  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
-							  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
-							  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
-							  // darkest pixel
-							 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-							  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-							  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-							  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-							  // pixel not white
-							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
-							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
-							  Math.abs(imgData[k+2] - 255) > orig_sensitivity)){
-							  
-								if (mask[i+offsetX] == undefined)
-									mask[i+offsetX] = [];
-								mask[i+offsetX][j+offsetY] = true;
+							
+							// using LAB-colorcheck
+							if($('#lab_checkbox').prop('checked')){
+								var pixel_lab = rgb2lab({r:imgData[k+0] ,g:imgData[k+1] ,b:imgData[k+2] });
+							
+								//check clicked pixel
+								if(((Math.abs(pixel_lab.a - lightest_pixel_lab.a) <= lab_sensitivity &&
+								  Math.abs(pixel_lab.b - lightest_pixel_lab.b) <= lab_sensitivity) ||
+								  // darkest pixel
+								 (Math.abs(pixel_lab.a - darkest_pixel_lab.a) <= lab_sensitivity &&
+								  Math.abs(pixel_lab.b - darkest_pixel_lab.b) <= lab_sensitivity)) &&
+								  // pixel not white
+								 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+2] - 255) > orig_sensitivity)){
+									
+									if (mask[i+offsetX] == undefined)
+										mask[i+offsetX] = [];
+									mask[i+offsetX][j+offsetY] = true;
+								}
+							}
+							// using RGB-colorcheck
+							else{
+								//check lightest pixel
+								if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+								  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+								  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+								  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
+								  // darkest pixel
+								 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+								  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+								  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+								  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+								  // pixel not white
+								 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+2] - 255) > orig_sensitivity)){
+								  
+									if (mask[i+offsetX] == undefined)
+										mask[i+offsetX] = [];
+									mask[i+offsetX][j+offsetY] = true;
+								}
 							}
 						}
 					}
@@ -543,6 +620,18 @@ function TOOLS_CLASS(){
 						TOOLS.selectionState = null;
 						return false;
 					}
+					
+					// using LAB-colorcheck
+					if($('#lab_checkbox').prop('checked')){
+						var darkest_pixel_lab = rgb2lab(color_from_darkest);
+						var lightest_pixel_lab = rgb2lab(color_from_lightest);
+						var lab_sensitivity = TOOLS.action_data().attributes.lab_sensitivity;
+						
+						// subtract
+						if (CONTROL.alt_pressed) lab_sensitivity += 5;
+						// else
+						else lab_sensitivity -= 5;
+					}
 									
 					var orig_sensitivity = sensitivity;	
 					// subtract
@@ -596,26 +685,51 @@ function TOOLS_CLASS(){
 							}
 							// within sensitivity?
 							var k = (jj * IMAGE.width + ii) * 4;
-							//check lightest pixel
-							if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
-							  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
-							  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
-							  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
-							  // darkest pixel
-							 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
-							  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
-							  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
-							  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
-							  // pixel not white
-							 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
-							  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
-							  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
-							  oddNodes){
-
+							
+							// using LAB-colorcheck
+							if($('#lab_checkbox').prop('checked')){
+								var pixel_lab = rgb2lab({r:imgData[k+0] ,g:imgData[k+1] ,b:imgData[k+2] });
+							
+								//check clicked pixel
+								if(((Math.abs(pixel_lab.a - lightest_pixel_lab.a) <= lab_sensitivity &&
+								  Math.abs(pixel_lab.b - lightest_pixel_lab.b) <= lab_sensitivity) ||
+								  // darkest pixel
+								 (Math.abs(pixel_lab.a - darkest_pixel_lab.a) <= lab_sensitivity &&
+								  Math.abs(pixel_lab.b - darkest_pixel_lab.b) <= lab_sensitivity)) &&
+								  // pixel not white
+								 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
+								  oddNodes){
+									
 									if (mask[ii+offsetX] == undefined)
 										mask[ii+offsetX] = [];
 									mask[ii+offsetX][jj+offsetY] = true;
-							}						  
+								}
+							}
+							// using RGB-colorcheck
+							else{
+								//check lightest pixel
+								if(((Math.abs(imgData[k+0] - color_from_lightest.r) <= sensitivity &&
+								  Math.abs(imgData[k+1] - color_from_lightest.g) <= sensitivity &&
+								  Math.abs(imgData[k+2] - color_from_lightest.b) <= sensitivity &&
+								  Math.abs(imgData[k+3] - color_from_lightest.a) <= sensitivity) ||
+								  // darkest pixel
+								 (Math.abs(imgData[k+0] - color_from_darkest.r) <= sensitivity &&
+								  Math.abs(imgData[k+1] - color_from_darkest.g) <= sensitivity &&
+								  Math.abs(imgData[k+2] - color_from_darkest.b) <= sensitivity &&
+								  Math.abs(imgData[k+3] - color_from_darkest.a) <= sensitivity)) &&
+								  // pixel not white
+								 (Math.abs(imgData[k+0] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+1] - 255) > orig_sensitivity ||
+								  Math.abs(imgData[k+2] - 255) > orig_sensitivity) &&
+								  oddNodes){
+	
+									if (mask[ii+offsetX] == undefined)
+										mask[ii+offsetX] = [];
+									mask[ii+offsetX][jj+offsetY] = true;
+								}	
+							}					  
 						}
 					}
 

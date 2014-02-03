@@ -189,6 +189,15 @@ html, body{
 	background-color: #393939 !important;
 	pointer-events: none;
 }
+#lab_select{
+	display:block;
+	margin-left: 0.5em;
+	font-size: 0.8em;
+}
+#lab_checkbox{
+	font-size: 1.5em;
+	margin-right: 0.5em;
+}
 
 .key_pressed{
 	display: none;
