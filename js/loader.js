@@ -8,7 +8,6 @@ function LOADER_CLASS(){
 		var images;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + '/GTWebTool/dummyinterface/figures.php',
 		  url: this.serverpath + 'interface.php?action=getImages',
 		  async: false
 		  //data: data,
@@ -25,11 +24,30 @@ function LOADER_CLASS(){
 	}
 	
 	
+	this.loadImageDetails = function(imageName){
+		var images;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getImageDetails&imageName=' + imageName,
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			images = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading imageDetails: " + errorThrown );
+		});
+		return images;
+	}
+	
+	
 	this.loadFiguresForImage = function(imageName){
 		var figures;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + '/GTWebTool/dummyinterface/figures.php',
 		  url: this.serverpath + 'interface.php?action=getFiguresForImage&imageName=' + imageName,
 		  async: false
 		  //data: data,
@@ -50,7 +68,6 @@ function LOADER_CLASS(){
 		var coords;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getCoordinatesForFigure&imageName=' + imageName 
 		  									+ '&boundingBox=' + boundingBox,
 		  async: false
@@ -72,7 +89,6 @@ function LOADER_CLASS(){
 		var mask;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getMaskForFigure&figureID=' + figureID,
 		  async: false
 		  //data: data,

@@ -27,6 +27,14 @@ switch($action){
 	case "getImages":
 		getImages();
 		break;
+		
+	case "getImageDetails":
+		$imageName = $_REQUEST['imageName'];
+		if ($imageName)
+			getImageDetails($imageName);
+		else
+			echo("no imageName defined");
+		break;
 
 	case "getClassificationOptions":
 		getClassificationOptions();
@@ -197,6 +205,31 @@ function getImages(){
 	echo json_encode($output);	
 }
 
+
+
+
+function getImageDetails($imageName){
+	
+	$sql = "SELECT * FROM Tracing WHERE Name = '" . $imageName . "'";
+			
+	$result = mysql_query($sql) or die("Error in getImageDetails: " . mysql_error());
+	
+	while ($row = mysql_fetch_array($result)) { 
+		$node = array();
+
+		$node['name'] = $row['Name'];
+		$node['folder'] = $row['Folder'];
+		$node['site'] = $row['Site'];
+		$node['rock'] = $row['Rock Number'];
+		$node['section'] = $row['Section'];
+		$node['width'] = $row['Width'];
+		$node['height'] = $row['Height'];
+		$node['author'] = $row['Author'];
+		
+	}
+		
+	echo json_encode($node);	
+}
 
 
 

@@ -60,18 +60,20 @@ function setupImage(){
 	imageCanvas.addEventListener("DOMMouseScroll", CONTROL.mouse_wheel_handler, false);	//mouse scroll
 	imageCanvas.oncontextmenu = function(e) {return CONTROL.mouse_right_click(e); };	//mouse right click
 	
+	// load image details
+	var imageName = GET('imageName');	
+	var imageDetails = LOADER.loadImageDetails(imageName);
+		
+	var imagePath = imageDetails.folder;
+	var imageWidth = imageDetails.width;
+	var imageHeight = imageDetails.height;
 	
-	var imageName = GET('imageName');
-	var imagePath = GET('imagePath');
-	var imageWidth = GET('imageWidth');
-	var imageHeight = GET('imageHeight');
+	$('#imageDescription #site span').html(imageDetails.site);
+	$('#imageDescription #rock span').html(imageDetails.rock);
+	$('#imageDescription #section span').html(imageDetails.section);
+	$('#imageDescription #author span').html(imageDetails.author);
 	
-	$('#imageDescription #site span').html(GET('site'));
-	$('#imageDescription #rock span').html(GET('rock'));
-	$('#imageDescription #section span').html(GET('section'));
-	$('#imageDescription #author span').html(GET('author'));
-	
-	
+	// setup image
 	IMAGE = new CanvasZoom({ canvas: document.getElementById('imageCanvas'),tilesFolder: imagePath, imageWidth: imageWidth, imageHeight: imageHeight, tilesSystem: 'zoomify', tileOverlap: 0 });
 	IMAGE.imageName = imageName;
 	FIGURES.load(imageName);

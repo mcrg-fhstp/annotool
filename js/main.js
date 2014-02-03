@@ -6,21 +6,17 @@ function generateImagesList(){
 	for(var i in images){
 		//console.log(images[i].name);
 		
-		var tr = '<tr><td><a href="figures.php?imageName=' + images[i].name + '&imagePath=' + images[i].folder + '&imageWidth=' + images[i].width + '&imageHeight=' + images[i].height + '&author=' + images[i].author;
+		var tr = '<tr><td><a href="figures.php?imageName=' + images[i].name + '">';
 		var name = '';
 		if (images[i].site != ""){
 			name += images[i].site;
-			tr += '&site=' + images[i].site;
 		}
 		if (images[i].rock != ""){
 			name += ' Rock ' + images[i].rock;
-			tr += '&rock=' + images[i].rock;			
 		}
 		if (images[i].section != ""){
 			name += ' Section ' + images[i].section;
-			tr += '&section=' + images[i].section;
 		}
-		tr += '">';
 		tr += name;
 		tr += '</a></td>';
 		if (images[i].nbFigures != "")
