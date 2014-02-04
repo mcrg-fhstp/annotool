@@ -1202,6 +1202,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		this.scale = _imageWidth/_tileZoomArray[_zoomLevel][_aGetWidth];
         $('#zoom_nr').html(Math.round( _zoomLevel/_zoomLevelMax * 1000)/10);
 		$('#zoom_range').attr('max',_zoomLevelMax);
+		$('#zoom_range').val(_zoomLevel);
 
 	//}());
 	
