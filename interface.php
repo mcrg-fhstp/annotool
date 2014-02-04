@@ -399,6 +399,11 @@ function getMaskForFigure($figureID){
 			$figure['figure_incomplete'] = $row['FigureIncomplete'];
 			$figure['figure_damaged'] = $row['FigureDamaged'];
 			$figure['tracing_incomplete'] = $row['TracingIncomplete'];
+			$figure['classified_by'] = $row['Username'];
+			if($row['Modified'] != 0)
+				$figure['classified_on'] = $row['Modified'];
+			else
+				$figure['classified_on'] = $row['Created'];
 	
 			//array_push($output, $figure);
 		}

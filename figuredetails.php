@@ -28,18 +28,6 @@
 
 <style>
 
-	.wrapper{
-		height: 100px;
-		width: 100px;
-		float:left;
-	}
-	.wrapper img{
-		max-width:100%;
-		max-height:100%;
-	}
-	.wrapper img:hover{
-		border: 1px solid yellow;
-	}
 	#content{
 		bottom: auto;
 		overflow: visible;
@@ -135,6 +123,13 @@
 	var link = document.createElement('a');
 	$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );
 	$(link).append(img);
+	$('#content #left').append(link);
+	
+	$('#content #left').append('<p>classified by: ' + data.classified_by + '</p>');
+	$('#content #left').append('<p>on: ' + data.classified_on + '</p>');
+
+	var link = document.createElement('a');
+	$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );	
 	$(link).append('<br/><br/>Show figure in tracing');
 	//$('#content #left').append(img);
 	$('#content #left').append(link);	
