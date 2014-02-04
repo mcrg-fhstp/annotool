@@ -1155,6 +1155,9 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 			reducingHeight /= 2;
 		}
 		
+		if(zoomLevelStart === -1)
+			zoomLevelStart = _zoomLevelMax;
+		
 		if( _defaultZoom === UNDEFINED ) {
 			_defaultZoom = zoomLevelStart;
 		}
