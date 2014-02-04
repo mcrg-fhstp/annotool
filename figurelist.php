@@ -31,13 +31,16 @@
 		height: 100px;
 		width: 100px;
 		float:left;
+		background-color: white;
 	}
 	.wrapper img{
 		max-width:100%;
 		max-height:100%;
 	}
 	.wrapper img:hover{
-		border: 1px solid yellow;
+		border: 1px solid orange;
+		max-width:98%;
+		max-height:98%;
 	}
 	#content{
 		bottom: auto;
