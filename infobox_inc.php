@@ -75,6 +75,11 @@
 				<p><b><i>Right-click and drag</i></b>, to move the canvas around, as long as the selection was not started.</p>
 				<p><b><i>ESC</i></b> to cancel the tool.</p>
 				</li>
+				
+				<li><img src="./img/selection_option_filiforms.png" />
+				<b>Filiform selection option</b>
+				<p>Check this box before the color selection in any of the three tools above to use a different sensitivity of the tool. This is especially helpful for the selection of small lines (filiforms).</p>
+				</li>
 				</ul>
 				
 			<h2 id="classify"><li>Classify figure:</li></h2>
@@ -143,6 +148,15 @@
 				</p>
 				
 			<h2 id="changelog">ChangeLog</h2>
+				<p>
+				<p><b>v1.3b</b></p>
+				<p><ul>
+				<li>Some more changes to selection tools due to problems with selections</li>
+				<li>Added filiform selection option for better selection of small lines</li>
+				<li>Some improvements to drawing full selection during zooming</li>
+				<li>Added statistics of already annotated figures</li>				
+				</ul></p>
+				
 				<p>
 				<p><b>v1.2b</b></p>
 				<p><ul>
