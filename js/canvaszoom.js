@@ -232,61 +232,7 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 	
 		if( _mouseX === _mouseDownX &&
 				_mouseY === _mouseDownY ) {
-/*
-			if (_mousedownTime != null) {
-				var now = (new Date()).getTime();
-				//doubleclick
-				if (now - _mousedownTime < _doubleclickTime) {
-					// Didn't drag so assume a click.
-					zoomInMouse();
-				}
-				//single click
-				else{
-*/
-					
-					if(TOOLS.selectedTool == TOOLS.magic_wand){
-						var scale = _imageWidth/_tileZoomArray[_zoomLevel][_aGetWidth];
-						
-						if( scale != 1){
-							alert("please zoom in to maximum for selection!")
-						}
-						else{
-							//document.body.style.cursor = "wait";
-							$('#wait').show();
-							
-							setTimeout(function(){
-								if (CONTROL.shift_pressed){
-									var mask = TOOLS.magic_wand(_canvas.getContext('2d'), _canvas.width, _canvas.height, _mouseX, _mouseY, 50, Math.ceil(Math.abs(this.offsetX)), Math.ceil(Math.abs(this.offsetY)));	// liefert unsortierte koordinaten relativ zum bildursprung
-									SELECTION.add(mask);
-									CLASSIFICATOR.showSaveButton();
-								}
-								else if (CONTROL.alt_pressed){
-									var mask = TOOLS.magic_wand(_canvas.getContext('2d'), _canvas.width, _canvas.height, _mouseX, _mouseY, 60, Math.ceil(Math.abs(this.offsetX)), Math.ceil(Math.abs(this.offsetY)));	// liefert unsortierte koordinaten relativ zum bildursprung
-									SELECTION.subtract(mask);
-									CLASSIFICATOR.showSaveButton();
-								}
-								else{
-									FIGURES.selectedFigure = null;
-									CLASSIFICATOR.reset();
-									SELECTION.clear();
-									$('.figureBox').removeClass('selected');
-									var mask = TOOLS.magic_wand(_canvas.getContext('2d'), _canvas.width, _canvas.height, _mouseX, _mouseY, 50, Math.ceil(Math.abs(this.offsetX)), Math.ceil(Math.abs(this.offsetY)));	// liefert unsortierte koordinaten relativ zum bildursprung
-									SELECTION.create(mask);
-								}
-		
-								redrawSelection();
-								
-								CLASSIFICATOR.show();
-								//document.body.style.cursor = "auto";
-								$('#wait').hide();
-							}, 20);
-						}
-					}
-/*
-				}
-			}
-			_mousedownTime = (new Date()).getTime();		
-*/
+
 		}
 	}
 	
