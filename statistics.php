@@ -76,11 +76,11 @@ Statistic of total number of annotated figures per node:
 				}
 				// append new child node
 				var li = document.createElement('li');
-				<?php if($_SESSION['username'] == "admin"): ?>
-					var option = "<a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].name + "</a><span id='span-right'>" + options[i].quantity + "</span>";
-				<?php else: ?>
-					var option = options[i].name + "<span id='span-right'>" + options[i].quantity + "</span>";
-				<?php endif; ?>
+				
+				
+					var option = "<a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].name + "</a><span id='span-right'>" + options[i].total_quantity + " in total, " + options[i].your_quantity + " by you</span>";
+				
+				
 				$(li).append(option);
 				$(ul).append(li);
 				appendSubElements(options[i].index, $(li));

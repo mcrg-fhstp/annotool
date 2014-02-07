@@ -57,7 +57,7 @@
 <?php include('header_inc.php'); ?>
 
 <div id="content">
-<p>List of figures for option <?php echo $_GET['option'] ?>:</p><br/><br/>
+<p>List of figures for option <?php echo '<b>'.$_GET['option'].'</b>'; if($_SESSION['username'] != 'admin') echo ' you annotated'; ?>:</p><br/><br/>
 <div id="responseBox"></div>
 </div>
 
@@ -83,6 +83,12 @@
 	}
 	else{
 		$('#responseBox').text(data);
+		$('#responseBox').addClass('error');
+		$('#responseBox').show();
+	}
+	
+	if (data.length == 0){
+		$('#responseBox').text('You did not annotate any figures with this option.');
 		$('#responseBox').addClass('error');
 		$('#responseBox').show();
 	}

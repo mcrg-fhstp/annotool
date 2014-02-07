@@ -119,13 +119,19 @@
 	CLASSIFICATOR.fill(data.classes, data.superimposition, data.figure_incomplete, data.figure_damaged, data.tracing_incomplete);
 	CLASSIFICATOR.show();
 	
+	$('#content #left').append('<p>Site: ' + data.site + '</p>');
+	$('#content #left').append('<p>Rock: ' + data.rock + '</p>');
+	$('#content #left').append('<p>Section: ' + data.section + '</p>');
+	$('#content #left').append('<br/>');
+
 	
 	var link = document.createElement('a');
 	$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );
 	$(link).append(img);
 	$('#content #left').append(link);
 	
-	$('#content #left').append('<p>classified by: ' + data.classified_by + '</p>');
+	$('#content #left').append('<br/><br/>');
+		$('#content #left').append('<p>classified by: ' + data.classified_by + '</p>');
 	$('#content #left').append('<p>on: ' + data.classified_on + '</p>');
 
 	var link = document.createElement('a');

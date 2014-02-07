@@ -283,10 +283,18 @@ function getClassificationOptionsWithQuantity(){
 		
 		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username !=  'demo'";
 		
-		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
+		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
 
-		$node['quantity'] = $row2[0];
+		$node['total_quantity'] = $row2[0];
+		
+		
+		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username = '" . $_SESSION['username'] . "'";
+		
+		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+		$row2 = mysql_fetch_row($result2);
+
+		$node['your_quantity'] = $row2[0];
 
 
 		array_push($output, $node);
@@ -380,7 +388,7 @@ function getCoordinatesForFigure($imageName, $boundingBox){
 function getMaskForFigure($figureID){
 	
 	// get figure
-	$sql = "SELECT * FROM Figure WHERE `Index` = '" . $figureID . "'";
+	$sql = "SELECT *,Figure.Created AS figure_created FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) WHERE `Index` = '" . $figureID . "'";
 	
 	$result = mysql_query($sql) or die("Error in getMaskForFigure, getFigure: " . mysql_error());
 
@@ -403,7 +411,10 @@ function getMaskForFigure($figureID){
 			if($row['Modified'] != 0)
 				$figure['classified_on'] = $row['Modified'];
 			else
-				$figure['classified_on'] = $row['Created'];
+				$figure['classified_on'] = $row['figure_created'];
+			$figure['site'] = $row['Site'];
+			$figure['rock'] = $row['Rock Number'];
+			$figure['section'] = $row['Section'];
 	
 			//array_push($output, $figure);
 		}
@@ -455,7 +466,7 @@ function getImagesForFiguresWithOption($optionIndex){
 	$result = mysql_query($sql) or die("Error in getImagesForFiguresWithOption, getFigures: " . mysql_error());
 
 	$output = array();
-	if (mysql_num_rows($result) == 0) die("Error in getImagesForFiguresWithOption for option " . $optionIndex . ": No result!"); 
+	if (mysql_num_rows($result) == 0) die("No figures with this option."); 
 	else {	
 		while ($row = mysql_fetch_array($result)) { 
 		
@@ -464,7 +475,10 @@ function getImagesForFiguresWithOption($optionIndex){
 			$figure['figureID'] = $row['figureID'];
 			
 			// get figure
-			$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' AND Username != 'demo'";
+			if ($_SESSION['username'] == 'admin')
+				$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' AND Username != 'demo'";
+			else
+				$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' AND Username = '" . $_SESSION['username'] . "'";
 			
 			$result2 = mysql_query($sql2) or die("Error in getImagesForFiguresWithOption, getFigureImage: " . mysql_error());
 			while($row2 = mysql_fetch_array($result2)){
