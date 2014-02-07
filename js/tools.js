@@ -165,7 +165,7 @@ function TOOLS_CLASS(){
 				var context = IMAGE.canvas.getContext('2d');
 				var sensitivity = TOOLS.action_data().attributes.sensitivity;
 				var x = mouse.x, y = mouse.y;
-				var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
+				var offsetX = -Math.ceil(IMAGE.offsetX), offsetY = -Math.ceil(IMAGE.offsetY);
 				var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 				var imgData = img.data;
 				var k = ((y * (img.width * 4)) + (x * 4));
@@ -397,7 +397,7 @@ function TOOLS_CLASS(){
 					var context = IMAGE.canvas.getContext('2d');
 					var sensitivity = TOOLS.action_data().attributes.sensitivity;
 					var x = mouse.x, y = mouse.y;
-					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
+					var offsetX = -Math.ceil(IMAGE.offsetX), offsetY = -Math.ceil(IMAGE.offsetY);
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
 					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
@@ -579,7 +579,7 @@ function TOOLS_CLASS(){
 					var context = IMAGE.canvas.getContext('2d');
 					var sensitivity = TOOLS.action_data().attributes.sensitivity;
 					var x = mouse.x, y = mouse.y;
-					var offsetX = Math.abs(Math.ceil(IMAGE.offsetX)), offsetY = Math.abs(Math.ceil(IMAGE.offsetY));
+					var offsetX = -Math.ceil(IMAGE.offsetX), offsetY = -Math.ceil(IMAGE.offsetY);
 					var img = context.getImageData(0, 0, IMAGE.width, IMAGE.height);
 					var imgData = img.data;
 					var dx = [-1,  0, +1, -1, +1, -1,  0, +1];
