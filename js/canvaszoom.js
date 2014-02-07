@@ -507,8 +507,8 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 				newImageX = currentImageX * scale,
 				newImageY = currentImageY * scale,
 					
-				newImageWidth = _tileZoomArray[newZoom][_aGetWidth],
-				newImageHeight = _tileZoomArray[newZoom][_aGetHeight];
+				newImageWidth = _tileZoomArray[newZoom][_aGetWidth]*1,
+				newImageHeight = _tileZoomArray[newZoom][_aGetHeight]*1;
 			
 			
 			var	newOffsetX = this.offsetX - (newImageX - currentImageX);
