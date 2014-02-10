@@ -54,7 +54,7 @@ html, body{
 #header a#back:hover{
 	color: #ccc;
 }
-#footer a:hover, #overviewPage #content a:hover{
+#footer a:hover, #overviewPage #content a:hover, #overviewPage #imageList h4:hover{
 	color: #2d2d2d;
 }
 #header h1{
