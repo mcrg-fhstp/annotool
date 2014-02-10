@@ -461,7 +461,7 @@ function getMaskForFigure($figureID){
 function getImagesForFiguresWithOption($optionIndex){
 	
 	// get figureIDs
-	$sql = "SELECT DISTINCT * FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
+	$sql = "SELECT DISTINCT figureID, ClassID FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
 	
 	$result = mysql_query($sql) or die("Error in getImagesForFiguresWithOption, getFigures: " . mysql_error());
 
