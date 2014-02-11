@@ -256,12 +256,12 @@ function LOADER_CLASS(){
 	}
 	
 	
-	this.loadImagesOfFiguresWithOption = function(optionIndex){
+	this.loadImagesOfAllFiguresWithOption = function(optionIndex){
 		var mask;
 		$.ajax({
 		  dataType: "json",
 		  //url: this.serverpath + 'coords.php',
-		  url: this.serverpath + 'interface.php?action=getImagesForFiguresWithOption&optionIndex=' + optionIndex,
+		  url: this.serverpath + 'interface.php?action=getImagesForAllFiguresWithOption&optionIndex=' + optionIndex,
 		  async: false
 		  //data: data,
 		  //success: success
@@ -271,7 +271,28 @@ function LOADER_CLASS(){
 			returndata = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
-			console.log( "Error loading images for figures with option: " + errorThrown );
+			console.log( "Error loading all images for figures with option: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.loadImagesOfMyFiguresWithOption = function(optionIndex){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  //url: this.serverpath + 'coords.php',
+		  url: this.serverpath + 'interface.php?action=getImagesForMyFiguresWithOption&optionIndex=' + optionIndex,
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading your images for figures with option: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
 		return returndata;

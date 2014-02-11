@@ -37,13 +37,11 @@
 		max-width:100%;
 		max-height:100%;
 	}
-	<?php if($_SESSION['username'] == "admin"): ?>
-		.wrapper img:hover{
-			border: 1px solid orange;
-			max-width:98%;
-			max-height:98%;
-		}
-	<?php endif; ?>
+	.wrapper img:hover{
+		border: 1px solid orange;
+		max-width:98%;
+		max-height:98%;
+	}
 	#content{
 		bottom: auto;
 		overflow: visible;
@@ -59,12 +57,12 @@
 <?php include('header_inc.php'); ?>
 
 <div id="content">
-<p>List of all figures for option <b><?php echo $_GET['option']; ?></b>:</p><br/><br/>
+<p>List of figures for option <b><?php echo $_GET['option']; ?></b> you annotated:</p><br/><br/>
 <div id="responseBox"></div>
 </div>
 
 <script language="javascript" type="text/javascript">
-	var data = LOADER.loadImagesOfAllFiguresWithOption(<?php echo $_GET['index'] ?>);
+	var data = LOADER.loadImagesOfMyFiguresWithOption(<?php echo $_GET['index'] ?>);
 
 	if( Object.prototype.toString.call( data ) === '[object Array]' ) {
 	    for(var i=0; i<data.length; i++){
@@ -72,18 +70,13 @@
 	    	
 	    	var wrapper = document.createElement('div');
 	    	$(wrapper).addClass('wrapper');
-	    	
+	    	var a = document.createElement('a');
+	    	var img = document.createElement('img');
 	    	if (figure.pathToMaskFile != null){
-	    		var img = document.createElement('img');
 	    		$(img).attr('src', figure.pathToMaskFile);
-	    		<?php if($_SESSION['username'] == "admin"): ?>
-	    			var a = document.createElement('a');
-	    			$(a).attr('href', 'figuredetails.php?figureID=' + figure.figureID);
-	    			$(a).append(img);
-	    			$(wrapper).append(a);
-	    		<?php else: ?>
-	    			$(wrapper).append(img);
-	    		<?php endif; ?>
+	    		$(a).attr('href', 'figuredetails.php?figureID=' + figure.figureID);
+	    		$(a).append(img);
+	    		$(wrapper).append(a);
 	    		$('#content').append(wrapper);
 	    	}
 	    }
@@ -95,7 +88,7 @@
 	}
 	
 	if (data.length == 0){
-		$('#responseBox').text('No figures annotated with this option.');
+		$('#responseBox').text('You did not annotate any figures with this option.');
 		$('#responseBox').addClass('error');
 		$('#responseBox').show();
 	}
