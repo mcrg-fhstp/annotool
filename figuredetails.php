@@ -56,7 +56,6 @@
 
 <div id="left">
 	<p>Details for figure <?php echo $_GET['figureID'] ?>:</p><br/><br/>
-	<div id="responseBox"></div>
 </div>
 
 <div id="right">
@@ -99,72 +98,112 @@
 		</select>
 		</div>
 		
-		<input id="save" type="button" value="Save to DB" onclick="SELECTION.saveClassificationData()" disabled />
-		<input id="delete" type="button" value="Delete from DB" onclick="FIGURES.removeClassificationData()" disabled />
-		<input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" />
+		<input id="save" type="button" value="Save to DB" onclick="saveClassificationData()" disabled />
+		<input id="delete" type="button" value="Delete from DB" onclick="removeClassificationData()" disabled />
+		<!--input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" /-->
 		<div id="classificationHint">Complete all classificationsets and make sure all total confidences are 1!</div>
 	</div>
+	
+	<div id="responseBox"><a href="">Reload</a></div>
 </div>	
 		
 </div>
 
 <script language="javascript" type="text/javascript">
-	var img = document.createElement('img');
-	$(img).attr('src', <?php echo "'".$_GET['path']."'" ?>);
 	
 	
 	var data = LOADER.loadMaskOfFigure(<?php echo $_GET['figureID'] ?>);
 
-	CLASSIFICATOR.loadOptions();
-	CLASSIFICATOR.fill(data.classes, data.superimposition, data.figure_incomplete, data.figure_damaged, data.tracing_incomplete);
-	CLASSIFICATOR.show();
-	
-	$('#content #left').append('<p>Site: ' + data.site + '</p>');
-	$('#content #left').append('<p>Rock: ' + data.rock + '</p>');
-	$('#content #left').append('<p>Section: ' + data.section + '</p>');
-	$('#content #left').append('<br/>');
-
-	
-	var link = document.createElement('a');
-	$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );
-	$(link).append(img);
-	$('#content #left').append(link);
-	
-	$('#content #left').append('<br/><br/>');
-		$('#content #left').append('<p>classified by: ' + data.classified_by + '</p>');
-	$('#content #left').append('<p>on: ' + data.classified_on + '</p>');
-
-	var link = document.createElement('a');
-	$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );	
-	$(link).append('<br/><br/>Show figure in tracing');
-	//$('#content #left').append(img);
-	$('#content #left').append(link);	
+	if (data.maskBase64 && data.classes && data.superimposition && data.figure_incomplete && data.figure_damaged && data.tracing_incomplete){
 		
-	/*if( Object.prototype.toString.call( data ) === '[object Array]' ) {
-	    for(var i=0; i<data.length; i++){
-	    	var figure = data[i];
-	    	
-	    	var wrapper = document.createElement('div');
-	    	$(wrapper).addClass('wrapper');
-	    	var a = document.createElement('a');
-	    	var img = document.createElement('img');
-	    	if (figure.pathToMaskFile != null){
-	    		$(img).attr('src', figure.pathToMaskFile);
-	    		$(a).attr('href', figure.pathToMaskFile);
-	    		$(a).append(img);
-	    		$(wrapper).append(a);
-	    		$('#content').append(wrapper);
-	    	}
-	    }
+		var img = document.createElement('img');
+		$(img).attr('src', data.maskBase64);
+	
+		CLASSIFICATOR.loadOptions();
+		CLASSIFICATOR.fill(data.classes, data.superimposition, data.figure_incomplete, data.figure_damaged, data.tracing_incomplete);
+		CLASSIFICATOR.show();
+		CLASSIFICATOR.showDeleteButton();
+		
+		$('#content #left').append('<p>Site: ' + data.site + '</p>');
+		$('#content #left').append('<p>Rock: ' + data.rock + '</p>');
+		$('#content #left').append('<p>Section: ' + data.section + '</p>');
+		$('#content #left').append('<br/>');
+	
+		
+		var link = document.createElement('a');
+		$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );
+		$(link).append(img);
+		$('#content #left').append(link);
+		
+		$('#content #left').append('<br/><br/>');
+			$('#content #left').append('<p>classified by: ' + data.classified_by + '</p>');
+		$('#content #left').append('<p>on: ' + data.classified_on + '</p>');
+	
+		var link = document.createElement('a');
+		$(link).attr('href','figures.php?imageName=' + data.imageName + '&figureID=' + data.figureID );	
+		$(link).append('<br/><br/>Show figure in tracing');
+		//$('#content #left').append(img);
+		$('#content #left').append(link);	
 	}
 	else{
-		$('#responseBox').text(data);
-		$('#responseBox').addClass('error');
-		$('#responseBox').show();
-	}*/
+		CLASSIFICATOR.hide();
+		CLASSIFICATOR.showError(data);
+	}
 
+
+
+	// update classification data for figure in db
+	function saveClassificationData(){
+		$('#wait').show();					
+		setTimeout(function(){				
+			var maskBase64 = null;
+			var figure = new Object();
+			figure.boundingBox = "";
+
+				var classificationData = CLASSIFICATOR.getSelectedClasses();
+				var response = LOADER.updateExistingFigure(<?php echo $_GET['figureID'] ?>, 
+											figure.boundingBox, 
+											classificationData.classes, 
+											classificationData.superimposition, 
+											classificationData.figure_incomplete,
+											classificationData.figure_damaged,
+											classificationData.tracing_incomplete,
+											maskBase64);
+				CLASSIFICATOR.hide();
+				if(!parseInt(response)){
+					CLASSIFICATOR.showError(figure.figureID);
+				}
+				else{
+					CLASSIFICATOR.showResponse("Figure " + response + " updated successfully!");
+				}
+				$('#responseBox').append("<br/><br/><a href=''>Reload</a>");
+			
+			$('#wait').hide();
+		},50);
+	}
+	
+	
+	// remove classification data for existing figure from db
+	function removeClassificationData(){
+		var resp = LOADER.deleteClassificationDataOfFigure(<?php echo $_GET['figureID'] ?>);
+		if (parseInt(resp)){
+			CLASSIFICATOR.reset();
+			CLASSIFICATOR.hide();
+			CLASSIFICATOR.showResponse("Figure " + resp + " deleted successfully!")
+		}
+		else{
+			CLASSIFICATOR.hide();
+			CLASSIFICATOR.showError(resp);
+		}
+		$('#responseBox').append("<br/><br/><a href=''>Reload</a>");
+
+	}
 	
 </script>
+
+<div id="wait">
+	<img id="spinner" src="img/ajaxSpinner.gif"/>
+</div>
 
 
 </body>
