@@ -114,7 +114,7 @@
 	
 	var data = LOADER.loadMaskOfFigure(<?php echo $_GET['figureID'] ?>);
 
-	if (data.maskBase64 && data.classes && data.superimposition && data.figure_incomplete && data.figure_damaged && data.tracing_incomplete){
+	if (data.boundingBox && data.maskBase64 && data.classes && data.superimposition && data.figure_incomplete && data.figure_damaged && data.tracing_incomplete){
 		
 		var img = document.createElement('img');
 		$(img).attr('src', data.maskBase64);
@@ -162,7 +162,7 @@
 
 				var classificationData = CLASSIFICATOR.getSelectedClasses();
 				var response = LOADER.updateExistingFigure(<?php echo $_GET['figureID'] ?>, 
-											figure.boundingBox, 
+											data.boundingBox, 
 											classificationData.classes, 
 											classificationData.superimposition, 
 											classificationData.figure_incomplete,
