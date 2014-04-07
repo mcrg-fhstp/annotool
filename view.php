@@ -24,7 +24,9 @@
 		
 		echo "<td>" . $row['Index'] . "</td>";
 		
-		echo "<td><img src='" . $row['PathToMaskFile'] . "'></td>";
+		echo "<td><a href='figuredetails.php?figureID=" . $row['Index'] . "'><img src='" . $row['PathToMaskFile'] . "'></a></td>";
+		echo "<td>" . $row['Boundingbox'] . "</td>";
+		echo "<td>" . $row['TracingName'] . "</td>";
 		/*
 		$node = array();
 
