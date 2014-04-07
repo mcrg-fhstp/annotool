@@ -308,6 +308,63 @@ function getClassificationOptionsWithQuantity(){
 
 		array_push($output, $node);
 	}
+	
+	// Add superimposition, figure incomplete, figure damaged, tracing incomplete
+	$node['index'] = 9991;
+	$node['parentIndex'] = 0;
+	$node['name'] = "Superimposition";
+	//$node['parentName'] = $row['ParentName'];
+	$node['mutuallyExclusive'] = 0;
+	$node['typology'] = "Flags";	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND Figure.Username !=  'demo'";		
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['total_quantity'] = $row2[0];	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	array_push($output, $node);
+
+	$node['index'] = 9992;
+	$node['parentIndex'] = 9991;
+	$node['name'] = "Figure incomplete";
+	$node['typology'] = "Figure incomplete";	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND Figure.Username !=  'demo'";		
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['total_quantity'] = $row2[0];	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	array_push($output, $node);
+	
+	$node['index'] = 9993;
+	$node['name'] = "Figure damaged";
+	$node['typology'] = "Figure damaged";	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND Figure.Username !=  'demo'";		
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['total_quantity'] = $row2[0];	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	array_push($output, $node);
+
+	$node['index'] = 9994;
+	$node['name'] = "Tracing incomplete";
+	$node['typology'] = "Tracing incomplete";	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND Figure.Username !=  'demo'";		
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['total_quantity'] = $row2[0];	
+	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
+	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	array_push($output, $node);
 		
 	echo json_encode($output);	
 }
@@ -469,11 +526,31 @@ function getMaskForFigure($figureID){
 
 function getImagesForAllFiguresWithOption($optionIndex){
 	
-	// get figureIDs
-	$sql = "SELECT DISTINCT figureID, ClassID FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
-	
+	switch ($optionIndex){
+		case 9991:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE Superimposition = '1'";	
+			break;	
+		case 9992:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE FigureIncomplete = '1'";	
+			break;
+		case 9993:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE FigureDamaged = '1'";	
+			break;
+		case 9994:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE TracingIncomplete = '1'";	
+			break;
+		default:
+			// get figureIDs
+			$sql = "SELECT DISTINCT figureID, ClassID FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
+			break;
+	}
+		
 	$result = mysql_query($sql) or die("Error in getImagesForFiguresWithOption, getFigures: " . mysql_error());
-
+	
 	$output = array();
 	if (mysql_num_rows($result) == 0) die("No figures with this option."); 
 	else {	
@@ -495,16 +572,37 @@ function getImagesForAllFiguresWithOption($optionIndex){
 		}
 			
 		echo json_encode($output);
-	}	
+	}
+	
 }
 
 
 
 function getImagesForMyFiguresWithOption($optionIndex){
 	
-	// get figureIDs
-	$sql = "SELECT DISTINCT figureID, ClassID FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
-	
+	switch ($optionIndex){
+		case 9991:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE Superimposition = '1'";	
+			break;	
+		case 9992:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE FigureIncomplete = '1'";	
+			break;
+		case 9993:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE FigureDamaged = '1'";	
+			break;
+		case 9994:
+			// get figureIDs
+			$sql = "SELECT `Index` AS figureID FROM Figure WHERE TracingIncomplete = '1'";	
+			break;
+		default:
+			// get figureIDs
+			$sql = "SELECT DISTINCT figureID, ClassID FROM FigureTypes WHERE `ClassID` = '" . $optionIndex . "'";
+			break;
+	}
+		
 	$result = mysql_query($sql) or die("Error in getImagesForFiguresWithOption, getFigures: " . mysql_error());
 
 	$output = array();
