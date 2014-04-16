@@ -98,7 +98,7 @@
 			<div id="optionHolder"></div>
 			
 			<div id="superimposition">
-			<span>Superimposition:</span>
+			<span>Figure contains superimposition:</span>
 			<select onchange="CLASSIFICATOR.showSaveButton(); CLASSIFICATOR.changed = true;">
 			<option value disabled hidden selected="selected"></option>
 			<option value="1">yes</option>
@@ -107,7 +107,7 @@
 			</div>
 			
 			<div id="figure_incomplete">
-			<span>Figure incomplete:</span>
+			<span>Figure is incomplete due to author:</span>
 			<select onchange="CLASSIFICATOR.showSaveButton(); CLASSIFICATOR.changed = true;">
 			<option value disabled hidden selected="selected"></option>
 			<option value="1">yes</option>
@@ -116,7 +116,7 @@
 			</div>
 			
 			<div id="figure_damaged">
-			<span>Figure damaged:</span>
+			<span>Figure is damaged:</span>
 			<select onchange="CLASSIFICATOR.showSaveButton(); CLASSIFICATOR.changed = true;">
 			<option value disabled hidden selected="selected"></option>
 			<option value="1">yes</option>
@@ -125,7 +125,7 @@
 			</div>
 			
 			<div id="tracing_incomplete">
-			<span>Tracing incomplete:</span>
+			<span>Figure is incomplete due to missing parts of tracing:</span>
 			<select onchange="CLASSIFICATOR.showSaveButton(); CLASSIFICATOR.changed = true;">
 			<option value disabled hidden selected="selected"></option>
 			<option value="1">yes</option>
