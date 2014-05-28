@@ -200,7 +200,7 @@ function getImages(){
 		$node['author'] = $row['Author'];
 		
 		$sql2 = "SELECT COUNT(*) FROM Figure WHERE TracingName = '" . $node['name'] . "'";
-		if ($_SESSION['username'] != 'admin')
+		if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
 			$sql2 .= " AND Username = '" . $_SESSION['username'] . "'";
 
 		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());

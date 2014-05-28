@@ -76,7 +76,11 @@ Statistic of total number of annotated figures per node:
 			if (options[i].parentIndex == index){
 				if (index == 0){
 					var h3 = document.createElement('h3');
-					$(h3).append(options[i].typology + "<span style='float:right'>by you / in total</span>");
+					$(h3).append(options[i].typology);
+					$(h3).append("<span style='float:right'>in total</span>");
+					<?php if($_SESSION['username'] != "ReadOnly"): ?>
+					$(h3).append("<span style='float:right'>by you /&nbsp;</span>");
+					<?php endif; ?>
 					$(ul).append(h3);
 				}
 				// append new child node
@@ -84,8 +88,9 @@ Statistic of total number of annotated figures per node:
 				
 				
 					var option = "" + options[i].name + "<span class='span-right'><a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].total_quantity + "</a></span>";
+					<?php if($_SESSION['username'] != "ReadOnly"): ?>
 					option += "<span class='span-right2'><a href='figurelist_my.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
-				
+					<?php endif; ?>
 				
 				$(li).append(option);
 				$(ul).append(li);

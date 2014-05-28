@@ -98,8 +98,10 @@
 		</select>
 		</div>
 		
+		<?php if($_SESSION['username'] != "ReadOnly"): ?>
 		<input id="save" type="button" value="Save to DB" onclick="saveClassificationData()" disabled />
 		<input id="delete" type="button" value="Delete from DB" onclick="removeClassificationData()" disabled />
+		<?php endif; ?>
 		<!--input id="cancel" type="button" value="Cancel" onclick="SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" /-->
 		<div id="classificationHint">Complete all classificationsets and make sure all total confidences are 1!</div>
 	</div>

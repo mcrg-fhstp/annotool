@@ -10,7 +10,7 @@
 			<input type="submit" name="logout" value="logout" />
 		</form>
 		
-		<?php if($_SESSION['username'] != "demo"): ?>
+		<?php if($_SESSION['username'] != "demo" && $_SESSION['username'] != "ReadOnly"): ?>
 			<form><input type="button" value="Change password" onclick="location.href='change_pwd.php';"></form>
 		<?php endif; ?>
 		

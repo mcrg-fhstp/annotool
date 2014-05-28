@@ -76,7 +76,7 @@
 	    	if (figure.pathToMaskFile != null){
 	    		var img = document.createElement('img');
 	    		$(img).attr('src', figure.pathToMaskFile);
-	    		<?php if($_SESSION['username'] == "admin"): ?>
+	    		<?php if($_SESSION['username'] == "admin" || $_SESSION['username'] == "ReadOnly"): ?>
 	    			var a = document.createElement('a');
 	    			$(a).attr('href', 'figuredetails.php?figureID=' + figure.figureID);
 	    			$(a).append(img);
