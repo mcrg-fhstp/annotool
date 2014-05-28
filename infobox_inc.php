@@ -148,6 +148,32 @@
 				</p>
 				
 			<h2 id="changelog">ChangeLog</h2>
+				
+				<p>
+				<p><b>v1.6b</b></p>
+				<p><ul>
+				<li>Improved labels for flags superimposition, figure incomplete, figure damaged & tracing incomplete</li>
+				<li>Added ReadOnly-user</li>
+				</ul>
+				</p>
+				
+				<p>
+				<p><b>v1.5b</b></p>
+				<p><ul>
+				<li>Link to original figure in tracing from detailview</li>
+				<li>Added flag listings (superimposition, figure incomplete, figure damaged & tracing incomplete) to statistics</li>
+				</ul>
+				</p>
+
+				<p>
+				<p><b>v1.4b</b></p>
+				<p><ul>
+				<li>Grouping of imagelist by site</li> 
+				<li>Listview and detailview of already annotated figures for all users</li>
+				<li>Several bugfixes</li>
+				</ul>
+				</p>
+			
 				<p>
 				<p><b>v1.3b</b></p>
 				<p><ul>
