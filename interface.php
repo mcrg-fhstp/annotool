@@ -166,6 +166,10 @@ switch($action){
 		else
 			echo("no figureID defined");
 		break;
+		
+	case "exportFiguresAsCSV":
+		exportFiguresAsCSV();
+		break;
 						
 	default:	
 		echo("wrong action or no action defined");
@@ -816,6 +820,158 @@ function deleteFigure($figureID)
 }
 
 
+
+
+
+function exportFiguresAsCSV()
+{
+
+	// found at: http://www.a2zwebhelp.com/export-data-to-csv
+	
+	//filter for classes and/or typology
+	$typology = "";
+	switch (strtolower($_REQUEST['typology']))
+	{ 
+		case 'chippindale':
+		case 'cc':
+			$typology = "Christopher Chippindale typology";
+			break;
+		case 'sansoni':
+		case 'alexander':
+			$typology = "Sansoni typology - Alexander modification";
+			break;
+	}
+	
+	if ($_REQUEST['class']){
+		$name = $_REQUEST['class'];
+		$sql2 = "SELECT `Index` FROM FigureTypeNode WHERE Name = '$name'";
+		$result2 = mysql_query($sql2) or die("Error in exportFiguresAsCSV, getParentIndex: " . mysql_error());
+		$row2 = mysql_fetch_array($result2);
+		$parentIndex = $row2['Index'];
+	}
+	else
+		$parentIndex = 0;	
+
+
+	
+	// Fetch records for table Figure	
+	$output = "";
+	$sql = "SELECT DISTINCT Figure.`Index` AS figureID, Site, `Rock Number`, Section, Figure.Created, Modified, PathToMaskFile, Username, Superimposition, FigureIncomplete, TracingIncomplete, FigureDamaged, FigureTypeNode.Typology, Confidence FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) JOIN FigureTypes ON (Figure.`Index` = FigureTypes.figureID) JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE Figure.Username !=  'demo'";
+	
+	// TODO: problem if confidence 0.5/0.5 -> DISTINCT
+	
+	if ($_REQUEST['class'])
+		$sql .= " AND ClassID = '$parentIndex'";
+	if ($_REQUEST['typology'])
+		$sql .= " AND FigureTypeNode.Typology = '$typology'";
+	$sql .= " ORDER BY Figure.`Index`, FigureTypeNode.Typology, Confidence DESC";	
+	$result = mysql_query($sql) or die("Error in exportFiguresAsCSV, getFigures: " . mysql_error());
+	$columns_total = mysql_num_fields($result);
+	
+	// Get Headers
+	for ($i = 0; $i < $columns_total; $i++) {
+		$heading = mysql_field_name($result, $i);
+		$output .= '"'.$heading.'",';
+	}
+	
+	// Fetch records for table FigureTypeNode recursively as tree
+	$children = getChildNodes($parentIndex, $typology);
+	
+	//echo '<pre>'; print_r($children); echo '</pre>';die();
+	$output .= $children[0];
+	$indices = $children[1];
+	
+	//echo $output;die();
+	
+	$output .="\n";
+
+
+
+	
+	// Get records from table Figure
+	while ($row = mysql_fetch_array($result)) {
+		for ($i = 0; $i < $columns_total; $i++) {
+			$output .='"'.$row["$i"].'",';
+		}
+		
+		$figureID = $row['figureID'];
+		$confidence = $row['Confidence'];
+		$typology = $row['Typology'];
+		
+		//print($figureID);
+		//print($confidence);
+		//print($typology);
+		
+		// Fetch records for table FigureTypes
+		$sql3 = "SELECT ClassID, Confidence FROM FigureTypes JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE figureID='". $figureID ."' AND CAST(Confidence AS DECIMAL(3,2))= '".$confidence."' AND FigureTypeNode.Typology= '".$typology."' ORDER BY ClassID";
+		$result3 = mysql_query($sql3) or die("Error in exportFiguresAsCSV, getFigureTypes: " . mysql_error());
+		$columns_total3 = mysql_num_rows($result3);
+		//print($columns_total3);
+		
+		// Get records from table FigureTypes
+		$temp_output = array();
+		while ($row3 = mysql_fetch_array($result3)) {
+			$temp_output[] = $row3['ClassID'];
+			//$confidence = $row3['Confidence'];
+		}
+		//echo '<pre>';print_r($temp_output);echo '</pre>';die();
+		
+		for ($i = 0; $i < count($indices); $i++) {
+			for ($j = 0; $j < count($temp_output); $j++) {
+				if ($temp_output[$j] == $indices[$i]){
+					$output .='"1",';
+					break;
+				}
+			}
+			if ($j == count($temp_output))
+				$output .='"0",';
+		}
+
+		//$output .='"'.$confidence.'",';
+		$output .="\n";		
+	}
+	
+
+	
+	
+	
+	// Download the file	
+	$filename = "FigureExportAsCSV_".$_SERVER['QUERY_STRING']."_".date("Y-m-d H:i:s").".csv";	//TODO: filename with filter and timestamp
+	header('Content-type: application/csv');
+	header('Content-Disposition: attachment; filename='.$filename);
+	
+	echo $output;
+	exit;
+
+}
+
+
+function getChildNodes($parent, $typology){
+	$sql2 = "SELECT `Index`, Name FROM FigureTypeNode WHERE ParentIndex = '$parent'";
+	if ($_REQUEST['typology'])
+		$sql .= " AND Typology = '$typology'";
+	$result2 = mysql_query($sql2) or die("Error in exportFiguresAsCSV, getChildNodes: " . mysql_error());
+	
+	$output = "";
+	$indices = array();
+	
+	// Get records from table FigureTypeNode	
+	while ($row2 = mysql_fetch_array($result2)) {
+		$output .='"'.$row2['Name'].'",';
+		$indices[] = $row2['Index'];
+		
+		$children = getChildNodes($row2['Index'], $typology);
+		$output .= $children[0];
+		foreach ($children[1] as $value)
+			$indices[] = $value;
+	}
+	
+	$children = array();
+	$children[] = $output;
+	$children[] = $indices;
+	
+	return $children;
+}
 
 
 
