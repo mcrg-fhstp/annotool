@@ -376,7 +376,7 @@ function getClassificationOptionsWithQuantity(){
 function getFiguresForImage($imageName){
 	
 	$sql = "SELECT * FROM Figure WHERE TracingName = '" . $imageName . "'";
-	if ($_SESSION['username'] != 'admin')
+	if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
 			$sql .= " AND Username = '" . $_SESSION['username'] . "'";
 		
 	$result = mysql_query($sql) or die("Error in getFiguresForImage: " . mysql_error());
