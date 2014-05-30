@@ -182,8 +182,9 @@ function CLASSIFICATOR_CLASS(){
 				var typology = this.id;
 			
 				// classificationsets
-				$('.classificationSet', this).each( function(){
+				$('.classificationSet', this).each( function(index){
 				
+					var classificationset = index;
 					// confidenceSlider
 					var confidence;
 					$('.confidenceSlider',this).each( function(){
@@ -201,6 +202,7 @@ function CLASSIFICATOR_CLASS(){
 							oneclass.mutuallyExclusive = 1;
 							oneclass.typology = typology;
 							oneclass.confidence = confidence;
+							oneclass.classificationset = classificationset;
 							classes.push(oneclass);
 						}
 					
@@ -210,6 +212,7 @@ function CLASSIFICATOR_CLASS(){
 						oneclass.index = this.value;
 						oneclass.typology = typology;
 						oneclass.confidence = confidence;
+						oneclass.classificationset = classificationset;
 						// TODO: zwischennodes für nicht mutually exclusive fehlen!!!!
 			
 						oneclass.mutuallyExclusive = $('option:selected',this).attr('mutuallyExclusive');	// nicht von select, sondern option

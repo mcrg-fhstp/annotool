@@ -497,7 +497,7 @@ function getMaskForFigure($figureID){
 		$sql = "SELECT * FROM FigureTypes ft, FigureTypeNode ftn 
 		WHERE ft.figureID = '" . $figureID . "' 
 		AND ft.ClassID = ftn.Index  
-		ORDER BY ftn.Typology, ft.Confidence DESC";
+		ORDER BY ftn.Typology, ft.Classificationset, ft.Confidence DESC";
 
 			
 		$result = mysql_query($sql) or die("Error in getMaskForFigure, getClasses for figure " . $figureID . ": " . mysql_error());
@@ -516,6 +516,7 @@ function getMaskForFigure($figureID){
 			$class['mutuallyExclusive'] = $row['MutuallyExclusive'];
 			$class['typology'] = $row['Typology'];
 			$class['confidence'] = $row['Confidence'];
+			$class['classificationset'] = $row['Classificationset'];
 
 			array_push($output, $class);
 		}
@@ -666,7 +667,7 @@ function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $fi
 	//print_r($classes);
 	foreach ($classes as $class) {
 		//$sql = "INSERT INTO FigureTypes (figureID, Name, ParentName, Typology, Confidence) VALUES ('". $figureID ."','". $class['name']  ."','". $class['parentName'] ."','". $class['typology']  ."','". $class['confidence'] ."')";
-		$sql = "INSERT INTO FigureTypes (figureID, ClassID, Typology, Confidence) VALUES ('". $figureID ."','". $class['index'] ."','". $class['typology']  ."','". $class['confidence'] ."')";
+		$sql = "INSERT INTO FigureTypes (figureID, ClassID, Typology, Confidence, Classificationset) VALUES ('". $figureID ."','". $class['index'] ."','". $class['typology']  ."','". $class['confidence']  ."','". $class['classificationset'] ."')";
 		
 		$result = mysql_query($sql);
 		
@@ -754,7 +755,7 @@ function updateExistingFigure($figureID, $boundingBox, $classes, $superimpositio
 		if ($result)
 		foreach ($classes as $class) {
 			//$sql = "INSERT INTO FigureTypes (figureID, Name, ParentName, Typology, Confidence) VALUES ('". $figureID ."','". $class['name']  ."','". $class['parentName'] ."','". $class['typology']  ."','". $class['confidence'] ."')";
-			$sql = "INSERT INTO FigureTypes (figureID, ClassID, Typology, Confidence) VALUES ('". $figureID ."','". $class['index'] ."','". $class['typology']  ."','". $class['confidence'] ."')";
+			$sql = "INSERT INTO FigureTypes (figureID, ClassID, Typology, Confidence, Classificationset) VALUES ('". $figureID ."','". $class['index'] ."','". $class['typology']  ."','". $class['confidence'] ."','". $class['classificationset'] ."')";
 			
 			$result = mysql_query($sql);
 			
@@ -856,15 +857,13 @@ function exportFiguresAsCSV()
 	
 	// Fetch records for table Figure	
 	$output = "";
-	$sql = "SELECT DISTINCT Figure.`Index` AS figureID, Site, `Rock Number`, Section, Figure.Created, Modified, PathToMaskFile, Username, Superimposition, FigureIncomplete, TracingIncomplete, FigureDamaged, FigureTypeNode.Typology, Confidence FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) JOIN FigureTypes ON (Figure.`Index` = FigureTypes.figureID) JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE Figure.Username !=  'demo'";
-	
-	// TODO: problem if confidence 0.5/0.5 -> DISTINCT
+	$sql = "SELECT  Figure.`Index` AS figureID, Site, `Rock Number`, Section, Figure.Created, Modified, PathToMaskFile, Username, Superimposition, FigureIncomplete, TracingIncomplete, FigureDamaged, FigureTypeNode.Typology, Confidence, Classificationset FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) JOIN FigureTypes ON (Figure.`Index` = FigureTypes.figureID) JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE Figure.Username !=  'demo' AND FigureTypeNode.ParentIndex=0";
 	
 	if ($_REQUEST['class'])
 		$sql .= " AND ClassID = '$parentIndex'";
 	if ($_REQUEST['typology'])
 		$sql .= " AND FigureTypeNode.Typology = '$typology'";
-	$sql .= " ORDER BY Figure.`Index`, FigureTypeNode.Typology, Confidence DESC";	
+	$sql .= " ORDER BY Figure.`Index`, FigureTypeNode.Typology, Classificationset, Confidence DESC";	
 	$result = mysql_query($sql) or die("Error in exportFiguresAsCSV, getFigures: " . mysql_error());
 	$columns_total = mysql_num_fields($result);
 	
@@ -897,13 +896,14 @@ function exportFiguresAsCSV()
 		$figureID = $row['figureID'];
 		$confidence = $row['Confidence'];
 		$typology = $row['Typology'];
+		$classificationset = $row['Classificationset'];
 		
 		//print($figureID);
 		//print($confidence);
 		//print($typology);
 		
 		// Fetch records for table FigureTypes
-		$sql3 = "SELECT ClassID, Confidence FROM FigureTypes JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE figureID='". $figureID ."' AND CAST(Confidence AS DECIMAL(3,2))= '".$confidence."' AND FigureTypeNode.Typology= '".$typology."' ORDER BY ClassID";
+		$sql3 = "SELECT ClassID, Confidence FROM FigureTypes JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE figureID='". $figureID ."' AND CAST(Confidence AS DECIMAL(3,2))= '".$confidence."' AND Classificationset= '".$classificationset."' AND FigureTypeNode.Typology= '".$typology."' ORDER BY ClassID";
 		$result3 = mysql_query($sql3) or die("Error in exportFiguresAsCSV, getFigureTypes: " . mysql_error());
 		$columns_total3 = mysql_num_rows($result3);
 		//print($columns_total3);
@@ -936,7 +936,7 @@ function exportFiguresAsCSV()
 	
 	
 	// Download the file	
-	$filename = "FigureExportAsCSV_".$_SERVER['QUERY_STRING']."_".date("Y-m-d H:i:s").".csv";	//TODO: filename with filter and timestamp
+	$filename = "FigureExportAsCSV_".$_SERVER['QUERY_STRING']."_".date("Y-m-d H:i:s").".csv";
 	header('Content-type: application/csv');
 	header('Content-Disposition: attachment; filename='.$filename);
 	
