@@ -857,12 +857,17 @@ function exportFiguresAsCSV()
 	
 	// Fetch records for table Figure	
 	$output = "";
-	$sql = "SELECT  Figure.`Index` AS figureID, Site, `Rock Number`, Section, Figure.Created, Modified, PathToMaskFile, Username, Superimposition, FigureIncomplete, TracingIncomplete, FigureDamaged, FigureTypeNode.Typology, Confidence, Classificationset FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) JOIN FigureTypes ON (Figure.`Index` = FigureTypes.figureID) JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE Figure.Username !=  'demo' AND FigureTypeNode.ParentIndex=0";
+	$sql = "SELECT Figure.`Index` AS figureID, Site, `Rock Number`, Section, Tracing.Width AS tracingWidth, Tracing.Height AS tracingHeight, Tracing.ScaleFactor AS tracingScale, Figure.Created, Modified, Boundingbox, PathToMaskFile, Username, Superimposition, FigureIncomplete, TracingIncomplete, FigureDamaged, FigureTypeNode.Typology, Confidence, Classificationset FROM Figure JOIN Tracing ON ( Figure.TracingName = Tracing.Name ) JOIN FigureTypes ON (Figure.`Index` = FigureTypes.figureID) JOIN FigureTypeNode ON (FigureTypes.classID = FigureTypeNode.`Index`) WHERE Figure.Username !=  'demo' AND FigureTypeNode.ParentIndex=0";
 	
 	if ($_REQUEST['class'])
 		$sql .= " AND ClassID = '$parentIndex'";
 	if ($_REQUEST['typology'])
 		$sql .= " AND FigureTypeNode.Typology = '$typology'";
+	if ($_REQUEST['site'])
+		$sql .= " AND Tracing.Site = '".$_REQUEST['site']."'";
+	if ($_REQUEST['rock'])
+		$sql .= " AND Tracing.`Rock Number` = '".$_REQUEST['rock']."'";
+	//$sql .= "GROUP BY Figure.`Index` ";
 	$sql .= " ORDER BY Figure.`Index`, FigureTypeNode.Typology, Classificationset, Confidence DESC";	
 	$result = mysql_query($sql) or die("Error in exportFiguresAsCSV, getFigures: " . mysql_error());
 	$columns_total = mysql_num_fields($result);
