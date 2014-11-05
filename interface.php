@@ -875,7 +875,11 @@ function exportFiguresAsCSV()
 	// Get Headers
 	for ($i = 0; $i < $columns_total; $i++) {
 		$heading = mysql_field_name($result, $i);
-		$output .= '"'.$heading.'",';
+		if ($heading == 'Boundingbox'){					// split Boundingbox fields (x1, y1, x2, y2)
+			$output .= '"x1","y1","x2","y2",';
+		}else{
+			$output .= '"'.$heading.'",';
+		}
 	}
 	
 	// Fetch records for table FigureTypeNode recursively as tree
@@ -895,7 +899,15 @@ function exportFiguresAsCSV()
 	// Get records from table Figure
 	while ($row = mysql_fetch_array($result)) {
 		for ($i = 0; $i < $columns_total; $i++) {
-			$output .='"'.$row["$i"].'",';
+			if (mysql_field_name($result, $i) == 'Boundingbox')	// split Boundingbox fields (x1, y1, x2, y2)
+			{
+				$bb_array = json_decode($row["$i"], true);
+				foreach ($bb_array as $bb_coord)
+					//var_dump($bb_coord);
+					$output .='"'.$bb_coord.'",';
+			}else{
+				$output .='"'.$row["$i"].'",';
+			}
 		}
 		
 		$figureID = $row['figureID'];
