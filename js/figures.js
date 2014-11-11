@@ -4,6 +4,7 @@ function FIGURES_CLASS(){
 
 	this.figures = null;
 	this.selectedFigure = null;
+	this.groupedFigures = new Array();
 
 	// load figures for image from db
 	this.load = function(imageName){
@@ -26,6 +27,9 @@ function FIGURES_CLASS(){
 					this.figures[i] = temp;
 				}
 			}
+			
+			if (this.figures[i].groupID > 0)
+				GROUPS.addFigure(this.figures[i].groupID, this.figures[i]);
 		}
 	}
 	
@@ -59,24 +63,64 @@ function FIGURES_CLASS(){
 				  //$(div).text(figure.figureID);	// show figureID in div
 				  
 				  $(div).click(function() {
-					  //alert( $(this).attr('id') );
-					  FIGURES.selectedFigure = $(this).attr('figureID');
-					  $('#wait').show();
-							
-					  setTimeout(function(){
-					  	  SELECTION.clear();
-					  	  CLASSIFICATOR.show();
-						  SELECTION.load( FIGURES.selectedFigure );
-						  CLASSIFICATOR.showDeleteButton();
-						  //FIGURES.loadClassificationData( FIGURES.selectedFigure );
-						  IMAGE.redrawSelectionFull();
-						  $('#wait').hide();
-					  },50);
-					  $('.figureBox').removeClass('selected');
-					  $(this).addClass('selected');
+				  	// add figure to group
+				  	if (CONTROL.shift_pressed){
+					  	// add currently selected figure to group
+					  	$('.figureBox').each(function(){
+						  	if ($(this).hasClass('selected')){
+							  	$(this).removeClass('selected');
+							  	$(this).addClass('grouped')
+							  	FIGURES.groupedFigures.push($(this).attr('figureID'));
+						  	}
+					  	});
+					  	FIGURES.selectedFigure = null;
+					  	SELECTION.clear(); IMAGE.redrawSelectionFull();
+					  	$(this).addClass('grouped');
+					  	// already added ??
+					  	if ($.inArray($(this).attr('figureID'), FIGURES.groupedFigures) == -1)
+					  		FIGURES.groupedFigures.push($(this).attr('figureID'));
+					  	if (GROUPS.selectedGroup == null)
+					  		GROUPS.selectedGroup = 0;
+					  	// show buttons
+					  	if (GROUPS.selectedGroup == 0) GROUPSELECTOR.showCreateNewGroup();
+					  	else GROUPSELECTOR.showUpdateExistingGroup();
+				  	}
+				  	// remove figure from group
+					else if (CONTROL.alt_pressed){
+						$(this).removeClass('grouped');
+						// remove from array
+						FIGURES.groupedFigures.splice( $.inArray($(this).attr('figureID'), FIGURES.groupedFigures), 1 );
+						GROUPSELECTOR.showUpdateExistingGroup();
+					}
+					// normal figure selection
+					else{
+						  //alert( $(this).attr('id') );
+						  FIGURES.selectedFigure = $(this).attr('figureID');
+						  $('#wait').show();
+								
+						  setTimeout(function(){
+						  	  SELECTION.clear();
+						  	  CLASSIFICATOR.show();
+							  SELECTION.load( FIGURES.selectedFigure );
+							  CLASSIFICATOR.showDeleteButton();
+							  //FIGURES.loadClassificationData( FIGURES.selectedFigure );
+							  IMAGE.redrawSelectionFull();
+							  $('#wait').hide();
+						  },50);
+						  $('.figureBox').removeClass('selected');
+						  $('.figureBox').removeClass('grouped');
+						  $('.groupBox').removeClass('selected');
+						  GROUPS.selectedGroup = null;
+						  FIGURES.groupedFigures = [];
+						  // hide buttons
+						  GROUPSELECTOR.hide();
+						  $(this).addClass('selected');
+					}
 				  });
 				  if (FIGURES.selectedFigure == $(div).attr('figureID'))
 				  	$(div).addClass('selected');
+				  if ($.inArray($(div).attr('figureID'), FIGURES.groupedFigures) > -1)
+				  	$(div).addClass('grouped');
 				  	
 				  $(parent).append(div);
 			  }
@@ -136,6 +180,7 @@ function FIGURES_CLASS(){
 	
 	
 	this.checkClick = function(event){
+		var returnvalue = false;
 		$("#figureHolder>div").each(function() {
 	       // check if clicked point (taken from event) is inside element
 	       var mouseX = event.pageX;
@@ -147,8 +192,10 @@ function FIGURES_CLASS(){
 	       if (mouseX > offset.left && mouseX < offset.left+width 
 	           && mouseY > offset.top && mouseY < offset.top+height){
 	         $(this).click(); // force click event
+	         returnvalue = true;
 	         return false;
 	       }
 	    });
+	    return returnvalue;
 	}
 }

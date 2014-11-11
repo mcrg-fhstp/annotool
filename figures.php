@@ -23,7 +23,9 @@
 <script language="javascript" type="text/javascript" src="js/selection.js"></script>
 <script language="javascript" type="text/javascript" src="js/controls.js"></script>
 <script language="javascript" type="text/javascript" src="js/figures.js"></script>
+<script language="javascript" type="text/javascript" src="js/groups.js"></script>
 <script language="javascript" type="text/javascript" src="js/classificator.js"></script>
+<script language="javascript" type="text/javascript" src="js/groupselector.js"></script>
 <script language="javascript" type="text/javascript" src="js/loader.js"></script>
 
 
@@ -77,7 +79,7 @@
 			<a id="undo_tool" title="Undo selection" style="background-position: -446px -43px;" class="" onclick="SELECTION.undo(); return false;" href="#"></a>
 			<a id="redo_tool" title="Redo selection" style="background-position: -498px -43px;" class="inactive" onclick="SELECTION.redo(); return false;" href="#"></a>
 
-			<a title="Clear selection" style="background-position: -95px -45px;" class="" onclick="SELECTION.push(); SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); TOOLS.reset(); return false;" href="#"></a>	
+			<a title="Clear selection" style="background-position: -95px -45px;" class="" onclick="SELECTION.push(); SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); $('.figureBox').removeClass('grouped'); GROUPS.selectedGroup = null; FIGURES.groupedFigures = []; $('.groupBox').removeClass('selected'); $('#groupSelector').hide(); TOOLS.reset(); return false;" href="#"></a>	
 		</div>
 		
 		<div id="tool_options">
@@ -141,6 +143,12 @@
 			<div id="classificationHint">Complete all classificationsets and make sure all total confidences are 1!</div>
 		</div>
 		
+		<div id="groupSelector">
+			<input id="createGroup" type="button" value="Create group" onclick="GROUPSELECTOR.createNewGroup(); return false;" disabled />
+			<input id="updateGroup" type="button" value="Update group" onclick="GROUPSELECTOR.updateExistingGroup(); return false;" disabled />
+			<input id="deleteGroup" type="button" value="Delete group" onclick="GROUPSELECTOR.deleteExistingGroup(); return false;" disabled />
+		</div>
+		
 		<div id="responseBox"></div>
 	</div>
 	
@@ -148,6 +156,7 @@
 		<canvas id="imageCanvas" ></canvas>
 		<canvas id="overlayCanvas" ></canvas>
 		<canvas id="toolCanvas" ></canvas>
+		<div id="groupHolder" style="width: 100%; height: 100%;"></div>
 		<div id="figureHolder" style="width: 100%; height: 100%;"></div>
 	</div>
 </div>

@@ -298,8 +298,10 @@ function CONTROLS_CLASS(){
 			
 			// remove pointer-events:auto from styles.css
 			// change > to < in FIGURES.sort
-			if (i == "move_tool")	
+			if (i == "move_tool"){	
 				FIGURES.checkMouseOver(event);
+				GROUPS.checkMouseOver(event);
+			}
 				
 			if(isDrag === false) return false;	//only drag now		
 			
@@ -360,8 +362,10 @@ function CONTROLS_CLASS(){
 					}
 					
 					if (i == "move_tool" &&
-						CONTROL.mouse.x == CONTROL.mouse.click_x && CONTROL.mouse.y == CONTROL.mouse.click_y)	
-						FIGURES.checkClick(event);
+						CONTROL.mouse.x == CONTROL.mouse.click_x && CONTROL.mouse.y == CONTROL.mouse.click_y){	
+						if (!FIGURES.checkClick(event))
+							GROUPS.checkClick(event);
+					}
 				}
 			}
 			_mousedownTime = (new Date()).getTime();

@@ -29,6 +29,7 @@ function setupImage(){
 	var overlayCanvas = document.getElementById('overlayCanvas');
 	var toolCanvas = document.getElementById('toolCanvas');
 	var figureHolder = document.getElementById('figureHolder');
+	var groupHolder = document.getElementById('groupHolder');
 	
 	init_canvas = function(){
 		var visible_w = parseInt(window.getComputedStyle(content,null).getPropertyValue('width'));// page_w - 60;
@@ -43,6 +44,8 @@ function setupImage(){
 		toolCanvas.height = visible_h;
 		figureHolder.style.width = visible_w +"px";
 		figureHolder.style.height = visible_h +"px";
+		groupHolder.style.width = visible_w +"px";
+		groupHolder.style.height = visible_h +"px";
 		
 		if(IMAGE)
 			IMAGE.resize();

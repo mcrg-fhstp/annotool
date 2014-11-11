@@ -226,13 +226,13 @@ html, body{
 }
 
 
-#overlayCanvas,#toolCanvas,#figureHolder{
+#overlayCanvas,#toolCanvas,#figureHolder,#groupHolder{
 	position: absolute;
 	top:0;
 	left:0;	
 	pointer-events:none; /* damit Events durchgehen!*/
 }
-#figureHolder{
+#figureHolder, #groupHolder{
 	overflow: hidden;
 }
 .figureBox{
@@ -253,6 +253,28 @@ html, body{
 .figureBox.selected{
 	display: none;
 }
+.figureBox.grouped{
+	border: 2px solid fuchsia;
+}
+
+.groupBox{
+	position: absolute;
+	border: 2px solid #b300ff;
+	pointer-events:none;
+	/*box-sizing: border-box;*/
+	margin-left: -2px;
+	margin-top: -2px;
+	cursor: pointer;
+}
+.groupBox.selectable{
+	/*pointer-events:auto; /* damit Hover funktioniert!*/
+}
+.groupBox.selectable:hover, .groupBox.hover{
+	border: 2px solid #00f7ff;
+}
+.groupBox.selected{
+	display: none;
+}
 
 
 #debug{
@@ -260,7 +282,7 @@ html, body{
 }
 
 
-#classificator{
+#classificator,#groupSelector{
 	display: none;
 	padding-bottom: 50px;
 }

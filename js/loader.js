@@ -260,7 +260,6 @@ function LOADER_CLASS(){
 		var mask;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getImagesForAllFiguresWithOption&optionIndex=' + optionIndex,
 		  async: false
 		  //data: data,
@@ -281,7 +280,6 @@ function LOADER_CLASS(){
 		var mask;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getImagesForMyFiguresWithOption&optionIndex=' + optionIndex,
 		  async: false
 		  //data: data,
@@ -293,6 +291,63 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading your images for figures with option: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.saveGroup = function(figureIDs){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=saveNewGroupForFigures&figureIDs=' + JSON.stringify(figureIDs),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error saving new group: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.updateGroup = function(groupID, figureIDs){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=updateExistingGroupWithFigures&groupID=' + groupID + '&figureIDs=' + JSON.stringify(figureIDs),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error updating existing group: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.deleteGroup = function(groupID){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=deleteExistingGroup&groupID=' + groupID,
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error deleting existing group: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
 		return returndata;

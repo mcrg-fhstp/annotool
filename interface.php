@@ -170,6 +170,22 @@ switch($action){
 	case "exportFiguresAsCSV":
 		exportFiguresAsCSV();
 		break;
+		
+	case "saveNewGroupForFigures":
+		$figureIDs = $_REQUEST['figureIDs'];
+		saveNewGroupForFigures(json_decode($figureIDs));
+		break;
+	
+	case "updateExistingGroupWithFigures":
+		$groupID = $_REQUEST['groupID'];
+		$figureIDs = $_REQUEST['figureIDs'];
+		updateExistingGroupWithFigures($groupID, json_decode($figureIDs));
+		break;
+		
+	case "deleteExistingGroup":
+		$groupID = $_REQUEST['groupID'];
+		deleteExistingGroup($groupID);
+		break;
 						
 	default:	
 		echo("wrong action or no action defined");
@@ -392,6 +408,7 @@ function getFiguresForImage($imageName){
 		$figure['figureID'] = $row['Index'];
 		$figure['imageName'] = $row['TracingName'];
 		$figure['boundingBox'] = json_decode($row['Boundingbox']);
+		$figure['groupID'] = $row['groupID'];
 
 		array_push($output, $figure);
 	}
@@ -991,6 +1008,38 @@ function getChildNodes($parent, $typology){
 }
 
 
+function saveNewGroupForFigures($figureIDs){
+	$sql = "SELECT MAX(groupID) FROM Figure";
+	$result = mysql_query($sql) or die("Error in saveNewGroupForFigures, selectMaxgroupID: " . mysql_error());
+	$row = mysql_fetch_array($result);
+	$maxgroupID =$row["MAX(groupID)"];
+	
+	$sql = "UPDATE Figure SET groupID=" . ($maxgroupID+1) . " WHERE 1=0";
+	foreach ($figureIDs as $figureID) {
+		$sql .= " OR `Index` = " . $figureID;
+	}
+	$result = mysql_query($sql) or die("Error in saveNewGroupForFigures, updateFigures: " . mysql_error());
+	echo ($maxgroupID+1);
+}
 
+function updateExistingGroupWithFigures($groupID, $figureIDs){
+	// remove all figures from group
+	$sql = "UPDATE Figure SET groupID=0 WHERE groupID=" . $groupID;
+	$result = mysql_query($sql) or die("Error in updateExistingGroupWithFigures, deleteGroupIDs: " . mysql_error());
+	
+	// add new figures
+	$sql = "UPDATE Figure SET groupID=" . $groupID ." WHERE 1=0";
+	foreach ($figureIDs as $figureID) {
+		$sql .= " OR `Index` = " . $figureID;
+	}
+	$result = mysql_query($sql) or die("Error in updateExistingGroupWithFigures, setGroupIDs: " . mysql_error());
+	echo $groupID;	
+}
+
+function deleteExistingGroup($groupID){
+	$sql = "UPDATE Figure SET groupID=0 WHERE groupID=" . $groupID;
+	$result = mysql_query($sql) or die("Error in deleteExistingGroup: " . mysql_error());
+	echo $groupID;
+}
 
 ?>
