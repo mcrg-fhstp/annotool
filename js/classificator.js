@@ -107,6 +107,19 @@ function CLASSIFICATOR_CLASS(){
 			}
 		}
 		
+		
+		// add new typologies
+		for(var j=0; j<this.classificationOptions.length; j++){
+			if(this.classificationOptions[j].parentIndex == 0 &&							// root node
+				$('#classificator .typology[id="' + CLASSIFICATOR.classificationOptions[j].typology + '"]').length == 0){		// typology not exists in #classificator
+					// add new typology
+					typology = new TYPOLOGY_CLASS(CLASSIFICATOR.classificationOptions[j].typology, this.classificationOptions, j);
+					$('#optionHolder').append(typology);
+					$('#classificator #classificationHint').show();
+			}
+		}
+
+		
 		// set dropdown for superimposition
 		$('#classificator #superimposition select').val(superimposition);
 		// set dropdown for incomplete
