@@ -219,6 +219,7 @@ function getImages(){
 		$node['height'] = $row['Height'];
 		$node['author'] = $row['Author'];
 		
+		// count # figures
 		$sql2 = "SELECT COUNT(*) FROM Figure WHERE TracingName = '" . $node['name'] . "'";
 		if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
 			$sql2 .= " AND Username = '" . $_SESSION['username'] . "'";
@@ -227,6 +228,16 @@ function getImages(){
 		$row2 = mysql_fetch_row($result2);
 
 		$node['nbFigures'] =  $row2[0];
+		
+		// count # groups
+		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM Figure WHERE TracingName = '" . $node['name'] . "' AND groupID > 0";
+		if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
+			$sql2 .= " AND Username = '" . $_SESSION['username'] . "'";
+
+		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
+		$row2 = mysql_fetch_row($result2);
+
+		$node['nbGroups'] =  $row2[0];
 
 		array_push($output, $node);
 	}
