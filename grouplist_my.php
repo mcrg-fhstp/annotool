@@ -76,15 +76,15 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-	var data = LOADER.loadGroupsOfMyFiguresWithOptions([<?php echo $_GET['index'] ?>]);
+	var data = LOADER.loadGroupsOfMyFiguresWithOptions(<?php echo $_GET['index'] ?>);
 
 	if( Object.prototype.toString.call( data ) === '[object Array]' ) {
 		var table = document.createElement('table');
 	    for(var i=0; i<data.length; i++){
 	    	var group = data[i];
 	    	
-	    	var tr = "<tr><td><a href='#'>Group " + group.groupID + "</a></td>";
-			tr += "<td>" + group.site + " Rock " + group.rock + " Section " + group.section + " </td>";
+	    	var tr = "<tr><td><a href='figures.php?imageName=" + group.imageName + '&groupID=' + group.groupID + "'>Group " + group.groupID + "</a></td>";
+	    	tr += "<td>" + group.site + " Rock " + group.rock + " Section " + group.section + " </td>";
 			
 			$(table).append(tr);
 	    }
