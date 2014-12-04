@@ -186,6 +186,29 @@ switch($action){
 		$groupID = $_REQUEST['groupID'];
 		deleteExistingGroup($groupID);
 		break;
+	
+	case "getFiguresInGroupsWithQuantity":
+		$optionIndexes = $_REQUEST['optionIndexes'];
+		getFiguresInGroupsWithQuantity(json_decode($optionIndexes));
+		break;
+		
+	case "getGroupsOfAllFiguresWithOptions":
+		$optionIndexes = $_REQUEST['optionIndexes'];
+		if ($optionIndexes){
+			getGroupsOfFiguresWithOptions(json_decode($optionIndexes), false);
+		}
+		else
+			echo("no optionIndexes defined");
+		break;	
+	
+	case "getGroupsOfMyFiguresWithOptions":
+		$optionIndexes = $_REQUEST['optionIndexes'];
+		if ($optionIndexes){
+			getGroupsOfFiguresWithOptions(json_decode($optionIndexes), true);
+		}
+		else
+			echo("no optionIndexes defined");
+		break;
 						
 	default:	
 		echo("wrong action or no action defined");
@@ -1053,4 +1076,344 @@ function deleteExistingGroup($groupID){
 	echo $groupID;
 }
 
+
+
+
+function getFiguresInGroupsWithQuantity($optionIndexes){
+	//print_r($optionIndexes);
+	
+	// get all ClassificationOptions
+	$sql = "SELECT * FROM FigureTypeNode ORDER BY Typology, `Index`";	
+	$result = mysql_query($sql) or die("Error in getFiguresInGroupsWithQuantity: " . mysql_error());
+
+
+	// prepare query parts
+	if ($optionIndexes){
+		$sql1_part = "SELECT DISTINCT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 AND Username != 'demo' ";
+		$sql2_part = "SELECT DISTINCT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 AND Username = '" . $_SESSION['username'] . "' ";
+
+	
+		// JOINS
+		$sql1_joins = "";
+		$sql2_joins = "";
+		foreach ($optionIndexes as $index => $optionIndex){		
+			if ($index == 0){
+				$sql1_joins .= "SELECT COUNT(DISTINCT t1.groupID) FROM (" . $sql1_part;
+				$sql2_joins .= "SELECT COUNT(DISTINCT t1.groupID) FROM (" . $sql2_part;
+			}
+			else{
+				$sql1_joins .= "INNER JOIN (" . $sql1_part;
+				$sql2_joins .= "INNER JOIN (" . $sql2_part;
+			}
+		
+			switch ($optionIndex){
+				case 9991:
+					// get figureIDs
+					$sql1_joins .= "AND Superimposition = '1' ";	
+					$sql2_joins .= "AND Superimposition = '1' ";	
+					break;	
+				case 9992:
+					// get figureIDs
+					$sql1_joins .= "AND FigureIncomplete = '1' ";	
+					$sql2_joins .= "AND FigureIncomplete = '1' ";	
+					break;
+				case 9993:
+					// get figureIDs
+					$sql1_joins .= "AND FigureDamaged = '1' ";	
+					$sql2_joins .= "AND FigureDamaged = '1' ";	
+					break;
+				case 9994:
+					// get figureIDs
+					$sql1_joins .= "AND TracingIncomplete = '1' ";	
+					$sql2_joins .= "AND TracingIncomplete = '1' ";	
+					break;
+				default:
+					// get figureIDs
+					$sql1_joins .= "AND FigureTypes.ClassID = '" . $optionIndex . "' ";
+					$sql2_joins .= "AND FigureTypes.ClassID = '" . $optionIndex . "' ";
+					break;
+			}
+			
+			$sql1_joins .= ") AS t" .($index+1). " ";
+			$sql2_joins .= ") AS t" .($index+1). " ";
+		}
+		
+		$subquerycount = count($optionIndexes) + 1;
+			
+		// WHERE CLAUSES
+		$sql1_where = "";
+		for ($i = 1; $i < $subquerycount; $i++){
+			if ($i == 1)
+				$sql1_where .= "WHERE t1.groupID = t2.groupID AND t1.`Index` != t2.`Index` ";
+			else{
+				$sql1_where .= "AND t" . $i . ".groupID = t" . ($i+1) . ".groupID ";
+				for ($j = 1; $j < $i+1; $j++)
+					$sql1_where .= "AND t" . $j . ".`Index` != t" . ($i+1) . ".`Index` ";
+			}
+		}
+	}
+	
+	
+	
+
+	$output = array();
+	while ($row = mysql_fetch_array($result)) { 
+		$node = array();
+
+		$node['index'] = $row['Index'];
+		$node['parentIndex'] = $row['ParentIndex'];
+		$node['name'] = $row['Name'];
+		//$node['parentName'] = $row['ParentName'];
+		$node['mutuallyExclusive'] = $row['MutuallyExclusive'];
+		$node['typology'] = $row['Typology'];
+		
+		// combine query
+		if ($optionIndexes){
+			$sql1 = $sql1_joins . "INNER JOIN (" . $sql1_part;
+			$sql1 .= "AND FigureTypes.ClassID = '" . $row['Index'] . "' ";
+			$sql1 .= ") AS t" .(count($optionIndexes)+1). " ";
+			$sql1 .= $sql1_where;
+			
+			$sql2 = $sql2_joins . "INNER JOIN (" . $sql2_part;
+			$sql2 .= "AND FigureTypes.ClassID = '" . $row['Index'] . "' ";
+			$sql2 .= ") AS t" .(count($optionIndexes)+1). " ";
+			$sql2 .= $sql1_where;
+		}
+		else{
+			$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND GroupID > 0 AND Figure.Username !=  'demo'";
+			$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
+		}	
+			
+		//echo $sql1;die();
+		$result1 = mysql_query($sql1) or die("Error in getFiguresInGroupsWithQuantity, countFigures1: " . mysql_error());
+		$row1 = mysql_fetch_row($result1);
+		$node['total_quantity'] = $row1[0];
+		
+				
+		//echo $sql2; die();	
+		$result2 = mysql_query($sql2) or die("Error in getFiguresInGroupsWithQuantity, countFigures2: " . mysql_error());
+		$row2 = mysql_fetch_row($result2);
+		$node['your_quantity'] = $row2[0];
+
+		// only output figures that are in a group
+		if ($node['total_quantity'] > 0)
+			array_push($output, $node);
+	}
+	
+	// Add superimposition, figure incomplete, figure damaged, tracing incomplete
+
+	// combine query
+	if ($optionIndexes){
+		$sql1 = $sql1_joins . "INNER JOIN (" . $sql1_part;
+		$sql1 .= "AND Superimposition = '1' ";
+		$sql1 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql1 .= $sql1_where;
+		
+		$sql2 = $sql2_joins . "INNER JOIN (" . $sql2_part;
+		$sql2 .= "AND Superimposition = '1' ";
+		$sql2 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql2 .= $sql1_where;
+	}
+	else{
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
+	}	
+	$node['index'] = 9991;
+	$node['parentIndex'] = 0;
+	$node['name'] = "Superimposition";
+	//$node['parentName'] = $row['ParentName'];
+	$node['mutuallyExclusive'] = 0;
+	$node['typology'] = "Flags";			
+	$result1 = mysql_query($sql1) or die("Error in getFiguresInGroupsWithQuantity, countFigures1: " . mysql_error());
+	$row1 = mysql_fetch_row($result1);
+	$node['total_quantity'] = $row1[0];	
+	$result2 = mysql_query($sql2) or die("Error in getFiguresInGroupsWithQuantity, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	// only output figures that are in a group
+	if ($node['total_quantity'] > 0)
+		array_push($output, $node);
+
+	
+	// combine query
+	if ($optionIndexes){
+		$sql1 = $sql1_joins . "INNER JOIN (" . $sql1_part;
+		$sql1 .= "AND FigureIncomplete = '1' ";
+		$sql1 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql1 .= $sql1_where;
+		
+		$sql2 = $sql2_joins . "INNER JOIN (" . $sql2_part;
+		$sql2 .= "AND FigureIncomplete = '1' ";
+		$sql2 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql2 .= $sql1_where;
+	}
+	else{
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
+	}	
+	$node['index'] = 9992;
+	$node['parentIndex'] = 0;
+	$node['name'] = "Figure incomplete";
+	$node['typology'] = "Flags";	
+	$result1 = mysql_query($sql1) or die("Error in getFiguresInGroupsWithQuantity, countFigures1: " . mysql_error());
+	$row1 = mysql_fetch_row($result1);
+	$node['total_quantity'] = $row1[0];	
+	$result2 = mysql_query($sql2) or die("Error in getFiguresInGroupsWithQuantity, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	// only output figures that are in a group
+	if ($node['total_quantity'] > 0)
+		array_push($output, $node);
+	
+	// combine query
+	if ($optionIndexes){
+		$sql1 = $sql1_joins . "INNER JOIN (" . $sql1_part;
+		$sql1 .= "AND FigureDamaged = '1' ";
+		$sql1 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql1 .= $sql1_where;
+		
+		$sql2 = $sql2_joins . "INNER JOIN (" . $sql2_part;
+		$sql2 .= "AND FigureDamaged = '1' ";
+		$sql2 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql2 .= $sql1_where;
+	}
+	else{
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
+	}	
+	$node['index'] = 9993;
+	$node['name'] = "Figure damaged";
+	$node['typology'] = "Flags";	
+	$result1 = mysql_query($sql1) or die("Error in getFiguresInGroupsWithQuantity, countFigures1: " . mysql_error());
+	$row1 = mysql_fetch_row($result1);
+	$node['total_quantity'] = $row1[0];	
+	$result2 = mysql_query($sql2) or die("Error in getFiguresInGroupsWithQuantity, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	// only output figures that are in a group
+	if ($node['total_quantity'] > 0)
+		array_push($output, $node);
+
+	// combine query
+	if ($optionIndexes){
+		$sql1 = $sql1_joins . "INNER JOIN (" . $sql1_part;
+		$sql1 .= "AND TracingIncomplete = '1' ";
+		$sql1 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql1 .= $sql1_where;
+		
+		$sql2 = $sql2_joins . "INNER JOIN (" . $sql2_part;
+		$sql2 .= "AND TracingIncomplete = '1' ";
+		$sql2 .= ") AS t" .(count($optionIndexes)+1). " ";
+		$sql2 .= $sql1_where;
+	}
+	else{
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
+	}	
+	$node['index'] = 9994;
+	$node['name'] = "Tracing incomplete";
+	$node['typology'] = "Flags";	
+	$result1 = mysql_query($sql1) or die("Error in getFiguresInGroupsWithQuantity, countFigures1: " . mysql_error());
+	$row1 = mysql_fetch_row($result1);
+	$node['total_quantity'] = $row1[0];	
+	$result2 = mysql_query($sql2) or die("Error in getFiguresInGroupsWithQuantity, countFigures2: " . mysql_error());
+	$row2 = mysql_fetch_row($result2);
+	$node['your_quantity'] = $row2[0];
+	// only output figures that are in a group
+	if ($node['total_quantity'] > 0)
+		array_push($output, $node);
+		
+	echo json_encode($output);	
+}
+
+
+
+
+
+function getGroupsOfFiguresWithOptions($optionIndexes, $my){
+
+	$sql1 = "SELECT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 ";
+	
+	if ($my)
+		$sql1 .= "AND Username = '" . $_SESSION['username'] . "' ";
+	else
+		$sql1 .= "AND Username != 'demo' ";
+	
+	// JOINS
+	foreach ($optionIndexes as $index => $optionIndex){		
+		if ($index == 0)
+			$sql2 = "SELECT DISTINCT t1.groupID FROM (" . $sql1;
+		else
+			$sql2 .= "INNER JOIN (" . $sql1;
+	
+		switch ($optionIndex){
+			case 9991:
+				// get figureIDs
+				$sql2 .= "AND Superimposition = '1' ";	
+				break;	
+			case 9992:
+				// get figureIDs
+				$sql2 .= "AND FigureIncomplete = '1' ";	
+				break;
+			case 9993:
+				// get figureIDs
+				$sql2 .= "AND FigureDamaged = '1' ";	
+				break;
+			case 9994:
+				// get figureIDs
+				$sql2 .= "AND TracingIncomplete = '1' ";	
+				break;
+			default:
+				// get figureIDs
+				$sql2 .= "AND FigureTypes.ClassID = '" . $optionIndex . "' ";
+				break;
+		}
+		
+		$sql2 .= ") AS t" .($index+1). " ";
+	}
+	// WHERE CLAUSES
+	for ($i = 1; $i < count($optionIndexes); $i++){
+		if ($i == 1)
+			$sql2 .= "WHERE t1.groupID = t2.groupID AND t1.`Index` != t2.`Index` ";
+		else{
+			$sql2 .= "AND t" . $i . ".groupID = t" . ($i+1) . ".groupID ";
+			for ($j = 1; $j < $i+1; $j++)
+				$sql2 .= "AND t" . $j . ".`Index` != t" . ($i+1) . ".`Index` ";
+		}
+	}
+
+	//echo $sql2;die();
+		
+	$result = mysql_query($sql2) or die("Error in getGroupsOfFiguresWithOption, getGroups: " . mysql_error());
+	
+	$output = array();
+	if (mysql_num_rows($result) == 0) die("No groups containing a figure with this option."); 
+	else {	
+		while ($row = mysql_fetch_array($result)) { 
+			//echo '<pre>'; print_r($row); echo '</pre>';die();
+			$group = array();
+	
+			$group['groupID'] = $row['groupID'];
+			
+			// get site and rock
+			$sql2 = "SELECT * FROM Figure JOIN Tracing ON Figure.TracingName = Tracing.Name WHERE groupID = " . $group['groupID'];
+			
+			$result2 = mysql_query($sql2) or die("Error in getGroupsOfFiguresWithOption, getSiteAndRock: " . mysql_error());
+			if ($row2 = mysql_fetch_array($result2)){
+				$group['site'] = $row2['Site'];
+				$group['rock'] = $row2['Rock Number'];
+				$group['section'] = $row2['Section'];
+				$group['imageName'] = $row2['TracingName'];
+				
+				array_push($output, $group);
+			}
+		}
+		
+		//echo '<pre>'; print_r($output); echo '</pre>';die();
+	
+		echo json_encode($output);
+	}
+
+	
+}
 ?>

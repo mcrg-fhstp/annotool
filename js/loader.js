@@ -353,4 +353,62 @@ function LOADER_CLASS(){
 		return returndata;
 	}
 
+	this.loadFiguresInGroupsWithQuantity = function(optionIndexes){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getFiguresInGroupsWithQuantity&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading figures in groups with quantity: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.loadGroupsOfAllFiguresWithOptions = function(optionIndexes){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getGroupsOfAllFiguresWithOptions&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading all groups with figures with options: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.loadGroupsOfMyFiguresWithOptions = function(optionIndexes){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getGroupsOfMyFiguresWithOptions&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading your groups with figures with options: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
 }

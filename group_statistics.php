@@ -16,7 +16,7 @@
 <![endif]-->
 
 
-
+<script language="javascript" type="text/javascript" src="js/setup.js"></script>
 <script language="javascript" type="text/javascript" src="js/loader.js"></script>
 
 
@@ -58,15 +58,39 @@
 <?php include('header_inc.php'); ?>
 
 <div id="content">
+
+Number of groups that have a figure with option<?php if ($_GET['option']){
+		echo ("s <b>");
+		$figureOptions = json_decode($_GET['option']); 
+		foreach ($figureOptions as $index => $option){
+			echo ($option);
+			if ($index < sizeof($figureOptions)-1) echo(", ");
+		}
+		echo ("</b> and");
+	}
+?>
+:<br>
 <div id="wrapper">
-Statistic of total number of annotated figures per node:
 </div>
+<div id="responseBox"></div>
 </div>
 
 <script language="javascript" type="text/javascript">
-	var options = LOADER.loadClassificationOptionsWithQuantity();
-
-
+	
+	if (GET('option') != '')
+		var oldOptions = JSON.parse(GET('option'));
+	else
+		var oldOptions = [];
+	
+	if (GET('index') != '')
+		var oldOptionIndexes = JSON.parse(GET('index'));
+	else
+		var oldOptionIndexes = [];
+	
+	
+	var options = LOADER.loadFiguresInGroupsWithQuantity(oldOptionIndexes);
+	
+	// recursively add list elements
 	function appendSubElements(index, elem){
 		
 		var ul = document.createElement('ul');
@@ -74,7 +98,9 @@ Statistic of total number of annotated figures per node:
 		// look for childnodes
 		for(var i=0; i<options.length; i++){
 			if (options[i].parentIndex == index){
-				if (index == 0){
+				// new header
+				if ((index == 0) &&
+					!$(ul).is(':contains(' + options[i].typology +')')){
 					var h3 = document.createElement('h3');
 					$(h3).append(options[i].typology);
 					$(h3).append("<span style='float:right'>in total</span>");
@@ -87,9 +113,12 @@ Statistic of total number of annotated figures per node:
 				var li = document.createElement('li');
 				
 				
-					var option = "" + options[i].name + "<span class='span-right'><a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].total_quantity + "</a></span>";
+					var option = "<a href='group_statistics.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].name + "</a>";
+					
+					option += "<span class='span-right'><a href='grouplist.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].total_quantity + "</a></span>";
+					
 					<?php if($_SESSION['username'] != "ReadOnly"): ?>
-					option += "<span class='span-right2'><a href='figurelist_my.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
+					option += "<span class='span-right2'><a href='grouplist_my.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
 					<?php endif; ?>
 				
 				$(li).append(option);
@@ -100,9 +129,20 @@ Statistic of total number of annotated figures per node:
 		elem.append(ul);
 	}	
 	
-	appendSubElements(0, $('#wrapper'));
 	
-
+	if( Object.prototype.toString.call( options ) === '[object Array]' )
+		appendSubElements(0, $('#wrapper'));
+	else{
+		$('#responseBox').text(options);
+		$('#responseBox').addClass('error');
+		$('#responseBox').show();
+	}
+	
+	if (options.length == 0){
+		$('#responseBox').text('No group containing a figure with this option.');
+		$('#responseBox').addClass('error');
+		$('#responseBox').show();
+	}
 	
 </script>
 
