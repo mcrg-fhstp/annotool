@@ -249,17 +249,22 @@ html, body{
 }
 .figureBox.selectable:hover, .figureBox.hover{
 	border: 2px solid yellow;
+	z-index:999;
 }
 .figureBox.selected{
 	display: none;
 }
 .figureBox.grouped{
 	border: 2px solid fuchsia;
+	z-index: 1000;
+}
+.figureBox.grouped.hover{
+	border: 4px solid fuchsia;
 }
 
 .groupBox{
 	position: absolute;
-	border: 2px solid #b300ff;
+	border: 2px solid lightgray;
 	pointer-events:none;
 	/*box-sizing: border-box;*/
 	margin-left: -2px;
@@ -271,6 +276,7 @@ html, body{
 }
 .groupBox.selectable:hover, .groupBox.hover{
 	border: 2px solid #00f7ff;
+	z-index: 1001;
 }
 .groupBox.selected{
 	display: none;
