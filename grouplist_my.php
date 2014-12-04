@@ -85,7 +85,10 @@
 	    	var group = data[i];
 	    	
 	    	var tr = "<tr><td><a href='figures.php?imageName=" + group.imageName + '&groupID=' + group.groupID + "'>Group " + group.groupID + "</a></td>";
-	    	tr += "<td>" + group.site + " Rock " + group.rock + " Section " + group.section + " </td>";
+	    	tr += "<td>" + group.site;
+			if (group.rock != "")	tr += " Rock " + group.rock;
+			if (group.section != "")	tr += " Section " + group.section;
+			tr += " </td>";
 			
 			$(table).append(tr);
 	    }
