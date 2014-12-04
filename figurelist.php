@@ -53,7 +53,7 @@
 </head>
 
 
-<body>
+<body id="statisticsPage">
 
 
 <?php include('header_inc.php'); ?>

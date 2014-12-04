@@ -53,7 +53,7 @@
 </head>
 
 
-<body>
+<body id="statisticsPage">
 
 
 <?php include('header_inc.php'); ?>
@@ -72,6 +72,7 @@
 	}
 ?>
 :</p></br>
+<div id="groupsList"></div>
 <div id="responseBox"></div>
 </div>
 
@@ -88,7 +89,7 @@
 			
 			$(table).append(tr);
 	    }
-	    $('#content').append(table);
+	    $('#groupsList').append(table);
 	}
 	else{
 		$('#responseBox').text(data);
