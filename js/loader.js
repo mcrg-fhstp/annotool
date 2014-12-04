@@ -215,7 +215,6 @@ function LOADER_CLASS(){
 	
 	
 	this.loadClassificationOptions = function(){
-		var options;
 		$.ajax({
 		  dataType: "json",
 		  url: this.serverpath + 'interface.php?action=getClassificationOptions',
@@ -225,18 +224,17 @@ function LOADER_CLASS(){
 		})
 		.done(function(data) { 
 			//console.log(data); 
-			options = data;
+			returndata = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
-		return options;
+		return returndata;
 	}
 	
 	
 	this.loadClassificationOptionsWithQuantity = function(){
-		var options;
 		$.ajax({
 		  dataType: "json",
 		  url: this.serverpath + 'interface.php?action=getClassificationOptionsWithQuantity',
@@ -246,13 +244,13 @@ function LOADER_CLASS(){
 		})
 		.done(function(data) { 
 			//console.log(data); 
-			options = data;
+			returndata = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options with quantity: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
-		return options;
+		return returndata;
 	}
 	
 	

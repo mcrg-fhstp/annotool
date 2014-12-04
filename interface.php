@@ -77,7 +77,7 @@ switch($action){
 	case "getImagesForAllFiguresWithOption":
 		$optionIndex = $_REQUEST['optionIndex'];
 		if ($optionIndex){
-			getImagesForAllFiguresWithOption($optionIndex);
+			getImagesForFiguresWithOption($optionIndex, false);
 		}
 		else
 			echo("no optionIndex defined");
@@ -86,7 +86,7 @@ switch($action){
 	case "getImagesForMyFiguresWithOption":
 		$optionIndex = $_REQUEST['optionIndex'];
 		if ($optionIndex){
-			getImagesForMyFiguresWithOption($optionIndex);
+			getImagesForFiguresWithOption($optionIndex, true);
 		}
 		else
 			echo("no optionIndex defined");
@@ -329,7 +329,7 @@ function getClassificationOptionsWithQuantity(){
 	
 	$sql = "SELECT * FROM FigureTypeNode ORDER BY Typology, `Index`";
 		
-	$result = mysql_query($sql) or die("Error in getClassificationOptions: " . mysql_error());
+	$result = mysql_query($sql) or die("Error in getClassificationOptionsWithQuantity: " . mysql_error());
 	
 	$output = array();
 	while ($row = mysql_fetch_array($result)) { 
@@ -346,7 +346,7 @@ function getClassificationOptionsWithQuantity(){
 		
 		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username !=  'demo'";
 		
-		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+		$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
 
 		$node['total_quantity'] = $row2[0];
@@ -354,7 +354,7 @@ function getClassificationOptionsWithQuantity(){
 		
 		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username = '" . $_SESSION['username'] . "'";
 		
-		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+		$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
 
 		$node['your_quantity'] = $row2[0];
@@ -371,51 +371,47 @@ function getClassificationOptionsWithQuantity(){
 	$node['mutuallyExclusive'] = 0;
 	$node['typology'] = "Flags";	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND Figure.Username !=  'demo'";		
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['total_quantity'] = $row2[0];	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['your_quantity'] = $row2[0];
 	array_push($output, $node);
 
 	$node['index'] = 9992;
-	$node['parentIndex'] = 9991;
 	$node['name'] = "Figure incomplete";
-	$node['typology'] = "Figure incomplete";	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND Figure.Username !=  'demo'";		
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['total_quantity'] = $row2[0];	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['your_quantity'] = $row2[0];
 	array_push($output, $node);
 	
 	$node['index'] = 9993;
 	$node['name'] = "Figure damaged";
-	$node['typology'] = "Figure damaged";	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND Figure.Username !=  'demo'";		
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['total_quantity'] = $row2[0];	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['your_quantity'] = $row2[0];
 	array_push($output, $node);
 
 	$node['index'] = 9994;
 	$node['name'] = "Tracing incomplete";
-	$node['typology'] = "Tracing incomplete";	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND Figure.Username !=  'demo'";		
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures1: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['total_quantity'] = $row2[0];	
 	$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND Figure.Username = '" . $_SESSION['username'] . "'";	
-	$result2 = mysql_query($sql2) or die("Error in getImages, countFigures2: " . mysql_error());
+	$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
 	$row2 = mysql_fetch_row($result2);
 	$node['your_quantity'] = $row2[0];
 	array_push($output, $node);
@@ -580,7 +576,7 @@ function getMaskForFigure($figureID){
 
 
 
-function getImagesForAllFiguresWithOption($optionIndex){
+function getImagesForFiguresWithOption($optionIndex, $my){
 	
 	switch ($optionIndex){
 		case 9991:
@@ -617,7 +613,11 @@ function getImagesForAllFiguresWithOption($optionIndex){
 			$figure['figureID'] = $row['figureID'];
 			
 			// get figure
-			$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' AND Username != 'demo'";
+			$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' ";
+			if ($my)
+				$sql2 .= "AND Username = '" . $_SESSION['username'] . "'";
+			else
+				$sql2 .= "AND Username != 'demo'";
 			
 			$result2 = mysql_query($sql2) or die("Error in getImagesForAllFiguresWithOption, getFigureImage: " . mysql_error());
 			while($row2 = mysql_fetch_array($result2)){
@@ -634,6 +634,7 @@ function getImagesForAllFiguresWithOption($optionIndex){
 
 
 
+/*
 function getImagesForMyFiguresWithOption($optionIndex){
 	
 	switch ($optionIndex){
@@ -684,6 +685,7 @@ function getImagesForMyFiguresWithOption($optionIndex){
 		echo json_encode($output);
 	}	
 }
+*/
 
 
 
