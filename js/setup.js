@@ -98,6 +98,21 @@ function setupImage(){
 			}
 		});
 	}
+	
+	// groupID as GET-Parameter submitted -> zoom to group
+	if(GET('groupID')){
+		// attach EventHandler, when Image fully loaded
+		$(document).on("allImagesLoaded",function() {
+			for(var i=0; i<GROUPS.groups.length; i++){
+				if(GROUPS.groups[i].groupID == GET('groupID')){
+					// zoom to figure		
+					IMAGE.zoomWindow(GROUPS.groups[i].boundingBox.x1, GROUPS.groups[i].boundingBox.y1, GROUPS.groups[i].boundingBox.x2, GROUPS.groups[i].boundingBox.y2);
+					// select figure
+					$("#groupHolder .groupBox[groupid='" + GET('groupID') + "']" ).trigger('click');
+				}
+			}
+		});
+	}
 }
 
 
