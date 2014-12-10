@@ -116,7 +116,13 @@ Number of groups that have a figure with option<?php if ($_GET['option']){
 				
 					var option = "<a href='group_statistics.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].name + "</a>";
 					
-					option += "<span class='span-right'><a href='grouplist.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].total_quantity + "</a></span>";
+					option += "<span class='span-right'>";
+					<?php if($_SESSION['username'] == "admin"): ?>
+						option += "<a href='grouplist.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].total_quantity + "</a>";
+					<?php else: ?>	
+						option += options[i].total_quantity;
+					<?php endif; ?>
+					option += "</span>";
 					
 					<?php if($_SESSION['username'] != "ReadOnly"): ?>
 					option += "<span class='span-right2'><a href='grouplist_my.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
