@@ -38,6 +38,39 @@ function GROUPS_CLASS(){
 		}
 	}
 	
+	this.removeFigure = function(groupID, figureID){
+		// group already existing ??
+		for(var i=0; i< this.groups.length; i++){
+			if (this.groups[i].groupID == groupID)
+				break;
+		}
+		if (i< this.groups.length){
+			// figure in array
+			if ((j=$.inArray(figureID, this.groups[i].figureIDs)) > -1){
+				this.groups[i].figureIDs.splice(j,1);
+				// update bounding box
+				this.groups[i].boundingBox.x1 = Infinity;
+				this.groups[i].boundingBox.y1 = Infinity;
+				this.groups[i].boundingBox.x2 = null;
+				this.groups[i].boundingBox.y2 = null;
+				for(var k=0; k< this.groups[i].figureIDs.length; k++){
+					for(var l=0; l< FIGURES.figures.length; l++){
+						if (this.groups[i].figureIDs[k] == FIGURES.figures[l].figureID){
+							if (FIGURES.figures[l].boundingBox.x1 <= this.groups[i].boundingBox.x1)
+								this.groups[i].boundingBox.x1 = FIGURES.figures[l].boundingBox.x1;
+							if (FIGURES.figures[l].boundingBox.y1 <= this.groups[i].boundingBox.y1)
+								this.groups[i].boundingBox.y1 = FIGURES.figures[l].boundingBox.y1;	
+							if (FIGURES.figures[l].boundingBox.x2 >= this.groups[i].boundingBox.x2)
+								this.groups[i].boundingBox.x2 = FIGURES.figures[l].boundingBox.x2;
+							if (FIGURES.figures[l].boundingBox.y2 >= this.groups[i].boundingBox.y2)
+								this.groups[i].boundingBox.y2 = FIGURES.figures[l].boundingBox.y2;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	this.clearGroup = function(groupID){
 		// group existing ??
 		for(var i=0; i< this.groups.length; i++){

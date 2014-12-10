@@ -75,11 +75,20 @@ function GROUPSELECTOR_CLASS(){
 			else{
 				CLASSIFICATOR.showResponse("Group " + groupID + " updated successfully!");
 				// update in GROUPS.groups
+				// delete all figures from group
 				GROUPS.clearGroup(groupID);
 				for (var i=0; i<FIGURES.groupedFigures.length; i++){
 					for (var j=0; j<FIGURES.figures.length; j++){
-						if (FIGURES.groupedFigures[i] == FIGURES.figures[j].figureID)
+						if (FIGURES.groupedFigures[i] == FIGURES.figures[j].figureID){
+							// delete figure from old group
+							for (var k=0; k<GROUPS.groups.length; k++){
+								if ($.inArray(FIGURES.groupedFigures[i], GROUPS.groups[k].figureIDs)> -1 ){
+									GROUPS.removeFigure(GROUPS.groups[k].groupID, FIGURES.groupedFigures[i]);
+								}
+							}
+							// add all selected figures to group
 							GROUPS.addFigure(groupID, FIGURES.figures[j]);
+						}
 					}
 				}
 				$('.figureBox').removeClass('grouped'); 
