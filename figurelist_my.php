@@ -60,6 +60,7 @@
 <p>List of figures for option <b><?php echo $_GET['option']; ?></b> you annotated:</p><br/><br/>
 <div id="responseBox"></div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var data = LOADER.loadImagesOfMyFiguresWithOption(<?php echo $_GET['index'] ?>);

@@ -74,6 +74,7 @@ Number of groups that have a figure with option<?php if ($_GET['option']){
 </div>
 <div id="responseBox"></div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	

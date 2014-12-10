@@ -62,6 +62,7 @@
 Number of annotated figures per class:
 </div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var options = LOADER.loadClassificationOptionsWithQuantity();

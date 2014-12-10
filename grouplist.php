@@ -75,6 +75,7 @@
 <div id="groupsList"></div>
 <div id="responseBox"></div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var data = LOADER.loadGroupsOfAllFiguresWithOptions(<?php echo $_GET['index'] ?>);

@@ -62,6 +62,7 @@
 <p>List of all figures for option <b><?php echo $_GET['option']; ?></b>:</p><br/><br/>
 <div id="responseBox"></div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var data = LOADER.loadImagesOfAllFiguresWithOption(<?php echo $_GET['index'] ?>);
