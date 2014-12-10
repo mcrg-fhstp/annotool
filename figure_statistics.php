@@ -59,7 +59,7 @@
 
 <div id="content">
 <div id="wrapper">
-Number of annotated figures per class:
+Number of <b><u>annotated figures</u></b> per class:
 </div>
 </div>
 <?php include('infobox_inc.php'); ?>

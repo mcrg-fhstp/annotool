@@ -59,7 +59,7 @@
 <?php include('header_inc.php'); ?>
 
 <div id="content">
-<p>List of your groups containing figures with option<?php if ($_GET['option']){
+<p>List of <b><u>your groups</u></b> containing figures with option<?php if ($_GET['option']){
 		$figureOptions = json_decode($_GET['option']);
 		if (sizeof($figureOptions) > 1) echo ("s");
 		echo (" <b>"); 
