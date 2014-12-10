@@ -406,6 +406,7 @@ html, body{
 	left:25px;
 	bottom:25px;
 	right:25px;
+	z-index:9999;
 }
 #infobox_foreground>a{
 	position: absolute;
