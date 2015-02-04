@@ -6,15 +6,24 @@
 			
 			<p>The workflow consists of 4 steps:</p>
 			<ol>
+			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#choosetracing').offset().top}, 1000);return false;">Choose a tracing:</a> describes tracing selection</p>
 			<p><li><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#zoominto').offset().top}, 1000);return false;">Zoom into image:</a> describes zoom tools</li></p>
 			<p><li><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#selectfigure').offset().top}, 1000);return false;">Select figure:</a> describes selection tools</li></p>
 			<p><li><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#classify').offset().top}, 1000);return false;">Classify figure:</a> describes classification tools</li></p>
 			<p><li><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#savedata').offset().top}, 1000);return false;">Save annotation</a></li></p>
+			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#grouping').offset().top}, 1000);return false;">Group figures:</a> describes figure grouping</p>
 			</ol>
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#error').offset().top}, 1000);return false;">What to do when an error occurs?</a></p>
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#changelog').offset().top}, 1000);return false;">ChangeLog</a></p>
 			
 			<ol>
+			<h2 id="choosetracing">Choose a tracing:</h2>
+				<p>
+				<img src="./img/choose_tracing.png"/>
+				Click on a site to get a list of all available tracings.<br/>
+				Click on a tracing to start the annotation process.
+				</p>
+			
 			<h2 id="zoominto"><li>Zoom into image:</li></h2>
 				<p>
 				<img src="./img/zoom_controls.png"/>
@@ -129,7 +138,37 @@
 				<img src="./img/saving_success.png"/>
 				A success-message is shown, when the figure and classification data were saved successfully.
 				</p>
-				
+			
+			<h2 id="grouping">Group figures:</h2>
+				<p style="clear:left;">
+				<img src="./img/group_highlight.png"/>
+				<p>To group figures, each of them has to be annotated first.<br/>
+				Each figure can be in only one group.<br/>
+				Groups are visualized with a light gray bounding box spanning all contained figures.<br/>
+				When hovering over it with the mouse cursor, the bounding box of the group is highlighted in turquoise.</p>
+				</p>
+				<p style="clear:left;">
+				<img src="./img/group_selected.png"/>
+				<p>Click on the bounding box of a group the select it.<br/>
+				The bounding boxes of all figures belonging to that group are highlighted in magenta.<br/>
+				You can then add and remove figures to/from an existing group.<br/>
+				</p>
+				<p style="clear:left;">
+				<img src="./img/group_update_delete.png"/>
+				Click <i>"update group"</i> to save changes, or <i>"delete group"</i> to remove it from the database.</p>
+				</p>
+				<p style="clear:left;">
+				<img src="./img/group_new.png"/>
+				<p>Click on the first figure you want to be in the group. The mask and annotation data for this figure is loaded.</p>
+				<p><b><i>SHIFT + click</i></b> on another figure to add it to the group.<br/>
+				<b><i>ALT + click</i></b> on a grouped figure to subtract it from the group.</p>
+				<p>When adding a figure that is already member of a group, it will be removed from the old group.</p> 
+				</p>
+				<p style="clear:left;">
+				<img src="./img/group_create.png"/>
+				<p>Click <i>"create group"</i> to save the new group to the database.</p>			
+				</p>
+					
 			</ol>
 			
 			<h2 id="error">What to do when an error occurs?</h2>
