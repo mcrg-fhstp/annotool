@@ -36,7 +36,7 @@
 
 
 	<h1>3D-Pitoti AnnoTool - Local
-		<span> v1.7b2</span>
+		<span> v1.7</span>
 	</h1>
 	
 
