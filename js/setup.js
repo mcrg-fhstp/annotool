@@ -29,6 +29,7 @@ function setupImage(){
 	var overlayCanvas = document.getElementById('overlayCanvas');
 	var toolCanvas = document.getElementById('toolCanvas');
 	var figureHolder = document.getElementById('figureHolder');
+	var groupHolder = document.getElementById('groupHolder');
 	
 	init_canvas = function(){
 		var visible_w = parseInt(window.getComputedStyle(content,null).getPropertyValue('width'));// page_w - 60;
@@ -43,6 +44,8 @@ function setupImage(){
 		toolCanvas.height = visible_h;
 		figureHolder.style.width = visible_w +"px";
 		figureHolder.style.height = visible_h +"px";
+		groupHolder.style.width = visible_w +"px";
+		groupHolder.style.height = visible_h +"px";
 		
 		if(IMAGE)
 			IMAGE.resize();
@@ -91,6 +94,21 @@ function setupImage(){
 					IMAGE.zoomWindow(FIGURES.figures[i].boundingBox.x1, FIGURES.figures[i].boundingBox.y1, FIGURES.figures[i].boundingBox.x2, FIGURES.figures[i].boundingBox.y2);
 					// select figure
 					$("#figureHolder .figureBox[figureid='" + GET('figureID') + "']" ).trigger('click');
+				}
+			}
+		});
+	}
+	
+	// groupID as GET-Parameter submitted -> zoom to group
+	if(GET('groupID')){
+		// attach EventHandler, when Image fully loaded
+		$(document).on("allImagesLoaded",function() {
+			for(var i=0; i<GROUPS.groups.length; i++){
+				if(GROUPS.groups[i].groupID == GET('groupID')){
+					// zoom to figure		
+					IMAGE.zoomWindow(GROUPS.groups[i].boundingBox.x1, GROUPS.groups[i].boundingBox.y1, GROUPS.groups[i].boundingBox.x2, GROUPS.groups[i].boundingBox.y2);
+					// select figure
+					$("#groupHolder .groupBox[groupid='" + GET('groupID') + "']" ).trigger('click');
 				}
 			}
 		});

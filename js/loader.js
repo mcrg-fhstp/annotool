@@ -215,7 +215,6 @@ function LOADER_CLASS(){
 	
 	
 	this.loadClassificationOptions = function(){
-		var options;
 		$.ajax({
 		  dataType: "json",
 		  url: this.serverpath + 'interface.php?action=getClassificationOptions',
@@ -225,18 +224,17 @@ function LOADER_CLASS(){
 		})
 		.done(function(data) { 
 			//console.log(data); 
-			options = data;
+			returndata = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
-		return options;
+		return returndata;
 	}
 	
 	
 	this.loadClassificationOptionsWithQuantity = function(){
-		var options;
 		$.ajax({
 		  dataType: "json",
 		  url: this.serverpath + 'interface.php?action=getClassificationOptionsWithQuantity',
@@ -246,13 +244,13 @@ function LOADER_CLASS(){
 		})
 		.done(function(data) { 
 			//console.log(data); 
-			options = data;
+			returndata = data;
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options with quantity: " + errorThrown );
 			returndata =  jqXHR.responseText;
 		});
-		return options;
+		return returndata;
 	}
 	
 	
@@ -260,7 +258,6 @@ function LOADER_CLASS(){
 		var mask;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getImagesForAllFiguresWithOption&optionIndex=' + optionIndex,
 		  async: false
 		  //data: data,
@@ -281,7 +278,6 @@ function LOADER_CLASS(){
 		var mask;
 		$.ajax({
 		  dataType: "json",
-		  //url: this.serverpath + 'coords.php',
 		  url: this.serverpath + 'interface.php?action=getImagesForMyFiguresWithOption&optionIndex=' + optionIndex,
 		  async: false
 		  //data: data,
@@ -297,5 +293,120 @@ function LOADER_CLASS(){
 		});
 		return returndata;
 	}
+	
+	this.saveGroup = function(figureIDs){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=saveNewGroupForFigures&figureIDs=' + JSON.stringify(figureIDs),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error saving new group: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.updateGroup = function(groupID, figureIDs){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=updateExistingGroupWithFigures&groupID=' + groupID + '&figureIDs=' + JSON.stringify(figureIDs),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error updating existing group: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.deleteGroup = function(groupID){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=deleteExistingGroup&groupID=' + groupID,
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error deleting existing group: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
 
+	this.loadFiguresInGroupsWithQuantity = function(optionIndexes){
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getFiguresInGroupsWithQuantity&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading figures in groups with quantity: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.loadGroupsOfAllFiguresWithOptions = function(optionIndexes){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getGroupsOfAllFiguresWithOptions&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading all groups with figures with options: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
+	
+	this.loadGroupsOfMyFiguresWithOptions = function(optionIndexes){
+		var mask;
+		$.ajax({
+		  dataType: "json",
+		  url: this.serverpath + 'interface.php?action=getGroupsOfMyFiguresWithOptions&optionIndexes=' + JSON.stringify(optionIndexes),
+		  async: false
+		  //data: data,
+		  //success: success
+		})
+		.done(function(data) { 
+			//console.log(data); 
+			returndata = data;
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) { 
+			console.log( "Error loading your groups with figures with options: " + errorThrown );
+			returndata =  jqXHR.responseText;
+		});
+		return returndata;
+	}
 }

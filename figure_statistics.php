@@ -52,16 +52,17 @@
 </head>
 
 
-<body>
+<body id="statisticsPage">
 
 
 <?php include('header_inc.php'); ?>
 
 <div id="content">
 <div id="wrapper">
-Statistic of total number of annotated figures per node:
+Number of <b><u>annotated figures</u></b> per class:
 </div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var options = LOADER.loadClassificationOptionsWithQuantity();
@@ -74,7 +75,8 @@ Statistic of total number of annotated figures per node:
 		// look for childnodes
 		for(var i=0; i<options.length; i++){
 			if (options[i].parentIndex == index){
-				if (index == 0){
+				if ((index == 0) &&
+					!$(ul).is(':contains(' + options[i].typology +')')){
 					var h3 = document.createElement('h3');
 					$(h3).append(options[i].typology);
 					$(h3).append("<span style='float:right'>in total</span>");

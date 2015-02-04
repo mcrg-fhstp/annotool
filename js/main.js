@@ -32,6 +32,8 @@ function generateImagesList(){
 		tr += '</a></td>';
 		if (images[i].nbFigures != "")
 			tr += '<td>' + images[i].nbFigures + ' figures annotated</td>';
+		if (images[i].nbGroups != "")
+			tr += '<td>' + images[i].nbGroups + ' groups</td>';
 		tr += '</tr>';
 		
 		//$('#imageList').append(tr);

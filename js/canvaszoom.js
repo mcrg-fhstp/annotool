@@ -909,6 +909,8 @@ function CanvasZoom( _settings, _tilesFolderDeprecated, _imageWidthDeprecated, _
 		
 		// redraw existing figures
 		FIGURES.draw(figureHolder,_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), _imageWidth/zoomWidth);
+		// redraw existing groups
+		GROUPS.draw(groupHolder,_canvas.width, _canvas.height, Math.ceil(this.offsetX), Math.ceil(this.offsetY), _imageWidth/zoomWidth);
 
 	}
 	

@@ -28,14 +28,15 @@
 	<div id="left">
 		<?php if (basename($_SERVER['PHP_SELF'], ".php") != 'index'): ?>
 		<a id="back" href="javascript:history.back()" >&lt; Back</a>
-		<form><input type="button" value="Show statistics" onclick="location.href='statistics.php';"></form>
+		<form><input type="button" value="Figure statistics" onclick="location.href='figure_statistics.php';"></form>
+		<form><input type="button" value="Group statistics" onclick="location.href='group_statistics.php';"></form>
 		<?php endif; ?>
 	</div>	
 
 
 
-	<h1>3D-Pitoti AnnoTool
-		<span> v1.5b</span>
+	<h1>3D-Pitoti AnnoTool - Local
+		<span> v1.7b2</span>
 	</h1>
 	
 

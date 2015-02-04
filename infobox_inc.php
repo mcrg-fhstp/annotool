@@ -150,6 +150,15 @@
 			<h2 id="changelog">ChangeLog</h2>
 				
 				<p>
+				<p><b>v1.7b</b></p>
+				<p><ul>
+				<li>Added feature for grouping of figures</li>
+				<li>Added group statistics</li>
+				<li>Added letters for writings/inscriptions</li>
+				</ul>
+				</p>
+				
+				<p>
 				<p><b>v1.6b</b></p>
 				<p><ul>
 				<li>Improved labels for flags superimposition, figure incomplete, figure damaged & tracing incomplete</li>

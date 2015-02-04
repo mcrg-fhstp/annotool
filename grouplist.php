@@ -59,35 +59,41 @@
 <?php include('header_inc.php'); ?>
 
 <div id="content">
-<p>List of <b><u>all figures</u></b> for option <b><?php echo $_GET['option']; ?></b>:</p><br/><br/>
+<p>List of <b><u>all groups</u></b> containing figures with option<?php if ($_GET['option']){
+		$figureOptions = json_decode($_GET['option']);
+		if (sizeof($figureOptions) > 1) echo ("s");
+		echo (" <b>"); 
+		foreach ($figureOptions as $index => $option){
+			echo ($option);
+			if (sizeof($figureOptions) > 1 && $index < sizeof($figureOptions)-2) echo (", ");
+			if ($index == sizeof($figureOptions)-2) echo ("</b> and <b>");
+		}
+		echo ("</b>");
+	}
+?>
+:</p></br>
+<div id="groupsList"></div>
 <div id="responseBox"></div>
 </div>
 <?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
-	var data = LOADER.loadImagesOfAllFiguresWithOption(<?php echo $_GET['index'] ?>);
+	var data = LOADER.loadGroupsOfAllFiguresWithOptions(<?php echo $_GET['index'] ?>);
 
 	if( Object.prototype.toString.call( data ) === '[object Array]' ) {
+		var table = document.createElement('table');
 	    for(var i=0; i<data.length; i++){
-	    	var figure = data[i];
+	    	var group = data[i];
 	    	
-	    	var wrapper = document.createElement('div');
-	    	$(wrapper).addClass('wrapper');
-	    	
-	    	if (figure.pathToMaskFile != null){
-	    		var img = document.createElement('img');
-	    		$(img).attr('src', figure.pathToMaskFile);
-	    		<?php if($_SESSION['username'] == "admin" || $_SESSION['username'] == "ReadOnly"): ?>
-	    			var a = document.createElement('a');
-	    			$(a).attr('href', 'figuredetails.php?figureID=' + figure.figureID);
-	    			$(a).append(img);
-	    			$(wrapper).append(a);
-	    		<?php else: ?>
-	    			$(wrapper).append(img);
-	    		<?php endif; ?>
-	    		$('#content').append(wrapper);
-	    	}
+	    	var tr = "<tr><td><a href='figures.php?imageName=" + group.imageName + '&groupID=' + group.groupID + "'>Group " + group.groupID + "</a></td>";
+			tr += "<td>" + group.site;
+			if (group.rock != "")	tr += " Rock " + group.rock;
+			if (group.section != "")	tr += " Section " + group.section;
+			tr += " </td>";
+			
+			$(table).append(tr);
 	    }
+	    $('#groupsList').append(table);
 	}
 	else{
 		$('#responseBox').text(data);
@@ -96,7 +102,7 @@
 	}
 	
 	if (data.length == 0){
-		$('#responseBox').text('No figures annotated with this option.');
+		$('#responseBox').text('No group containing a figure with this option.');
 		$('#responseBox').addClass('error');
 		$('#responseBox').show();
 	}

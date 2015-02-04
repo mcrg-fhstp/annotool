@@ -51,15 +51,16 @@
 </head>
 
 
-<body>
+<body id="statisticsPage">
 
 
 <?php include('header_inc.php'); ?>
 
 <div id="content">
-<p>List of figures for option <b><?php echo $_GET['option']; ?></b> you annotated:</p><br/><br/>
+<p>List of <b><u>your figures</u></b> for option <b><?php echo $_GET['option']; ?></b>:</p><br/><br/>
 <div id="responseBox"></div>
 </div>
+<?php include('infobox_inc.php'); ?>
 
 <script language="javascript" type="text/javascript">
 	var data = LOADER.loadImagesOfMyFiguresWithOption(<?php echo $_GET['index'] ?>);
