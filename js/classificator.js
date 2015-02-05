@@ -372,6 +372,7 @@ function CLASSIFICATIONOPTION_CLASS(options, indexOfElement, classifiedOptions, 
 	
 	var element = options[indexOfElement];
 	
+	if (element != undefined)
 	if (element.mutuallyExclusive == 0){
 		// find children
 		// add all children at once
