@@ -888,7 +888,9 @@ function exportFiguresAsCSV()
 	{ 
 		case 'chippindale':
 		case 'cc':
-			$typology = "Christopher Chippindale typology";
+		case '3d-pitoti':
+		case '3dp':
+			$typology = "3D-Pitoti project typology";
 			break;
 		case 'sansoni':
 		case 'alexander':
@@ -1019,7 +1021,7 @@ function exportFiguresAsCSV()
 function getChildNodes($parent, $typology){
 	$sql2 = "SELECT `Index`, Name FROM FigureTypeNode WHERE ParentIndex = '$parent'";
 	if ($_REQUEST['typology'])
-		$sql .= " AND Typology = '$typology'";
+		$sql2 .= " AND Typology = '$typology'";
 	$result2 = mysql_query($sql2) or die("Error in exportFiguresAsCSV, getChildNodes: " . mysql_error());
 	
 	$output = "";
