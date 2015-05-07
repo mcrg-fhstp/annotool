@@ -141,6 +141,9 @@ function SELECTION_CLASS(){
 			var mask = window.disassembleOneBitBitmap(data.maskBase64, data.boundingBox);
 			this.create(mask);
 			CLASSIFICATOR.fill(data.classes, data.superimposition, data.figure_incomplete, data.figure_damaged, data.tracing_incomplete);
+					$('#classificator #classifier_data #figureid').text(figureID);
+					$('#classificator #classifier_data #classified_by').text(data.classified_by);
+					$('#classificator #classifier_data #classified_on').text(data.classified_on);
 			this.figureID = data.figureID;
 		}
 		else{

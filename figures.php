@@ -99,6 +99,15 @@
 		<input type="button" value="generate bitmapimage" onclick="var maskBase64 = window.generateOneBitBitmapDataURL(SELECTION.current, SELECTION.boundingBox); window.open(maskBase64);"/>
 		</div>
 		<div id="classificator">
+			<?php if($_SESSION['username'] == "admin"): ?>
+			<div id="classifier_data">
+				<p>figureID: <span id="figureid"></span></p>
+				<p>classified by: <span id="classified_by"></span></p>
+				<p>on: <span id="classified_on"></span></p>
+				<p><br/></p>
+			</div>
+			<?php endif; ?>
+			
 			<div id="optionHolder"></div>
 			
 			<div id="superimposition">
