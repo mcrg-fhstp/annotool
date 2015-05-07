@@ -343,7 +343,7 @@ function getClassificationOptionsWithQuantity(){
 		$node['typology'] = $row['Typology'];
 		
 		
-		
+		// count total quantity
 		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username !=  'demo'";
 		
 		$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
@@ -351,7 +351,7 @@ function getClassificationOptionsWithQuantity(){
 
 		$node['total_quantity'] = $row2[0];
 		
-		
+		// count own quantity
 		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username = '" . $_SESSION['username'] . "'";
 		
 		$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures2: " . mysql_error());
