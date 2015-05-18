@@ -82,6 +82,12 @@
 			<a title="Clear selection" style="background-position: -95px -45px;" class="" onclick="SELECTION.push(); SELECTION.clear(); $('.figureBox').removeClass('selected'); FIGURES.selectedFigure = null; IMAGE.redrawSelectionFull(); $('.figureBox').removeClass('grouped'); GROUPS.selectedGroup = null; FIGURES.groupedFigures = []; $('.groupBox').removeClass('selected'); $('#groupSelector').hide(); TOOLS.reset(); return false;" href="#"></a>	
 		</div>
 		
+		<?php if($_SESSION['username'] == "admin"): ?>
+		<div>
+			<a href="#" onmousedown="this.href='interface.php?action=exportFiguresAsCSV&site='+$('#imageDescription #site span').text()+'&rock='+$('#imageDescription #rock span').text()+'&section='+$('#imageDescription #section span').text();">export as CSV</a>
+		</div>
+		<?php endif; ?>
+		
 		<div id="tool_options">
 			<ol class="hint" style="-webkit-padding-start: 30px;">
 			<li>Zoom into image</li>
