@@ -934,7 +934,9 @@ function exportFiguresAsCSV()
 	for ($i = 0; $i < $columns_total; $i++) {
 		$heading = mysql_field_name($result, $i);
 		if ($heading == 'Boundingbox'){					// split Boundingbox fields (x1, y1, x2, y2)
-			$output .= '"x1","y1","x2","y2",';
+			$output .= '"Boundingbox_x1","Boundingbox_y1","Boundingbox_x2","Boundingbox_y2",';
+		}else if ($heading == 'groupID'){
+			$output .= '"groupID","GroupBoundingbox_x1","GroupBoundingbox_y1","GroupBoundingbox_x2","GroupBoundingbox_y2",';
 		}else{
 			$output .= '"'.$heading.'",';
 		}
@@ -963,6 +965,32 @@ function exportFiguresAsCSV()
 				foreach ($bb_array as $bb_coord)
 					//var_dump($bb_coord);
 					$output .='"'.$bb_coord.'",';
+			}else if (mysql_field_name($result, $i) == 'groupID'){	// add groups boundingbox fields (x1, y1, x2, y2)
+				// add groupID
+				$output .='"'.$row["$i"].'",';
+				if ($row["$i"] > 0){
+					// query for boundingboxes of all figures in this group
+					$sql2 = "SELECT Boundingbox FROM Figure WHERE groupID =" .$row["$i"];
+					$result2 = mysql_query($sql2) or die("Error in exportFiguresAsCSV, getGroupBoundingboxes: " . mysql_error());
+					$xmin=INF;
+					$ymin=INF;
+					$xmax=0;
+					$ymax=0;
+					while ($row2 = mysql_fetch_array($result2)) {
+						//print_r( $row2);
+						$bb_array = json_decode($row2[0], true);
+						//print_r($bb_array);
+						if ($bb_array['x1'] < $xmin) $xmin = $bb_array['x1'];
+						if ($bb_array['y1'] < $ymin) $ymin = $bb_array['y1'];
+						if ($bb_array['x2'] > $xmax) $xmax = $bb_array['x2'];
+						if ($bb_array['y2'] > $ymax) $ymax = $bb_array['y2'];
+						//echo($xmin." ".$ymin." ".$xmax." ".$ymax."<br>");
+					}
+					//die();
+					$output .='"'.$xmin.'","'.$ymin.'","'.$xmax.'","'.$ymax.'",';
+				}else{
+					$output .='"0","0","0","0",';
+				}
 			}else{
 				$output .='"'.$row["$i"].'",';
 			}
