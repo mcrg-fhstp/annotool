@@ -699,13 +699,16 @@ function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $fi
 	//removing the "data:image/png;base64," part
 	$data = substr($maskBase64,strpos($maskBase64,",")+1);
 	$data = str_replace(' ', '+', $data);
-	$data = base64_decode($data);
+	$data = base64_decode($data, true);		// set strict=true to check for valid data
 	
 	$filename = FIGUREIMAGEUPLOADPATH .'/' . uniqid() . '.bmp';
 	
-	// begin transaction
-	mysql_query("START TRANSACTION");
-	mysql_query("BEGIN");
+	// save Bitmap-File
+    $success = file_put_contents($filename, $data);
+	//echo $success;
+	
+	if (!$success) 
+		die ('Error in saveNewFigure: Unable to save file for figure ');
 	
 	// save Figure
 	//$sql = "INSERT INTO Figure (TracingName, Boundingbox, PathToMaskFile, MaskBase64, MaskBlob) VALUES ('". $imageName ."','". $boundingBox ."','". $filename  ."','". $maskBase64  ."','". $data ."')";
@@ -717,7 +720,7 @@ function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $fi
 
 	$figureID = mysql_insert_id();
 
-	echo $result;
+	//echo $result1;
 	
 	// save Classes
 	//print_r($classes);
@@ -728,25 +731,19 @@ function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $fi
 		$result = mysql_query($sql);
 		
 		if (!$result){
-			echo ("Error in saveNewFigure, saveClasses for figure " . $figureID . ": " . mysql_error());
-			break;
+			//reverting figure
+			$sql = "DELETE * FROM Figure WHERE `Index` = '". $figureID ."'";
+			mysql_query($sql) or die("Error in saveNewFigure, deleting figure " . $figureID . ": " . mysql_error());
+			//reverting classes
+			$sql = "DELETE * FROM FigureTypes WHERE figureID = '". $figureID ."'";
+			mysql_query($sql) or die("Error in saveNewFigure, deleting figureTypes for figure " . $figureID . ": " . mysql_error());
+			//exit
+			die ("Error in saveNewFigure, saveClasses for figure " . $figureID . ": " . mysql_error());
 		}
     }
-
-    // save Bitmap-File
-    if ($result1 && $result){
-	    $success = file_put_contents($filename, $data);
-	    //echo $success;
-		print $success ? $file : 'Error in saveNewFigure: Unable to save file for figure ' . $figureID . ': '.$success;
-	}
-		
-	if(!$success || !$result1 || !$result){
-		mysql_query("ROLLBACK");
-	}
-	else{
-		mysql_query("COMMIT");
-		echo $figureID;
-	}
+    
+    //successfully saved everything
+    echo $figureID;
 }
 
 
@@ -761,15 +758,19 @@ function updateExistingFigure($figureID, $boundingBox, $classes, $superimpositio
 		//removing the "data:image/png;base64," part
 		$data = substr($maskBase64,strpos($maskBase64,",")+1);
 		$data = str_replace(' ', '+', $data);
-		$data = base64_decode($data);
+		$data = base64_decode($data, true);		// set strict=true to check for valid data
 		
 		$filename = FIGUREIMAGEUPLOADPATH .'/' . uniqid() . '.bmp';
+
+		// save Bitmap-File
+		$success = file_put_contents($filename, $data);
+	    //echo $success;
+	    
+	    if (!$success) 
+	    	die ('Error in updateExistingFigure: Unable to save file for figure ');
 	}
 	
-	// begin transaction
-	mysql_query("START TRANSACTION");
-	mysql_query("BEGIN");
-	
+
 	// save Figure
 	//$sql = "INSERT INTO Figure (TracingName, Boundingbox, PathToMaskFile, MaskBase64, MaskBlob) VALUES ('". $imageName ."','". $boundingBox ."','". $filename  ."','". $maskBase64  ."','". $data ."')";
 	
@@ -800,15 +801,10 @@ function updateExistingFigure($figureID, $boundingBox, $classes, $superimpositio
 		// delete old classes
 		$sql = "DELETE FROM FigureTypes WHERE figureID='". $figureID ."'";
 			
-		$result = mysql_query($sql);
-		
-		if (!$result){
-			echo ("Error in updateExistingFigure, removeOldClasses for figure " . $figureID . ": " . mysql_error());
-		}
+		$result = mysql_query($sql) or die ("Error in updateExistingFigure, removeOldClasses for figure " . $figureID . ": " . mysql_error());
 		
 		// save Classes
 		//print_r($classes);
-		if ($result)
 		foreach ($classes as $class) {
 			//$sql = "INSERT INTO FigureTypes (figureID, Name, ParentName, Typology, Confidence) VALUES ('". $figureID ."','". $class['name']  ."','". $class['parentName'] ."','". $class['typology']  ."','". $class['confidence'] ."')";
 			$sql = "INSERT INTO FigureTypes (figureID, ClassID, Typology, Confidence, Classificationset) VALUES ('". $figureID ."','". $class['index'] ."','". $class['typology']  ."','". $class['confidence'] ."','". $class['classificationset'] ."')";
@@ -816,28 +812,20 @@ function updateExistingFigure($figureID, $boundingBox, $classes, $superimpositio
 			$result = mysql_query($sql);
 			
 			if (!$result){
-				echo ("Error in updateExistingFigure, insertNewClasses for figure " . $figureID . ": " . mysql_error());
-				break;
+				//reverting figure
+				$sql = "DELETE * FROM Figure WHERE `Index` = '". $figureID ."'";
+				mysql_query($sql) or die("Error in updateExistingFigure, deleting figure " . $figureID . ": " . mysql_error());
+				//reverting classes
+				$sql = "DELETE * FROM FigureTypes WHERE figureID = '". $figureID ."'";
+				mysql_query($sql) or die("Error in updateExistingFigure, deleting figureTypes for figure " . $figureID . ": " . mysql_error());
+				//exit
+				die ("Error in updateExistingFigure, saveClasses for figure " . $figureID . ": " . mysql_error());
 			}
 	    }
 	}
 
-    // save Bitmap-File
-    if (($result1 && $maskBase64 && !$classes) ||
-    	($result1 && $maskBase64 && $result && $classes)){
-	    $success = file_put_contents($filename, $data);
-	    //echo $success;
-		print $success ? $file : 'Error in updateExistingFigure: Unable to save file for figure ' . $figureID . '.';
-	}
-		
-	if(($maskBase64 && !$success) || !$result1 || ($classes && !$result)){
-		mysql_query("ROLLBACK");
-		echo ("Error in updateExistingFigure,: ROLLBACK");
-	}
-	else{
-		mysql_query("COMMIT");
-		echo $figureID;
-	}
+	// everything updated successfully
+    echo $figureID;
 }
 
 
