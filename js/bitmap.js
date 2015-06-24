@@ -191,16 +191,23 @@
             num_data_bytes = (Math.ceil(width/8) + row_padding) * height, // size in bytes of BMP data
             num_file_bytes = 62 + num_data_bytes,                // full header size (offset) + size of data
             num_header_bytes = 62;
-    
-	    // split 'data:image/bmp;base64,'
-	    var array = maskBase64.split(",");
-	    // base64 decode
-	    var file = atob(array[1]);
-	    // split header
-	    var data = file.substr(num_header_bytes);
-	    
-	    var mask = _uncollapseData(data, row_padding, boundingBox);
-	    return mask;
+		
+		//bugfix for broken segmentation masks caused by interrupted upload	
+		try{
+		    // split 'data:image/bmp;base64,'
+		    var array = maskBase64.split(",");
+		    // base64 decode
+		    var file = atob(array[1]);
+		    // split header
+		    var data = file.substr(num_header_bytes);
+		    
+		    var mask = _uncollapseData(data, row_padding, boundingBox);
+		    return mask;
+	    }
+	    catch(e){
+		    console.error('AnnoTool: error decoding segmentation mask');
+		    return [];
+		}
     }
 
 })();
