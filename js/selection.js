@@ -354,7 +354,7 @@ function SELECTION_CLASS(){
 											classificationData.tracing_incomplete,
 											maskBase64);
 				if(!parseInt(response)){
-					CLASSIFICATOR.showError(figure.figureID);
+					CLASSIFICATOR.showError(response);
 				}
 				else{
 					// update in FIGURES.figures
