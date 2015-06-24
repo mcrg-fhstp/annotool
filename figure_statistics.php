@@ -61,6 +61,7 @@
 <div id="wrapper">
 Number of <b><u>annotated figures</u></b> per class:
 </div>
+<div id="responseBox"></div>
 </div>
 <?php include('infobox_inc.php'); ?>
 
@@ -102,8 +103,19 @@ Number of <b><u>annotated figures</u></b> per class:
 		elem.append(ul);
 	}	
 	
-	appendSubElements(0, $('#wrapper'));
+	if( Object.prototype.toString.call( options ) === '[object Array]' )
+		appendSubElements(0, $('#wrapper'));
+	else{
+		$('#responseBox').text(options);
+		$('#responseBox').addClass('error');
+		$('#responseBox').show();
+	}
 	
+	if (options.length == 0){
+		$('#responseBox').text('No figures found.');
+		$('#responseBox').addClass('error');
+		$('#responseBox').show();
+	}
 
 	
 </script>

@@ -45,6 +45,7 @@
 	<li><u>Campanine Rock 2 Section B</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 figures</li>
 	<li>...</li-->
 	</ul>
+	<div id="responseBox"></div>
 	</div>
 </div>
 

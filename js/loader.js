@@ -19,6 +19,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading images: " + errorThrown );
+			if (jqXHR.responseText!=undefined)
+				images =  jqXHR.responseText;
+			else
+				images = errorThrown;
 		});
 		return images;
 	}
@@ -39,6 +43,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading imageDetails: " + errorThrown );
+			if (jqXHR.responseText!=undefined)
+				images =  jqXHR.responseText;
+			else
+				images = errorThrown;
 		});
 		return images;
 	}
@@ -59,6 +67,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading figures for image: " + errorThrown );
+			if (jqXHR.responseText!=undefined)
+				figures =  jqXHR.responseText;
+			else
+				figures = errorThrown;
 		});
 		return figures;
 	}
@@ -80,6 +92,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading figure coordinates: " + errorThrown );
+			if (jqXHR.responseText!=undefined)
+				coords =  jqXHR.responseText;
+			else
+				coords = errorThrown;
 		});
 		return coords;
 	}
@@ -100,7 +116,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading figure mask: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -121,6 +140,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification data of figure: " + errorThrown );
+			if (jqXHR.responseText!=undefined)
+				classes =  jqXHR.responseText;
+			else
+				classes = errorThrown;
 		});
 		return classes;
 	}
@@ -152,7 +175,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error saving new figure: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;		
 	}
@@ -184,7 +210,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error updating existing figure: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;		
 	}
@@ -208,7 +237,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error deleting existing figure: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;			
 	}
@@ -228,7 +260,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -248,7 +283,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading classification options with quantity: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -269,7 +307,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading all images for figures with option: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -289,7 +330,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading your images for figures with option: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -308,7 +352,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error saving new group: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -327,7 +374,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error updating existing group: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -346,7 +396,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error deleting existing group: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -365,7 +418,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading figures in groups with quantity: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -385,7 +441,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading all groups with figures with options: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
@@ -405,7 +464,10 @@ function LOADER_CLASS(){
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) { 
 			console.log( "Error loading your groups with figures with options: " + errorThrown );
-			returndata =  jqXHR.responseText;
+			if (jqXHR.responseText!=undefined)
+				returndata =  jqXHR.responseText;
+			else
+				returndata = errorThrown;
 		});
 		return returndata;
 	}
