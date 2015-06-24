@@ -1,7 +1,7 @@
 <div id="header">
 
 
-	<?php if($_SESSION['username'] != ""): ?>
+	<?php if (session_id()) if($_SESSION['username'] != ""): ?>
 		
 	<div id="right">
 		<a title="Open infobox" class="" onclick="$('#infobox').show(); return false;" href="#"></a>	

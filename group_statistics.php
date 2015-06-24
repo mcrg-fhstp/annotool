@@ -59,7 +59,7 @@
 
 <div id="content">
 
-Number of <b><u>groups</u></b> that have a figure with option<?php if ($_GET['option']){
+Number of <b><u>groups</u></b> that have a figure with option<?php if (isset($_GET['option'])){
 		echo ("s <b>");
 		$figureOptions = json_decode($_GET['option']); 
 		foreach ($figureOptions as $index => $option){
