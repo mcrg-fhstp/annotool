@@ -196,6 +196,10 @@
 		try{
 		    // split 'data:image/bmp;base64,'
 		    var array = maskBase64.split(",");
+		    if (array[1].length % 4 != 0){
+		    	console.error('AnnoTool: length of base64 string not correct')
+		    	array[1] = array[1].substring(0,Math.floor(array[1].length/4))
+		    }
 		    // base64 decode
 		    var file = atob(array[1]);
 		    // split header
