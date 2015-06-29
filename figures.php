@@ -27,6 +27,7 @@
 <script language="javascript" type="text/javascript" src="js/classificator.js"></script>
 <script language="javascript" type="text/javascript" src="js/groupselector.js"></script>
 <script language="javascript" type="text/javascript" src="js/loader.js"></script>
+<script language="javascript" type="text/javascript" src="js/md5.js"></script>
 
 
 <script language="javascript" type="text/javascript" src="js/jquery-2.0.3.min.js"></script>

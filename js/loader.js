@@ -166,6 +166,11 @@ function LOADER_CLASS(){
 		  	figure_damaged: figure_damaged,
 		  	tracing_incomplete: tracing_incomplete,
 		  	maskBase64: maskBase64
+		  },
+		  beforeSend: function( xhr, settings ) {
+		    var checksum = CryptoJS.MD5(settings.data).toString();
+		    //console.log(checksum);
+		    settings.data=settings.data + "&checksum=" + checksum;
 		  }
 		  //success: success
 		})
@@ -201,6 +206,11 @@ function LOADER_CLASS(){
 		  	figure_damaged: figure_damaged,
 		  	tracing_incomplete: tracing_incomplete,
 		  	maskBase64: maskBase64
+		  },
+		  beforeSend: function( xhr, settings ) {
+		    var checksum = CryptoJS.MD5(settings.data).toString();
+		    //console.log(checksum);
+		    settings.data=settings.data + "&checksum=" + checksum;
 		  }
 		  //success: success
 		})

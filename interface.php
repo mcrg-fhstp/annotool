@@ -695,6 +695,13 @@ function getImagesForMyFiguresWithOption($optionIndex){
 
 function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $figure_incomplete, $figure_damaged, $tracing_incomplete, $maskBase64)
 {
+	// compare checksum
+	// get raw post data
+	$postdata = file_get_contents("php://input");
+	$postdata = substr($postdata, 0, strpos($postdata,'&checksum'));
+	if (strcmp(md5($postdata), $_REQUEST['checksum']) != 0)
+		die('Error in checksum');
+	
 	//echo $maskBase64;
 	//removing the "data:image/png;base64," part
 	$data = substr($maskBase64,strpos($maskBase64,",")+1);
@@ -753,6 +760,13 @@ function saveNewFigure($imageName, $boundingBox, $classes, $superimposition, $fi
 
 function updateExistingFigure($figureID, $boundingBox, $classes, $superimposition, $figure_incomplete, $figure_damaged, $tracing_incomplete, $maskBase64)
 {
+	// compare checksum
+	// get raw post data
+	$postdata = file_get_contents("php://input");
+	$postdata = substr($postdata, 0, strpos($postdata,'&checksum'));
+	if (strcmp(md5($postdata), $_REQUEST['checksum']) != 0)
+		die('Error in checksum');
+	
 	if ($maskBase64){
 		//echo $maskBase64;
 		//removing the "data:image/png;base64," part
