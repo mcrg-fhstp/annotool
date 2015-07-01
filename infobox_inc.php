@@ -189,6 +189,15 @@
 			<h2 id="changelog">ChangeLog</h2>
 				
 				<p>
+				<p><b>v1.8b</b></p>
+				<p><ul>
+				<li>Added "export as CSV"-link to rock panel view</li>
+				<li>Added demo videos to index page</li>
+				<li>Added checksum and additional error-detection to catch faulty data transfer</li>
+				</ul>
+				</p>
+				
+				<p>
 				<p><b>v1.7b</b></p>
 				<p><ul>
 				<li>Added feature for grouping of figures</li>
