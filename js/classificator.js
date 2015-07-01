@@ -37,6 +37,9 @@ function CLASSIFICATOR_CLASS(){
 		$('#classificator #figure_incomplete select').val("");
 		$('#classificator #figure_damaged select').val("");
 		$('#classificator #tracing_incomplete select').val("");
+		$('#classificator #classifier_data #figureid').text("");
+		$('#classificator #classifier_data #classified_by').text("");
+		$('#classificator #classifier_data #classified_on').text("");
 		this.hideSaveButton();
 		this.hideResponse();
 		
