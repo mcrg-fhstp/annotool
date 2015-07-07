@@ -40,7 +40,7 @@
 </head>
 
 
-<body onload="setupImage();">
+<body onload="setupImage();" <?php if($_SESSION['username'] == "admin") echo('class="admin"'); ?>>
 
 <?php include('header_inc.php'); ?>
 <?php include('footer_inc.php'); ?>

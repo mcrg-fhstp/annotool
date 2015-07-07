@@ -194,6 +194,7 @@
 				<li>Added "export as CSV"-link to rock panel view</li>
 				<li>Added demo videos to index page</li>
 				<li>Added checksum and additional error-detection to catch faulty data transfer</li>
+				<li>Display figure-ID and group-ID for admin when hovering over figures/groups</li>
 				</ul>
 				</p>
 				
