@@ -3,18 +3,7 @@
 	if($_SESSION['username'] == "") header('Location: index.php');	// wenn Seite direkt über URL angesteuert und nicht eingeloggt, dann Umleitung zum Einloggen
 ?>  
 
-<!doctype html>
-<html lang="en-US">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>3D-Pitoti AnnoTool</title>
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="icon" href="favicon.ico">
-  
-  <!--[if lt IE 9]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
+<?php include('html_head_inc.php'); ?>
 
 <script language="javascript" type="text/javascript" src="js/imageloader.js"></script>
 <script language="javascript" type="text/javascript" src="js/canvaszoom.js"></script>
@@ -34,8 +23,6 @@
 <script language="javascript" type="text/javascript" src="js/jquery.json-2.2.min.js"></script>
 <script language="javascript" type="text/javascript" src="js/helpers.js"></script>
 <script language="javascript" type="text/javascript" src="js/bitmap.js"></script>
-
-<link rel="stylesheet" type="text/css" href="css/styles.css" />
 
 </head>
 

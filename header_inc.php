@@ -35,8 +35,8 @@
 
 
 
-	<h1>3D-Pitoti AnnoTool - Local
-		<span> v1.7</span>
+	<h1>AnnoTool
+		<span> v1.8b</span>
 	</h1>
 	
 
