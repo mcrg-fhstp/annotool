@@ -84,8 +84,6 @@
 			<li>Save annotation</li>
 			</ol>
 		</div>
-		
-		<a href="AncientCamunianAlphabet.pdf">Download ancient camunian alphabet</a>
 	</div>
    
 	<div id="right">
