@@ -1,10 +1,10 @@
 <div id="header">
 
-
-	<?php if (session_id()) if($_SESSION['username'] != ""): ?>
 		
 	<div id="right">
 		<a title="Open infobox" class="" onclick="$('#infobox').show(); return false;" href="#"></a>	
+
+		<?php if (session_id()) if($_SESSION['username'] != ""): ?>
 	
 		<form id="logout" action="scripts/logout.php" method="post">
 			<input type="submit" name="logout" value="logout" />
@@ -19,9 +19,11 @@
 		<?php endif; ?>
 
 		<p id="user">Logged in as <?php echo $_SESSION['username']; ?></p>
+
+		<?php endif; ?>
 	</div>	
 		
-	<?php endif; ?>
+
 
 
 

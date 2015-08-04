@@ -4,6 +4,7 @@
 
 <?php include('html_head_inc.php'); ?>
 	
+	<script language="javascript" type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
 	<script src="js/md5.js"></script>
 	<script>
 		function crypt(){
@@ -35,6 +36,7 @@
 </div>
 
 <?php include('footer_inc.php'); ?>
+<?php include('infobox_inc.php'); ?>
 
 
 </div>
