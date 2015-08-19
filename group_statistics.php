@@ -91,9 +91,15 @@ Number of <b><u>groups</u></b> that have a figure with option<?php if (isset($_G
 					!$(ul).is(':contains(' + options[i].typology +')')){
 					var h3 = document.createElement('h3');
 					$(h3).append(options[i].typology);
+					<?php if($_SESSION['username'] != "demo"): ?>
 					$(h3).append("<span style='float:right'>in total</span>");
-					<?php if($_SESSION['username'] != "ReadOnly"): ?>
-					$(h3).append("<span style='float:right'>by you /&nbsp;</span>");
+					<?php endif; if($_SESSION['username'] != "ReadOnly"): ?>
+					var span = "<span style='float:right'>by you";
+						<?php if($_SESSION['username'] != "demo"): ?>
+						$span += "/&nbsp;";
+						<?php endif; ?>
+					span += "</span>";
+					$(h3).append(span);
 					<?php endif; ?>
 					$(ul).append(h3);
 				}
@@ -106,13 +112,17 @@ Number of <b><u>groups</u></b> that have a figure with option<?php if (isset($_G
 					option += "<span class='span-right'>";
 					<?php if($_SESSION['username'] == "admin"): ?>
 						option += "<a href='grouplist.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].total_quantity + "</a>";
-					<?php else: ?>	
+					<?php endif; if($_SESSION['username'] != "demo"): ?>	
 						option += options[i].total_quantity;
 					<?php endif; ?>
 					option += "</span>";
 					
 					<?php if($_SESSION['username'] != "ReadOnly"): ?>
-					option += "<span class='span-right2'><a href='grouplist_my.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
+					option += "<span class='span-right2'><a href='grouplist_my.php?option=" + JSON.stringify(oldOptions.concat([options[i].name])) + "&index=" + JSON.stringify(oldOptionIndexes.concat([options[i].index])) + "'>" + options[i].your_quantity + "</a>";
+						<?php if($_SESSION['username'] != "demo"): ?>
+						option += "&nbsp;&nbsp;&nbsp;&nbsp;/";
+						<?php endif; ?>
+					option += "</span>";
 					<?php endif; ?>
 				
 				$(li).append(option);

@@ -66,19 +66,30 @@ Number of <b><u>annotated figures</u></b> per class:
 					!$(ul).is(':contains(' + options[i].typology +')')){
 					var h3 = document.createElement('h3');
 					$(h3).append(options[i].typology);
+					<?php if($_SESSION['username'] != "demo"): ?>
 					$(h3).append("<span style='float:right'>in total</span>");
-					<?php if($_SESSION['username'] != "ReadOnly"): ?>
-					$(h3).append("<span style='float:right'>by you /&nbsp;</span>");
+					<?php endif; if($_SESSION['username'] != "ReadOnly"): ?>
+					var span = "<span style='float:right'>by you";
+						<?php if($_SESSION['username'] != "demo"): ?>
+						span += " /&nbsp;";
+						<?php endif; ?>
+					span += "</span>";
+					$(h3).append(span);
 					<?php endif; ?>
 					$(ul).append(h3);
 				}
 				// append new child node
 				var li = document.createElement('li');
 				
-				
-					var option = "" + options[i].name + "<span class='span-right'><a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].total_quantity + "</a></span>";
-					<?php if($_SESSION['username'] != "ReadOnly"): ?>
-					option += "<span class='span-right2'><a href='figurelist_my.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].your_quantity + "</a>&nbsp;&nbsp;&nbsp;&nbsp;/</span>";
+					var option = "" + options[i].name;
+					<?php if($_SESSION['username'] != "demo"): ?>
+					option += "<span class='span-right'><a href='figurelist.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].total_quantity + "</a></span>";
+					<?php endif; if($_SESSION['username'] != "ReadOnly"): ?>
+					option += "<span class='span-right2'><a href='figurelist_my.php?option=" + escape(options[i].name) + "&index=" + options[i].index + "'>" + options[i].your_quantity + "</a>";
+						<?php if($_SESSION['username'] != "demo"): ?>
+						option += "&nbsp;&nbsp;&nbsp;&nbsp;/";
+						<?php endif; ?>
+					option += "</span>";
 					<?php endif; ?>
 				
 				$(li).append(option);
