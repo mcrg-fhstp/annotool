@@ -30,7 +30,8 @@
 	<div id="infobox_foreground">
 		<div id="infobox_content">
 			
-			<p id="begin"><b>3D-Pitoti AnnoTool</b> is a tool for annotating prehistoric rock art figures (pitoti) with class labels from different typologies.</p>
+			<p id="begin"><b>AnnoTool</b> is a Multiuser Annotation Webtool for large 2D graphics.<br/>
+			Figures can be selected utilizing several state-of-the-art selection tools, and annotated with class labels from multiple typologies.</p>
 			
 			<p>The workflow consists of 4 steps:</p>
 			<ol>
@@ -42,7 +43,7 @@
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#grouping').offset().top}, 1000);return false;">Group figures:</a> describes figure grouping</p>
 			</ol>
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#error').offset().top}, 1000);return false;">What to do when an error occurs?</a></p>
-			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#changelog').offset().top}, 1000);return false;">ChangeLog</a></p>
+			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#credits').offset().top}, 1000);return false;">CREDITS</a></p>
 			
 			<ol>
 			<h2 id="choosetracing">Choose a tracing:</h2>
@@ -78,23 +79,23 @@
 				</p>
 				
 				<ul style="list-style: none;">
-				<li><div class="tool" title="Move canvas tool" style="background-position: 3px -98px;"></div>
+				<p><li><div class="tool" title="Move canvas tool" style="background-position: 3px -98px;"></div>
 				<b>Move tool</b>
 				<p>Click and drag the canvas around.</p>
 				<p>Select an already annotated figure to load its classification data.<br/>
 				The figure itself and its classification data can be changed and saved again, as well as deleted from the database.</p>
-				</li>
+				</li></p>
 				
-				<li><div class="tool" title="Rectangle selection tool" style="background-position: -46px 5px;"></div>
+				<p><li><div class="tool" title="Rectangle selection tool" style="background-position: -46px 5px;"></div>
 				<b>Rectangle selection tool</b>
 				<p>Drag a rectangle around a figure and then choose the color of the pixels to select.</p>
 				<p><b><i>SHIFT + click</i></b> when selecting color to add new selection to current selection.<br/>
 				<b><i>ALT + click</i></b> when selecting color to subtract new selection from current selection.</p>
 				<p><b><i>Right-click and drag</i></b>, to move the canvas around, as long as the selection was not started.</p>
 				<p><b><i>ESC</i></b> to cancel the tool.</p>
-				</li>
+				</li></p>
 				
-				<li><div class="tool" title="Polygon selection tool" style="background-position: -398px -47px;"></div>
+				<p><li><div class="tool" title="Polygon selection tool" style="background-position: -398px -47px;"></div>
 				<b>Polygon selection tool</b>
 				<p>Draw a polygon around a figure (click to add points) and then choose the color of the pixels to select.</p>
 				<p><b><i>SHIFT + click</i></b> when selecting color to add new selection to current selection.<br/>
@@ -102,21 +103,21 @@
 				<p><b><i>Right-click and drag</i></b>, to move the canvas around, as long as the selection was not started.</p>
 				<p><b><i>ESC</i></b> to cancel the tool.</p>
 				<p><b><i>Backspace</i></b> to delete last point of the polygon.</p>
-				</li>
+				</li></p>
 				
-				<li><div class="tool" title="Magic wand selection tool" style="background-position: -149px -48px;"></div>
+				<p><li><div class="tool" title="Magic wand selection tool" style="background-position: -149px -48px;"></div>
 				<b>Magic wand selection tool</b>
 				<p>Click on a colored pixel, all neighbouring pixels with the same color will be selected.</p>
 				<p><b><i>SHIFT + click</i></b> to add new selection to current selection.<br/>
 				<b><i>ALT + click</i></b> to subtract new selection from current selection.</p>
 				<p><b><i>Right-click and drag</i></b>, to move the canvas around, as long as the selection was not started.</p>
 				<p><b><i>ESC</i></b> to cancel the tool.</p>
-				</li>
+				</li></p>
 				
-				<li><img src="./img/selection_option_filiforms.png" />
+				<p><li><img src="./img/selection_option_filiforms.png" />
 				<b>Filiform selection option</b>
 				<p>Check this box before the color selection in any of the three tools above to use a different sensitivity of the tool. This is especially helpful for the selection of small lines (filiforms).</p>
-				</li>
+				</li></p>
 				</ul>
 				
 			<h2 id="classify"><li>Classify figure:</li></h2>
@@ -200,100 +201,40 @@
 			</ol>
 			
 			<h2 id="error">What to do when an error occurs?</h2>
-				<p>
+				<p><p>
 				<img src="./img/error_classificator.png"/>
 				An error might occur when loading data from or saving data to the database.<br/>
 				An error-message will be shown.
-				<p style="clear:left; border:1px solid black; padding: 1em; margin: 2em;">
-				<b><i>Please report any error including the error-message immediately to <a href="mailto:ewald.wieser@fhstp.ac.at">Ewald Wieser</a> and wait for further instructions before continuing to annotate!</i></b>
 				</p>
-				<br/><br/>
-				
-				If you observe an unexpected behaviour of the webtool without an error-message, you might want to open the developer console of Google Chrome (Alt+Cmd+i on OSX, Ctrl+Shift+i on Windows), click on <i>Console</i> and look for error-messages there:<br/><br/>
-				<img src="./img/error_console.png"/>
+				<br/>
+				<p>If you observe an unexpected behaviour of the webtool without an error-message, you might want to open the developer console of Google Chrome (Alt+Cmd+i on OSX, Ctrl+Shift+i on Windows), click on <i>Console</i> and look for error-messages there:<br/><br/>
+				<img src="./img/error_console.png"/></p>
 				
 				</p>
 				
-			<h2 id="changelog">ChangeLog</h2>
-				
-				<p>
-				<p><b>v1.8b</b></p>
-				<p><ul>
-				<li>Added "export as CSV"-link to rock panel view</li>
-				<li>Added demo videos to index page</li>
-				<li>Added checksum and additional error-detection to catch faulty data transfer</li>
-				<li>Display figure-ID and group-ID for admin when hovering over figures/groups</li>
-				</ul>
+
+			<h2 id="credits">CREDITS</h2>
+			<p>
+				<p>AnnoTool was developed in the 3D-PITOTI project (<a href="http://www.3d-pitoti.eu">http://www.3d-pitoti.eu</a>) for the annotation of large tracings of prehistoric rock art figures. </p>
+				<p>It is based on <a href="https://developer.mozilla.org/en-US/demos/detail/minipaint">Mozilla miniPaint</a>, and <a href="http://www.akademy.co.uk/software/canvaszoom/canvaszoom.php">CanvasZoom</a>.</p>
+				<p><b>Libraries used:</b></p>
+				<p>	<ul><li><a href="https://code.google.com/p/crypto-js/">CryptoJS</a></li>
+					<li><a href="https://jquery.com">jQuery</a></li>
+					<li><a href="http://mrcoles.com/blog/making-images-byte-by-byte-javascript/">bitmap.js</a></li></ul>
 				</p>
-				
-				<p>
-				<p><b>v1.7b</b></p>
-				<p><ul>
-				<li>Added feature for grouping of figures</li>
-				<li>Added group statistics</li>
-				<li>Added letters for writings/inscriptions</li>
-				</ul>
-				</p>
-				
-				<p>
-				<p><b>v1.6b</b></p>
-				<p><ul>
-				<li>Improved labels for flags superimposition, figure incomplete, figure damaged & tracing incomplete</li>
-				<li>Added ReadOnly-user</li>
-				</ul>
-				</p>
-				
-				<p>
-				<p><b>v1.5b</b></p>
-				<p><ul>
-				<li>Link to original figure in tracing from detailview</li>
-				<li>Added flag listings (superimposition, figure incomplete, figure damaged & tracing incomplete) to statistics</li>
-				</ul>
+				<p>(C) 2012-2015 Media Computing Research Group <a href="http://mc.fhstp.ac.at">http://mc.fhstp.ac.at</a><br/>
+				Institute for Creative \Media/ Technologies (IC\M/T)<br/>
+				St. Poelten, University of Applied Sciences (FHSTP) <a href="http://www.fhstp.ac.at">http://www.fhstp.ac.at</a><br/>
 				</p>
 
-				<p>
-				<p><b>v1.4b</b></p>
-				<p><ul>
-				<li>Grouping of imagelist by site</li> 
-				<li>Listview and detailview of already annotated figures for all users</li>
-				<li>Several bugfixes</li>
-				</ul>
-				</p>
-			
-				<p>
-				<p><b>v1.3b</b></p>
-				<p><ul>
-				<li>Some more changes to selection tools due to problems with selections</li>
-				<li>Added filiform selection option for better selection of small lines</li>
-				<li>Some improvements to drawing full selection during zooming</li>
-				<li>Added statistics of already annotated figures</li>				
-				</ul></p>
-				
-				<p>
-				<p><b>v1.2b</b></p>
-				<p><ul>
-				<li>Changed view of selected area from outline to filled</li>
-				<li>Some changes in selection tools for better selection results</li>
-				</ul></p>
-			
-				<p>
-				<p><b>v1.1b</b></p>
-				<p><ul>
-				<li>Added dropdowns for Figure Incomplete, Figure Damaged and Tracing Incomplete</li>
-				<li>Autopolulate for second classificationset</li>
-				<li>Undo/Redo selections</li>
-				<li>Cancel a selection tool with ESC</li>
-				<li>Revert last point of polygon selection tool with BACKSPACE</li>
-				<li>Indicator for pressed SHIFT and ALT-keys for adding/subtracting selection</li>
-				<li>UI-fix for large dropdowns</li>
-				<li>Bugfix with calculating Image-Bitmaps</li>
-				<li>Bugfix with saving mutually-non-exclusive data</li>
-				</ul></p>
-				
-				<p><b>v1.0b</b></p>
-				<p>first release</p>
-				</p>
+				<p>Developed by: <ul><li>Ewald Wieser</li>
+						<li>Markus Seidl</li>
+						<li>Matthias Zeppelzauer</li></ul></p>
+
+				<p>Released under GPLv3 (see <a href="LICENSE.txt">LICENSE.txt</a>)</p>
+				<p>For more information, see <a href="README.md">README.md</a></p>
+			</p>
 		</div>
-		<a title="Close infobox" style="background-position: -95px -45px;" class="" onclick="$('#infobox').hide();return false;" href="#"></a>
+		<a title="Close infobox" style="background-position: -95px -45px;" class="" onclick="$('#infobox_content').animate({scrollTop: 0}, 0);$('#infobox').hide();return false;" href="#"></a>
 	</div>
 </div>
