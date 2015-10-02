@@ -1,3 +1,49 @@
+/**
+ * AnnoTool, a Multiuser Annotation Webtool for large 2D graphics
+ * 
+ * Copyright (C) 2012-2015 Media Computing Research Group [http://mc.fhstp.ac.at]
+ * Institute for Creative \Media/ Technologies (IC\M/T)
+ * St. Poelten, University of Applied Sciences (FHSTP)
+ * 
+ * This file is part of AnnoTool [https://github.com/mcrg-fhstp/annotool]. 
+ * It was originally developed by viliusle under GPL for miniPaint [https://github.com/viliusle/miniPaint] 
+ * and modified for AnnoTool.
+ * 
+ * AnnoTool is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * AnnoTool is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * 
+ * See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with AnnoTool. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Modified by:	    Ewald Wieser
+ */
+
+
+/**
+ * miniPaint, Online graphics editing tool use HTML5 technologies like Canvas, Offline support, Drag and Drop. 
+ * 
+ * Copyright (C) viliusle [https://github.com/viliusle/miniPaint]
+ * 
+ * This file is part of miniPaint.
+ * 
+ * miniPaint is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * miniPaint is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * 
+ * See the GNU General Public License for more details. You should have received a copy of the GNU
+ * General Public License along with miniPaint. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author: viliusle
+ */
+
+
 var CONTROL = new CONTROLS_CLASS();
 
 //keyboard handlers
