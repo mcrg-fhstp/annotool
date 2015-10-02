@@ -272,6 +272,8 @@ function getImages(){
 		$sql2 = "SELECT COUNT(*) FROM Figure WHERE TracingName = '" . $node['name'] . "'";
 		if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
 			$sql2 .= " AND Username = '" . $_SESSION['username'] . "'";
+		else
+			$sql2 .= " AND Username != 'demo'";
 
 		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
@@ -282,6 +284,8 @@ function getImages(){
 		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM Figure WHERE TracingName = '" . $node['name'] . "' AND groupID > 0";
 		if ($_SESSION['username'] != 'admin' && $_SESSION['username'] != 'ReadOnly')
 			$sql2 .= " AND Username = '" . $_SESSION['username'] . "'";
+		else
+			$sql2 .= " AND Username != 'demo'";
 
 		$result2 = mysql_query($sql2) or die("Error in getImages, countFigures: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
@@ -370,7 +374,11 @@ function getClassificationOptionsWithQuantity(){
 		
 		
 		// count total quantity
-		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND Figure.Username !=  'demo'";
+		$sql2 = "SELECT COUNT(DISTINCT figureID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'];
+		if ($_SESSION['username'] == 'demo')
+			$sql2 .= "' AND Figure.Username =  'demo'";
+		else
+			$sql2 .= "' AND Figure.Username !=  'demo'";
 		
 		$result2 = mysql_query($sql2) or die("Error in getClassificationOptionsWithQuantity, countFigures1: " . mysql_error());
 		$row2 = mysql_fetch_row($result2);
@@ -643,7 +651,7 @@ function getImagesForFiguresWithOption($optionIndex, $my){
 			
 			// get figure
 			$sql2 = "SELECT * FROM Figure WHERE `Index` = '" . $figure['figureID'] . "' ";
-			if ($my)
+			if ($my || $_SESSION['username'] == 'demo')
 				$sql2 .= "AND Username = '" . $_SESSION['username'] . "'";
 			else
 				$sql2 .= "AND Username != 'demo'";
@@ -1160,7 +1168,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 
 	// prepare query parts
 	if ($optionIndexes){
-		$sql1_part = "SELECT DISTINCT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 AND Username != 'demo' ";
+		$sql1_part = "SELECT DISTINCT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 ";
+		if ($_SESSION['username'] == 'demo')
+			$sql1_part .= " AND Username = 'demo' ";
+		else
+			$sql1_part .= " AND Username != 'demo' ";
 		$sql2_part = "SELECT DISTINCT groupID, Figure.`Index` FROM Figure JOIN FigureTypes ON Figure.`Index` = FigureTypes.figureID WHERE groupID > 0 AND Username = '" . $_SESSION['username'] . "' ";
 
 	
@@ -1251,7 +1263,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 			$sql2 .= $sql1_where;
 		}
 		else{
-			$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND GroupID > 0 AND Figure.Username !=  'demo'";
+			$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND GroupID > 0";
+			if ($_SESSION['username'] == 'demo')
+				$sql1 .= " AND Figure.Username = 'demo' ";
+			else
+				$sql1 .= " AND Figure.Username != 'demo' ";
 			$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE ClassID = '" . $row['Index'] . "' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
 		}	
 			
@@ -1286,7 +1302,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 		$sql2 .= $sql1_where;
 	}
 	else{
-		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND GroupID > 0";
+		if ($_SESSION['username'] == 'demo')
+			$sql1 .= " AND Figure.Username = 'demo' ";
+		else
+			$sql1 .= " AND Figure.Username != 'demo' ";
 		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE Superimposition = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
 	}	
 	$node['index'] = 9991;
@@ -1319,7 +1339,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 		$sql2 .= $sql1_where;
 	}
 	else{
-		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND GroupID > 0";
+		if ($_SESSION['username'] == 'demo')
+			$sql1 .= " AND Figure.Username = 'demo' ";
+		else
+			$sql1 .= " AND Figure.Username != 'demo' ";
 		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureIncomplete = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
 	}	
 	$node['index'] = 9992;
@@ -1349,7 +1373,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 		$sql2 .= $sql1_where;
 	}
 	else{
-		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND GroupID > 0";
+		if ($_SESSION['username'] == 'demo')
+			$sql1 .= " AND Figure.Username = 'demo' ";
+		else
+			$sql1 .= " AND Figure.Username != 'demo' ";
 		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE FigureDamaged = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
 	}	
 	$node['index'] = 9993;
@@ -1378,7 +1406,11 @@ function getFiguresInGroupsWithQuantity($optionIndexes){
 		$sql2 .= $sql1_where;
 	}
 	else{
-		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND GroupID > 0 AND Figure.Username !=  'demo'";
+		$sql1 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND GroupID > 0";
+		if ($_SESSION['username'] == 'demo')
+			$sql1 .= " AND Figure.Username = 'demo' ";
+		else
+			$sql1 .= " AND Figure.Username != 'demo' ";
 		$sql2 = "SELECT COUNT(DISTINCT groupID) FROM FigureTypes JOIN Figure ON ( FigureTypes.figureID = Figure.Index ) WHERE TracingIncomplete = '1' AND GroupID > 0 AND Figure.Username = '" . $_SESSION['username'] . "'";
 	}	
 	$node['index'] = 9994;
