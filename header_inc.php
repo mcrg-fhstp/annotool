@@ -66,7 +66,7 @@
 
 
 	<h1>AnnoTool
-		<span> v1.8b</span>
+		<span></span>
 	</h1>
 	
 
