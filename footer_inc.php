@@ -27,5 +27,8 @@
 
 
 <div id="footer">
-	<p>(c) 2013 <a href="http://3d-pitoti.eu" target="_blank">3D-Pitoti</a> - <a href="mailto:ewald.wieser@fhstp.ac.at">Ewald Wieser</a> - <a href="http://mc.fhstp.ac.at" target="_blank">Media Computing Research Group</a> - IC\M/T - <a href="http://www.fhstp.ac.at" target="_blank">FH St.P&ouml;lten</a></p>
+	<p>
+	<a href="#" onclick="$('#infobox').show(); $('#infobox_content').animate({scrollTop: $('#credits').offset().top}, 1000);return false;">CREDITS</a>
+	- AnnoTool is released under GPLv3 and can be downloaded from <a href="https://github.com/mcrg-fhstp/annotool">Github</a>. 
+	</p>
 </div>
