@@ -3,6 +3,7 @@ AnnoTool
 
 a Multiuser Annotation Webtool for large 2D graphics
 
+<p><a href="./docs/screenshot.png"><img src="./docs/screenshot.png" alt="Screenshot of AnnoTool" width="500"></a></p>
 
 
 
