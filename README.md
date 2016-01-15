@@ -193,3 +193,25 @@ Developed by:
 * Matthias Zeppelzauer
 
 Released under GPL v3 (see [LICENSE.txt](LICENSE.txt)).
+
+
+CITATION
+--------
+
+If you use the AnnoTool and if appropriate, please cite the following article in which the tool is explained in detail:
+
+Seidl M., Wieser E., Alexander C., 2015, Automated classification of petroglyphs, *Digital Applications in Archaeology and Cultural Heritage* 3, 2015, pp.196-212.
+<http://dx.doi.org/10.1016/j.daach.2015.03.001>
+
+
+    @article{ Seidl2015196,
+    	author = "Markus Seidl and Ewald Wieser and Craig Alexander"
+        title = "Automated classification of petroglyphs ",
+        journal = "Digital Applications in Archaeology and Cultural Heritage ",
+        volume = "2",
+        number = "2–3",
+        pages = "196 - 212",
+        year = "2015",
+        doi = "http://dx.doi.org/10.1016/j.daach.2015.03.001",
+        url = "http://www.sciencedirect.com/science/article/pii/S2212054815000090",
+    }
