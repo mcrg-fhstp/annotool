@@ -3,9 +3,17 @@ AnnoTool
 
 a Multiuser Annotation Webtool for large 2D graphics
 
+Figures can be selected utilizing several state-of-the-art selection tools, and annotated with class labels from multiple typologies.
+
+If you use the AnnoTool and if appropriate, please cite the following article in which the tool is explained in detail:
+
+Seidl M., Wieser E., Alexander C., 2015, Automated classification of petroglyphs, *Digital Applications in Archaeology and Cultural Heritage* 3, 2015, pp.196-212.
+<http://dx.doi.org/10.1016/j.daach.2015.03.001>
+
 <p><a href="./docs/screenshot.png"><img src="./docs/screenshot.png" alt="Screenshot of AnnoTool" width="500"></a></p>
 
 
+The development of AnnoTool has received funding from the EC FP7 project [3D-PITOTI](http://3d-pitoti.eu) (ICT-2011-600545).
 
 Requirements
 ------------
@@ -175,7 +183,7 @@ The example database file **_annotool.sql_** contains:
 CREDITS
 -------
 
-AnnoTool was developed in the 3D-PITOTI project (<http://www.3d-pitoti.eu>) for the annotation of large tracings of prehistoric rock art figures.
+AnnoTool was developed in the 3D-PITOTI project (<http://www.3d-pitoti.eu>) for the annotation of large tracings of prehistoric rock art figures. The development of AnnoTool has received funding from the EC FP7 project [3D-PITOTI](http://3d-pitoti.eu) (ICT-2011-600545).
 It is based on [Mozilla miniPaint](https://developer.mozilla.org/en-US/demos/detail/minipaint), and [CanvasZoom](http://www.akademy.co.uk/software/canvaszoom/canvaszoom.php).
 
 Libraries used:

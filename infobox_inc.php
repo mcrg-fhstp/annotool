@@ -44,7 +44,8 @@
 			</ol>
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#error').offset().top}, 1000);return false;">What to do when an error occurs?</a></p>
 			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#credits').offset().top}, 1000);return false;">CREDITS</a></p>
-			
+			<p><a href="#" onclick="$('#infobox_content').animate({scrollTop: $('#citation').offset().top}, 1000);return false;">CITATION</a></p>
+			<p>The development of AnnoTool has received funding from the EC FP7 project <a href="http://3d-pitoti.eu">3D-PITOTI</a> (ICT-2011-600545).</p>
 			<ol>
 			<h2 id="choosetracing">Choose a tracing:</h2>
 				<p>
@@ -215,7 +216,7 @@
 
 			<h2 id="credits">CREDITS</h2>
 			<p>
-				<p>AnnoTool was developed in the 3D-PITOTI project (<a href="http://www.3d-pitoti.eu">http://www.3d-pitoti.eu</a>) for the annotation of large tracings of prehistoric rock art figures. </p>
+				<p>AnnoTool was developed in the 3D-PITOTI project (<a href="http://www.3d-pitoti.eu">http://www.3d-pitoti.eu</a>) for the annotation of large tracings of prehistoric rock art figures. The development of AnnoTool has received funding from the EC FP7 project 3D-PITOTI (ICT-2011-600545).</p>
 				<p>It is based on <a href="https://developer.mozilla.org/en-US/demos/detail/minipaint">Mozilla miniPaint</a>, and <a href="http://www.akademy.co.uk/software/canvaszoom/canvaszoom.php">CanvasZoom</a>.</p>
 				<p><b>Libraries used:</b></p>
 				<p>	<ul><li><a href="https://code.google.com/p/crypto-js/">CryptoJS</a></li>
@@ -234,6 +235,11 @@
 				<p>Released under GPLv3 (see <a href="LICENSE.txt">LICENSE.txt</a>)</p>
 				<p>For more information, see <a href="README.md">README.md</a></p>
 			</p>
+
+			<h2 id="citation">CITATION</h2>
+			<p>
+				<p>If you use the AnnoTool and if appropriate, please cite the following article in which the tool is explained in detail:</p>
+				<p>Seidl M., Wieser E., Alexander C., 2015, Automated classification of petroglyphs, <em>Digital Applications in Archaeology and Cultural Heritage</em> 3, 2015, pp.196-212. <a href="http://dx.doi.org/10.1016/j.daach.2015.03.001">http://dx.doi.org/10.1016/j.daach.2015.03.001</a></p>
 		</div>
 		<a title="Close infobox" style="background-position: -95px -45px;" class="" onclick="$('#infobox_content').animate({scrollTop: 0}, 0);$('#infobox').hide();return false;" href="#"></a>
 	</div>
